@@ -4,10 +4,12 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ລະບົບຄິດໄລ່ເງິນອຸດໜູນປະກັນສັງຄົມ (ອປຊ)</title>
+  <title>IT-banban</title>
 
   <meta name="description" content="ເວັບໄຊທ໌ໃຫ້ຂໍ້ມູນ ແລະ ຄິດໄລ່ເງິນອຸດໜູນປະເພດຕ່າງໆຂອງພາກລັດ ແລະ ພາກວິສາຫະກິດ." />
   <meta name="theme-color" content="#10b981" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -22,6 +24,10 @@
         extend: {
           fontFamily: {
             sans: ['Noto Sans Lao', 'sans-serif'],
+          },
+     
+    aspectRatio: {
+            '16/9': '16 / 9',
           },
         }
       }
@@ -40,12 +46,28 @@
     .calc-section { display: none; }
     .calc-section.active { display: block; animation: fadeIn 0.5s ease-in-out; }
     /* [FIX-1] Removed !important from .hidden to allow Tailwind's responsive classes (like md:flex) to work correctly.
-    [ການແກ້ໄຂ-1] ລຶບ !important ອອກຈາກ .hidden ເພື່ອໃຫ້ class responsive ຂອງ Tailwind (ເຊັ່ນ md:flex) ເຮັດວຽກໄດ້ຖືກຕ້ອງ.
-    */
+ [ການແກ້ໄຂ-1] ລຶບ !important ອອກຈາກ .hidden ເພື່ອໃຫ້ class responsive ຂອງ Tailwind (ເຊັ່ນ md:flex) ເຮັດວຽກໄດ້ຖືກຕ້ອງ.
+ */
     .hidden { display: none; } 
-    #image-slider .slider-track { transition: transform 0.5s ease-in-out; }
+    #image-slider .slider-track { 
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform;
+}
     #fab-home-button { transition: opacity 0.3s, transform 0.3s; }
-    #fab-home-button.hidden { opacity: 0; transform: scale(0.5); pointer-events: none; }
+    #fab-home-button.hidden { opacity: 0;
+transform: scale(0.5); pointer-events: none; }
+    
+    /* --- CSS ປັບປຸງໃໝ່ສຳລັບ Slider Dots --- */
+    #slider-dots button {
+      width: 0.75rem; /* 12px */
+      height: 0.75rem;
+      border-radius: 9999px;
+      background-color: rgba(255, 255, 255, 0.5); transition: all 0.3s ease-in-out;
+    }
+    #slider-dots button.active {
+      background-color: white;
+      transform: scale(1.25); }
+    /* --- ສິ້ນສຸດ CSS ປັບປຸງໃໝ່ --- */
+
     @media (max-width: 768px) {
       #searchResult .table-container table, #searchResult .table-container thead, #searchResult .table-container tbody, #searchResult .table-container th, #searchResult .table-container td, #searchResult .table-container tr { display: block; }
       #searchResult .table-container thead tr { position: absolute; top: -9999px; left: -9999px; }
@@ -56,11 +78,11 @@
       #searchResult .table-container td:last-child::before { display: none; }
       #searchResult .table-container td.mobile-hidden { display: none; }
     }
+
   </style>
   <script>
     if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    } else {
+      document.documentElement.classList.add('dark'); } else {
       document.documentElement.classList.remove('dark');
     }
   </script>
@@ -72,22 +94,30 @@
       <nav class="flex justify-between items-center py-3">
         <a href="#" onclick="showPage('home')" class="flex items-center space-x-3 text-xl font-bold text-gray-900 dark:text-white cursor-pointer">
           <img src="https://i.ibb.co/36359Bf/image.png" alt="Logo" class="w-10 h-10 rounded-full">
-          <span>ຄຳນວນເງີນອຸດໜຸນຕ່າງໆ</span>
-        </a>
+          <span>IT-BANBAN</span>
+       
+
+  </a>
         
         <div class="hidden md:flex items-center space-x-6 text-base font-semibold ml-auto" id="desktop-nav">
           <a href="#" onclick="showPage('home')" class="hover:text-emerald-500 transition-colors nav-link" data-page="home">ໜ້າຫຼັກ</a>
-          <a href="#" onclick="showPage('gov-guide')" class="hover:text-emerald-500 transition-colors nav-link" data-page="gov-guide">ວິທີຄິດໄລ່ພາກລັດ</a>
-          <a href="#" onclick="showPage('ent-guide')" class="hover:text-emerald-500 transition-colors nav-link" data-page="ent-guide">ວິທີຄິດໄລ່ພາກວິສາຫະກິດ</a>
+          <a href="#" onclick="showPage('gov-guide')" class="hover:text-emerald-500 transition-colors nav-link" data-page="gov-guide">ອຸດໜຸນພາກລັດ</a>
+          <a href="#" onclick="showPage('ent-guide')" class="hover:text-emerald-500 transition-colors nav-link" data-page="ent-guide">ອຸດໜຸນວິສາຫະກິດ</a>
           <a href="#" onclick="showPage('calculator')" class="hover:text-emerald-500 transition-colors nav-link" data-page="calculator">ເຄື່ອງຄຳນວນ</a>
-          <a href="#" onclick="showPage('contact')" class="hover:text-emerald-500 transition-colors nav-link" data-page="contact">ກ່ຽວກັບ</a>
+          
+
+<a href="#" onclick="showPage('contact')" class="hover:text-emerald-500 transition-colors nav-link" data-page="contact">ກ່ຽວກັບ</a>
         </div>
 
         <div class="flex items-center gap-2">
            <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5">
              <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-             <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm-.707 10.607a1 1 0 010-1.414l.707-.707a1 1 0 111.414 1.414l-.707-.707a1 1 0 01-1.414 0zM3 11a1 1 0 100 2h1a1 1 0 100-2H3z"></path></svg>
-           </button>
+             <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path 
+
+d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm-.707 10.607a1 1 0 010-1.414l.707-.707a1 1 0 111.414 1.414l-.707-.707a1 1 0 01-1.414 0zM3 11a1 1 0 100 2h1a1 1 0 100-2H3z"></path></svg>
+          
+
+ </button>
             <button id="mobile-menu-button" class="md:hidden p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
@@ -95,19 +125,25 @@
       </nav>
       
       <div id="mobile-menu" class="hidden flex-col md:hidden pb-4">
-          <a href="#" onclick="showPage('home')" class="flex items-center gap-2 py-2 px-3 text-base text-gray-900 dark:text-white hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-md">
+         
+
+ <a href="#" onclick="showPage('home')" class="flex items-center gap-2 py-2 px-3 text-base text-gray-900 dark:text-white hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-md">
              <i class="fas fa-home w-5"></i> ໜ້າຫຼັກ
           </a>
           <a href="#" onclick="showPage('gov-guide')" class="flex items-center gap-2 py-2 px-3 text-base text-gray-900 dark:text-white hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-md">
-             <i class="fas fa-landmark w-5"></i> ວິທີຄິດໄລ່ພາກລັດ
+             <i class="fas fa-landmark w-5"></i> ອຸດໜຸນພາກລັດ
           </a>
-          <a href="#" onclick="showPage('ent-guide')" class="flex items-center gap-2 py-2 px-3 text-base text-gray-900 dark:text-white hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-md">
-             <i class="fas fa-building w-5"></i> ວິທີຄິດໄລ່ພາກວິສາຫະກິດ
+         
+
+ <a href="#" onclick="showPage('ent-guide')" class="flex items-center gap-2 py-2 px-3 text-base text-gray-900 dark:text-white hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-md">
+             <i class="fas fa-building w-5"></i> ອຸດໜຸນວິສາຫະກິດ
           </a>
           <a href="#" onclick="showPage('calculator')" class="flex items-center gap-2 py-2 px-3 text-base text-gray-900 dark:text-white hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-md">
              <i class="fas fa-calculator w-5"></i> ເຄື່ອງຄຳນວນ
           </a>
-          <a href="#" onclick="showPage('contact')" class="flex items-center gap-2 py-2 px-3 text-base text-gray-900 dark:text-white hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-md">
+         
+
+ <a href="#" onclick="showPage('contact')" class="flex items-center gap-2 py-2 px-3 text-base text-gray-900 dark:text-white hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-md">
              <i class="fas fa-info-circle w-5"></i> ກ່ຽວກັບ
           </a>
       </div>
@@ -115,127 +151,220 @@
   </header>
 
   <main class="container mx-auto px-4 py-6 md:py-12 flex-grow">
-    
     <div id="home-page" class="page">
 	    <section class="text-center">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-4 leading-tight">ລະບົບຂໍ້ມູນ ແລະ ຄິດໄລ່ເງິນອຸດໜູນ ອປຊ</h1>
-			<p id="date-lao-calc" class="text-emerald-500"></p>
-            <p class="text-md lg:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">ສູນລວມຂໍ້ມູນ, ຄຳແນະນຳ ແລະ ເຄື່ອງມືຄຳນວນເງິນອຸດໜູນປະເພດຕ່າງໆ.</p>
-        </section>
+		 <p id="date-lao-calc" class="text-center text-2xl font-semibold text-emerald-500"></p>
+           <p class="text-md lg:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">ຮູບພາບ ປະເພດອຸດໜຸນຕ່າງໆ.</p>
+   
+     </section>
         <section id="image-slider" class="relative w-full max-w-5xl mx-auto my-10 shadow-2xl rounded-2xl overflow-hidden">
              <div class="slider-track flex bg-gray-200 dark:bg-gray-800">
                 <img src="https://i.ibb.co/ycdSVQTZ/mm1.jpg" alt="ຮູບລວມ" class="w-full flex-shrink-0 object-cover h-64 md:h-96">
-                <img src="https://i.ibb.co/VW4s2Tg8/image.jpg" alt="ເງີນເດືອນລັດຖະກອນ" class="w-full flex-shrink-0 object-cover h-64 md:h-96">
-                <img src="https://i.ibb.co/fVrXqrhw/image.jpg" alt="ບຳນານ" class="w-full flex-shrink-0 object-cover h-64 md:h-96">
+                 <img src="https://i.ibb.co/VW4s2Tg8/image.jpg" alt="ເງີນເດືອນລັດຖະກອນ" class="w-full flex-shrink-0 object-cover h-64 md:h-96">
+              
+  <img src="https://i.ibb.co/fVrXqrhw/image.jpg" alt="ບຳນານ" class="w-full flex-shrink-0 object-cover h-64 md:h-96">
 				<img src="https://i.ibb.co/twzt8WjW/image.jpg " alt="ບຳເນັດເກີດລູກ" class="w-full flex-shrink-0 object-cover h-64 md:h-96">
                 <img src="https://i.ibb.co/nMr0cZ6w/image.jpg" alt="ປ່ວຍການ" class="w-full flex-shrink-0 object-cover h-64 md:h-96">
                 <img src="https://i.ibb.co/sdmHtnwm/image.jpg" alt="ເສຍຊີວິດ" class="w-full flex-shrink-0 object-cover h-64 md:h-96">
 				
             </div>
-             <button id="slider-prev" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-black/60 transition-colors">
-                <i class="fas fa-chevron-left"></i>
+ 
+           <button id="slider-prev" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-black/60 hover:scale-110 active:scale-95 transition-all duration-300 ease-in-out">
+ 
+              <i class="fas fa-chevron-left"></i>
             </button>
-            <button id="slider-next" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-black/60 transition-colors">
-                <i class="fas fa-chevron-right"></i>
-             </button>
+            <button id="slider-next" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-black/60 hover:scale-110 active:scale-95 transition-all duration-300 ease-in-out">
+              <i class="fas fa-chevron-right"></i>
+     
+       </button>
             <div id="slider-dots" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2"></div>
         </section>
-    </div>
+			
+			
+			
+        <section class="my-12">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-2xl sm:text-3xl font-bold text-center text-gray-900 dark:text-white mb-6">ວິດີໂອແນະນຳ</h2>
+                   <div class="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-black">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="aspect-video rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-black">
+   
+ <iframe class="w-full h-full"
+      src="https://www.youtube.com/embed/7Iu8eKjmBJg"
+      title="YouTube video 1"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="aspect-video rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-black">
+    <iframe class="w-full h-full"
+      src="https://www.youtube.com/embed/ZVvSVKXQrTk"
+      title="YouTube video 2"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="aspect-video rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-black">
+    <iframe class="w-full h-full"
+      src="https://www.youtube.com/embed/NHT8SRcj09g"
+      title="YouTube video 3"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+</div>
+        </section>
+        </div>
 
     <div id="gov-guide-page" class="page">
         <section class="max-w-4xl mx-auto">
             <div class="text-center mb-10">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-500 mb-4">ວິທີການຄິດໄລ່ເງິນອຸດໜູນພາກລັດ</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">ຄຳອະທິບາຍລະອຽດກ່ຽວກັບການຄຳນວນເງິນເດືອນ, ບຳນານ ແລະ ບຳເນັດ.</p>
-            </div>
+                         
+            
+ </div>
             
             <div class="bg-white dark:bg-gray-800/50 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 space-y-8">
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">1. ການຄິດໄລ່ເງິນເດືອນລັດຖະກອນ</h2>
-                    <p class="mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">ເງິນເດືອນລັດຖະກອນປະກອບດ້ວຍຫຼາຍພາກສ່ວນລວມກັນ. ສູດຄິດໄລ່ເງິນເດືອນທີ່ໄດ້ຮັບຕົວຈິງມີດັ່ງນີ້:</p>
+                  
+  <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">1. ການຄິດໄລ່ເງິນເດືອນລັດຖະກອນ</h2>
+   
+                 <p class="mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">ເງິນເດືອນລັດຖະກອນປະກອບດ້ວຍຫຼາຍພາກສ່ວນລວມກັນ.
+ສູດຄິດໄລ່ເງິນເດືອນທີ່ໄດ້ຮັບຕົວຈິງມີດັ່ງນີ້:</p>
                     <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-center font-sans text-base md:text-lg mb-4 break-words">
                         ເງິນເດືອນລວມ = (ພື້ນຖານ + ຕຳແໜ່ງ + ປີການ) - ຫັກ 8% - ອາກອນ + ອຸດໜູນລູກ/ເມຍ + ຄ່າຄອງຊີບ
                     </div>
-                    <img src="https://i.ibb.co/VW4s2Tg8/image.jpg" alt="Salary Calculation" class="rounded-lg shadow-md mx-auto w-full max-w-lg object-cover mt-6">
+          
+          <img src="https://i.ibb.co/VW4s2Tg8/image.jpg" alt="Salary Calculation" class="rounded-lg shadow-md mx-auto w-full max-w-lg object-cover mt-6">
                 </div>
                 
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">2. ການຄິດໄລ່ເງິນບຳນານ</h2>
+           
+         <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">2. ການຄິດໄລ່ເງິນບຳນານ</h2>
                     <p class="mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">ເງິນບຳນານຈະຖືກຄິດໄລ່ຈາກເງິນເດືອນພື້ນຖານເດືອນສຸດທ້າຍກ່ອນອອກບຳນານ ຄູນກັບເປີເຊັນບຳນານທີ່ໄດ້ຮັບ.</p>
                     <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-center font-sans text-base md:text-lg mb-4 break-words">
-                        ເງິນບຳນານລວມ = (ເງິນເດືອນລວມກ່ອນອອກການ * %ບຳນານ) - ປະກັນສຸຂະພາບ + ອຸດໜູນລູກ + ຄ່າຄອງຊີບ
-                    </div>
+                        ເງິນບຳນານລວມ = (ພື້ນຖານ + ຕຳແໜ່ງ + ປີການ * %ບຳນານ) - ປະກັນສຸຂະພາບ + ອຸດໜູນລູກ + ຄ່າຄອງຊີບ
+       
+     
+          </div>
                      <img src="https://i.ibb.co/fVrXqrhw/image.jpg" alt="Pension Calculation" class="rounded-lg shadow-md mx-auto w-full max-w-lg object-cover mt-6">
                 </div>
 
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">3. ການຄິດໄລ່ເງິນບຳເນັດອອກການ</h2>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">3.
+ການຄິດໄລ່ເງິນບຳເນັດອອກການ</h2>
                      <p class="mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">ສຳລັບລັດຖະກອນທີ່ອອກການກ່ອນກະສຽນ ຈະໄດ້ຮັບເງິນບຳເນັດເທື່ອດຽວ.</p>
                     <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-center font-sans text-base md:text-lg mb-4 break-words">
-                        ເງິນບຳເນັດ = (ເງິນເດືອນເດືອນສຸດທ້າຍ * 85%) * 1.5 * ປີການ
-                    </div>
+                        ເງິນບຳເນັດອອກການ = (ເງິນເດືອນເດືອນສຸດທ້າຍ * 85%) * 1.5 * ປີການ
+        
+         </div>
                     <img src="https://i.ibb.co/twzt8WjW/image.jpg" alt="Severance Pay Calculation" class="rounded-lg shadow-md mx-auto w-full max-w-lg object-cover mt-6">
                 </div>
             </div>
         </section>
+		<div class="flex justify-center mt-6">
+  <a
+    href="https://lsso.gov.la/index.php/lo/subsidy-type-la"
+    target="_blank"
+    class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+  >
+    ຂໍ້ມູນລະອຽດທີ່ເວັບໄຊ Lsso
+  </a>
+</div>
+		
+		
     </div>
 
     <div id="ent-guide-page" class="page">
         <section class="max-w-4xl mx-auto">
-            <div class="text-center mb-10">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-500 mb-4">ວິທີການຄິດໄລ່ເງິນອຸດໜູນພາກວິສາຫະກິດ</h1>
-                 <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">ຄຳອະທິບາຍລະອຽດກ່ຽວກັບການຄຳນວນເງິນອຸດໜູນປະເພດຕ່າງໆ.</p>
+    
+
+         <div class="text-center mb-10">
+        
             </div>
             
             <div class="bg-white dark:bg-gray-800/50 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 space-y-8">
+ 
+
                 <div>
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">1. ການຄິດໄລ່ເງິນອຸດໜູນເກີດລູກ</h2>
                     <p class="mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">ຜູ້ປະກັນຕົນຍິງທີ່ເກີດລູກຈະໄດ້ຮັບເງິນອຸດໜູນຊ່ວຍຄ່າໃຊ້ຈ່າຍ ແລະ ເງິນພັກການ.</p>
                     <ul class="list-disc list-inside space-y-2 mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">
                         <li><strong>ເງິນບຳເນັດເກີດລູກ (ຈ່າຍເທື່ອດຽວ):</strong> ເງິນເດືອນສະເລ່ຍ 6 ເດືອນ * 60%</li>
-                         <li><strong>ເງິນອຸດໜູນ (ໄລຍະພັກ):</strong> ຄິດໄລ່ຕາມອັດຕາສ່ວນຂອງເງິນເດືອນສະເລ່ຍ 6 ເດືອນ.</li>
+               
+  
+                   <li><strong>ເງິນອຸດໜູນ (ໄລຍະພັກ):</strong> ຄິດໄລ່ຕາມອັດຕາສ່ວນຂອງເງິນເດືອນສະເລ່ຍ 6 ເດືອນ.</li>
+
                     </ul>
                     <img src="https://i.ibb.co/rRDFqGgM/image.jpg" alt="Maternity Benefit" class="rounded-lg shadow-md mx-auto w-full max-w-lg object-cover mt-6">
                 </div>
-                
-                 <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">2. ການຄິດໄລ່ເງິນບຳເນັດອອກການ (ບໍ່ຮອດ 60 ເດືອນ)</h2>
-                    <p class="mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">ຜູ້ປະກັນຕົນທີ່ອອກຈາກວຽກ ແລະ ມີການສົ່ງເງິນສົມທົບແຕ່ 1-59 ເດືອນ ຈະໄດ້ຮັບເງິນບຳເນັດເທື່ອດຽວ.</p>
+                 
+      
+
+            <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">2. ການຄິດໄລ່ເງິນບຳເນັດອອກການ (ຮອດ 60 ເດືອນ ລົງມາ)</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">ຜູ້ປະກັນຕົນທີ່ອອກຈາກວຽກ ແລະ ມີການສົ່ງເງິນສົມທົບແຕ່ 1-60 ເດືອນ ຈະໄດ້ຮັບເງິນບຳເນັດເທື່ອດຽວ.</p>
                     <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-center font-sans text-base md:text-lg mb-4 break-words">
-                        ເງິນບຳເນັດ = (ເງິນສົມທົບສະເລ່ຍ) * 20% * ຈຳນວນປີທີ່ສົ່ງ
-                    </div>
+                        ເງິນບຳເນັດ = (ເງິນສົມທົບສະເລ່ຍ) * 1,5 * ຈຳນວນປີ
+       
+ 
+             </div>
                      <img src="https://i.ibb.co/twzt8WjW/image.jpg" alt="Enterprise Severance Pay" class="rounded-lg shadow-md mx-auto w-full max-w-lg object-cover mt-6">
                 </div>
 
                 <div>
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">3. ການຄິດໄລ່ເງິນອຸດໜູນເສຍຊີວິດ</h2>
                     <p class="mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">ກໍລະນີຜູ້ປະກັນຕົນເສຍຊີວິດ, ຄອບຄົວຈະໄດ້ຮັບເງິນອຸດໜູນໂດຍຄິດໄລ່ຕາມຈຳນວນປີທີ່ສົ່ງເງິນສົມທົບ.</p>
-                    <img src="https://i.ibb.co/sdmHtnwm/image.jpg" alt="Death Benefit" class="rounded-lg shadow-md mx-auto w-full max-w-lg object-cover mt-6">
+					    <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-center font-sans text-base md:text-lg mb-4 break-words">
+                        ເງິນອຸດໜຸນເສຍຊີວິດ = (ເງິນສົມທົບສະເລ່ຍ) * ຈຳນວນປີ
+                       </div>
+						
+                     <img src="https://i.ibb.co/sdmHtnwm/image.jpg" alt="Death Benefit" class="rounded-lg shadow-md mx-auto w-full max-w-lg object-cover mt-6">
                 </div>
             </div>
         </section>
+<div class="flex justify-center mt-6">
+  <a
+    href="https://lsso.gov.la/index.php/lo/subsidy-type-la"
+    target="_blank"
+    class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+  >
+ 
+   ຂໍ້ມູນລະອຽດທີ່ເວັບໄຊ Lsso
+  </a>
+</div>
+	
     </div>
-
     <div id="calculator-page" class="page">
         <div id="calculator-home" class="calc-section active bg-white dark:bg-gray-800/50 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
             <div class="text-center mb-6">
                 <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">ຄຳນວນເງິນເດືອນ-ເງີນອຸດໜູນຕ່າງໆ (ອປຊ)</h1>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button class="w-full text-left p-4 bg-gray-100 dark:bg-gray-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg transition-all" onclick="showCalcSection('Salary')">
+           
+      <button class="w-full text-left p-4 bg-gray-100 dark:bg-gray-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg transition-all" onclick="showCalcSection('Salary')">
                      <i class="fas fa-money-bill-wave text-emerald-500 mr-3 w-6 text-center"></i> <span class="font-semibold text-gray-800 dark:text-gray-200">ຄຳນວນເງິນເດືອນ</span>
                 </button>
                 <button class="w-full text-left p-4 bg-gray-100 dark:bg-gray-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg transition-all" onclick="showCalcSection('Government')">
-                    <i class="fas fa-landmark text-emerald-500 mr-3 w-6 text-center"></i> <span class="font-semibold text-gray-800 dark:text-gray-200">ອຸດໜູນພາກລັດ</span>
+           
+        <i class="fas fa-landmark text-emerald-500 mr-3 w-6 text-center"></i> <span class="font-semibold text-gray-800 dark:text-gray-200">ອຸດໜູນພາກລັດ</span>
                  </button>
                  <button class="w-full text-left p-4 bg-gray-100 dark:bg-gray-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg transition-all" onclick="showCalcSection('Enterprise')">
                     <i class="fas fa-building text-emerald-500 mr-3 w-6 text-center"></i> <span class="font-semibold text-gray-800 dark:text-gray-200">ອຸດໜູນວິສາຫະກິດ</span>
-                </button>
+        
+         </button>
                  <button class="w-full text-left p-4 bg-gray-100 dark:bg-gray-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg transition-all" onclick="showCalcSection('Search')">
                     <i class="fas fa-search text-emerald-500 mr-3 w-6 text-center"></i> <span class="font-semibold text-gray-800 dark:text-gray-200">ຄົ້ນຫາຂໍ້ມູນ</span>
                 </button>
-            </div>
-             <div class="mt-8 text-center bg-yellow-100 dark:bg-yellow-900/50 border-l-4 border-yellow-500 p-4 rounded-r-lg text-yellow-800 dark:text-yellow-200">
+         </div>
+      
+
+        <div class="mt-8 text-center bg-yellow-100 dark:bg-yellow-900/50 border-l-4 border-yellow-500 p-4 rounded-r-lg text-yellow-800 dark:text-yellow-200">
                   <i class="fas fa-exclamation-triangle mr-2"></i> 
                 <strong>ຄຳເຕືອນ:</strong> ແອັບນີ້ສ້າງຂຶ້ນເພື່ອຊ່ວຍຄຳນວນໃນເບື້ອງຕົ້ນເທົ່ານັ້ນ, ສອບຖາມຂໍ້ມູນເພີ່ມເຕີມທີ່ ອປຊ ໂທ: 1508.
             </div>
@@ -246,182 +375,215 @@
             <p class="text-base text-gray-500 dark:text-gray-400 mb-6 md:mb-10 text-center">ລັດຖະກອນ (ປົກຄອງ-ຄູອາຈານ)</p>
             <form id="salaryForm" class="space-y-4 max-w-lg mx-auto">
                 <div>
-                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເນື້ອໃນລາຍລະອຽດ:</label>
+                     <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເນື້ອໃນລາຍລະອຽດ:</label>
                     <select id="category" onchange="toggleFields()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                         <option value="">-- ເລືອກປະເພດ --</option>
 						<option value="civil">ເງິນເດືອນພະນັກງານລັດຖະກອນ</option>
 						<option value="pension">ເງີນບຳນານ</option>
 					</select>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+               
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                      <div>
                         <label for="index" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ດັດສະນີ:</label>
                         <input type="number" id="index" min="0" placeholder="ຕົວຢ່າງ: 226" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                     </div>
+                      </div>
                      <div>
                         <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ປີການ:</label>
-                        <input type="number" id="year" min="0" placeholder="ຕົວຢ່າງ: 10" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                         
+<input type="number" id="year" min="0" placeholder="ຕົວຢ່າງ: 10" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                      </div>
                 </div>
                  <div>
-                    <label for="position" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເງິນຕຳແໜ່ງ:</label>
-                    <input type="text" inputmode="numeric" id="position" oninput="formatAndRestrictNumber(this)" placeholder="ຕົວຢ່າງ: 200,000" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                     <label for="position" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເງິນຕຳແໜ່ງ:</label>
+                     <input type="text" inputmode="numeric" id="position" oninput="formatAndRestrictNumber(this)" placeholder="ຕົວຢ່າງ: 200,000" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                  </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="children" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ຈຳນວນລູກ:</label>
+                     
+<div>
+                         <label for="children" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ຈຳນວນລູກ:</label>
                         <input type="number" id="children" min="0" placeholder="ຕົວຢ່າງ: 2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                    </div>
-                    <div id="wifeGroup">
+                     </div>
+    
+                 <div id="wifeGroup">
                          <label for="wife" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ຈຳນວນເມຍ:</label>
                         <input type="number" id="wife" min="0" placeholder="ຕົວຢ່າງ: 1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                    </div>
+      
+               </div>
                  </div>
                  <div class="hidden" id="pensionGroup">
                      <label for="pensionPercent" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເປີເຊັນບຳນານ (%):</label>
-                     <input type="number" id="pensionPercent" min="0" max="100" placeholder="ຕົວຢ່າງ: 80" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                     
+ <input type="number" id="pensionPercent" min="0" max="100" placeholder="ຕົວຢ່າງ: 80" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                  </div>
 
                 <div class="flex flex-wrap justify-center gap-3 pt-4">
                      <button type="button" class="text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="calculateSalary()"><i class="fas fa-calculator mr-2"></i>ຄຳນວນ</button>
-                     <button type="button" class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="resetSalaryForm()"><i class="fas fa-trash mr-2"></i>ລ້າງຂໍ້ມູນ</button>
+      
+                <button type="button" class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="resetSalaryForm()"><i class="fas fa-trash mr-2"></i>ລ້າງຂໍ້ມູນ</button>
                       <button type="button" class="text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="goCalcHome()"><i class="fas fa-arrow-left mr-2"></i>ກັບຄືນ</button>
                 </div>
-            </form>
-            <div id="salaryResult" class="hidden mt-6 p-5 max-w-lg mx-auto bg-gray-50 dark:bg-gray-900/70 rounded-lg border-l-4 border-emerald-500">
+             </form>
+     
+       <div id="salaryResult" class="hidden mt-6 p-5 max-w-lg mx-auto bg-gray-50 dark:bg-gray-900/70 rounded-lg border-l-4 border-emerald-500">
                 <h3 class="text-lg font-bold text-emerald-500 mb-4">ຜົນການຄຳນວນ</h3>
                 <div class="space-y-2 text-sm">
                     <p class="flex justify-between"><strong>ລວມເງິນກ່ອນຫັກ:</strong> <span id="totalBeforeDeduction">0</span> ກີບ</p>
-                    <p class="flex justify-between"><strong>ເງິນປີການ:</strong> <span id="yearAllowance">0</span> ກີບ</p>
-                    <p class="flex justify-between"><strong>ເງິນລູກ:</strong> <span id="childAllowance">0</span> ກີບ</p>
+         
+ <p class="flex justify-between"><strong>ເງິນປີການ:</strong> <span id="yearAllowance">0</span> ກີບ</p>
+                     <p class="flex justify-between"><strong>ເງິນລູກ:</strong> <span id="childAllowance">0</span> ກີບ</p>
                      <p id="wifeLabel" class="flex justify-between"><strong>ເງິນເມຍ:</strong> <span id="wifeAllowance">0</span> ກີບ</p>
                     <p id="deductionLabel" class="flex justify-between"><strong>ຫັກ 8%:</strong> <span id="deduction8">0</span> ກີບ</p>
-                    <p id="taxLabel" class="flex justify-between"><strong>ຫັກອາກອນ:</strong> <span id="tax">0</span> ກີບ</p>
+               
+      <p id="taxLabel" class="flex justify-between"><strong>ຫັກອາກອນ:</strong> <span id="tax">0</span> ກີບ</p>
                     <p class="flex justify-between"><strong>ເງິນຄ່າຄອງຊີບເພີ່ມ:</strong> <span id="livingAllowance">0</span> ກີບ</p>
                     <p class="flex justify-between font-bold text-base bg-emerald-100 dark:bg-emerald-900/50 p-3 rounded-md mt-4"><strong>ລວມເງິນທັງໝົດ:</strong> <span id="totalNet" class="text-emerald-500">0</span> ກີບ</p>
                 </div>
-            </div>
-        </div>
+             </div>
+  
+      </div>
 
-        <div id="Government" class="calc-section bg-white dark:bg-gray-800/50 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mt-6">
+         <div id="Government" class="calc-section bg-white dark:bg-gray-800/50 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mt-6">
             <h2 class="text-xl sm:text-2xl font-bold text-emerald-500 mb-2 text-center">ຄຳນວນເງິນອຸດໜຸນພາກລັດ</h2>
             <p class="text-base text-gray-500 dark:text-gray-400 mb-6 md:mb-10 text-center">ກອງທຶນປະກັນສັງຄົມແຫ່ງຊາດ (ອປຊ)</p>
             <form id="bonusForm" class="space-y-4 max-w-lg mx-auto">
-                <div>
-                    <label for="detail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເນື້ອໃນລາຍລະອຽດ:</label>
+                 <div>
+     
+                <label for="detail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເນື້ອໃນລາຍລະອຽດ:</label>
                     <select id="detail" name="detail" onchange="updatePercentage()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                         <option value="">-- ເລືອກປະເພດ --</option>
 						<option value="ເງີນອຸດໜຸນບຳເນັດອອກການ">ເງີນອຸດໜຸນບຳເນັດອອກການ</option>
 						<option value="ເງີນອຸດໜຸນເສຍຊີວິດລັດຖະກອນ">ເງິນອຸດໜຸນເສຍຊີວິດລັດຖະກອນ</option>
-                       <option value="ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ">ເງິນອຸດໜຸນບຳນານເສຍຊີວິດ</option>
+          
+              <option value="ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ">ເງິນອຸດໜຸນບຳນານເສຍຊີວິດ</option>
                        <option value="ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ">ເງິນອຸດໜຸນໝາຍເສຍຊີວິດ</option>
                     </select>
                 </div>
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    
+                 <div>
                          <label for="govIndex" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ດັດສະນີ:</label>
                         <input type="number" id="govIndex" name="index" placeholder="ຕົວຢ່າງ: 226" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                    </div>
-                    <div>
+       
+             </div>
+                     <div>
                          <label for="serviceYears" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ປີການ:</label>
                        <input type="number" id="serviceYears" name="serviceYears" placeholder="ຕົວຢ່າງ: 10" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                    </div>
+                     </div>
                  </div>
                 <div>
                     <label for="positionSalary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເງິນຕຳແໜ່ງ:</label>
-                    <input type="text" inputmode="numeric" id="positionSalary" name="positionSalary" oninput="formatAndRestrictNumber(this)" placeholder="ຕົວຢ່າງ: 200,000" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+          
+          <input type="text" inputmode="numeric" id="positionSalary" name="positionSalary" oninput="formatAndRestrictNumber(this)" placeholder="ຕົວຢ່າງ: 200,000" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <div class="hidden" id="percentageGroup">
                     <label id="percentageLabel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເປີເຊັນບຳນານ (%):</label>
-                    <input type="number" id="percentage" name="percentage" step="0.01" placeholder="ຕົວຢ່າງ: 85" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+      
+              <input type="number" id="percentage" name="percentage" step="0.01" placeholder="ຕົວຢ່າງ: 85" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-3 pt-4">
-                     <button type="button" class="text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="validateAndCalculateGovernment()"><i class="fas fa-calculator mr-2"></i>ຄຳນວນ</button>
-                     <button type="button" class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="clearGovForm()"><i class="fas fa-trash mr-2"></i>ລ້າງຂໍ້ມູນ</button>
+                      <button type="button" class="text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="validateAndCalculateGovernment()"><i class="fas fa-calculator mr-2"></i>ຄຳນວນ</button>
+                      <button type="button" class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="clearGovForm()"><i class="fas fa-trash mr-2"></i>ລ້າງຂໍ້ມູນ</button>
                       <button type="button" class="text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="goCalcHome()"><i class="fas fa-arrow-left mr-2"></i>ກັບຄືນ</button>
-                 </div>
-             </form>
-             <div id="govResult" class="hidden mt-6 p-5 max-w-lg mx-auto bg-gray-50 dark:bg-gray-900/70 rounded-lg border-l-4 border-emerald-500">
+                  </div>
+    
+         </form>
+              <div id="govResult" class="hidden mt-6 p-5 max-w-lg mx-auto bg-gray-50 dark:bg-gray-900/70 rounded-lg border-l-4 border-emerald-500">
                 <h3 class="text-lg font-bold text-emerald-500 mb-4">ຜົນການຄຳນວນ</h3>
                  <div class="space-y-2 text-sm">
-                    <p class="flex justify-between"><strong>ເງິນເດືອນພື້ນຖານ:</strong> <span id="govBaseMonthlySalary">0</span> ກີບ</p>
-                    <p class="flex justify-between"><strong>ເງິນປີການ:</strong> <span id="govYearlyBonus">0</span> ກີບ</p>
+                 
+   <p class="flex justify-between"><strong>ເງິນເດືອນພື້ນຖານ:</strong> <span id="govBaseMonthlySalary">0</span> ກີບ</p>
+  
+                  <p class="flex justify-between"><strong>ເງິນປີການ:</strong> <span id="govYearlyBonus">0</span> ກີບ</p>
                      <p class="flex justify-between"><strong>ລວມເງິນກ່ອນຫັກ:</strong> <span id="govTotalDeduction">0</span> ກີບ</p>
                     <p class="flex justify-between"><strong>ເດືອນທີ່ໄດ້ຮັບ:</strong> <span id="govMonthsReceived">0</span> ເດືອນ</p>
-                    <p class="flex justify-between font-bold text-base bg-emerald-100 dark:bg-emerald-900/50 p-3 rounded-md mt-4"><strong>ລວມເງິນທັງໝົດທີ່ໄດ້ຮັບ:</strong> <span id="govTotalAmountReceived" class="text-emerald-500">0</span> ກີບ</p>
-                 </div>
+                     <p class="flex justify-between font-bold text-base bg-emerald-100 dark:bg-emerald-900/50 p-3 rounded-md mt-4"><strong>ລວມເງິນທັງໝົດທີ່ໄດ້ຮັບ:</strong> <span id="govTotalAmountReceived" class="text-emerald-500">0</span> ກີບ</p>
+                  </div>
             </div>
          </div>
 
          <div id="Enterprise" class="calc-section bg-white dark:bg-gray-800/50 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mt-6">
             <h2 class="text-xl sm:text-2xl font-bold text-emerald-500 mb-2 text-center">ຄຳນວນເງິນອຸດໜຸນພາກວິສາຫະກິດ</h2>
-            <p class="text-base text-gray-500 dark:text-gray-400 mb-6 md:mb-10 text-center">ກອງທຶນປະກັນສັງຄົມແຫ່ງຊາດ (ອປຊ)</p>
+      
+           <p class="text-base text-gray-500 dark:text-gray-400 mb-6 md:mb-10 text-center">ກອງທຶນປະກັນສັງຄົມແຫ່ງຊາດ (ອປຊ)</p>
             <form id="supportForm" class="space-y-4 max-w-lg mx-auto">
-                <div>
+                 <div>
                       <label for="entCategory" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເນື້ອໃນລາຍລະອຽດ:</label>
                      <select id="entCategory" name="category" onchange="handleEnterpriseCategoryChange()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                          <option value="">-- ເລືອກປະເພດ --</option>
                          <option value="ບຳເນັດເກີດລູກ">ບຳເນັດເກີດລູກ</option>
                          <option value="ອຸດໜຸນເກີດລູກ">ອຸດໜຸນເກີດລູກ</option>
 						 <option value="ບຳເນັດອອກການ">ບຳເນັດອອກການ</option>
-                         <option value="ເງີນເສຍຊີວິດ">ເງິນເສຍຊີວິດ</option>
+               
+           <option value="ເງີນເສຍຊີວິດ">ເງິນເສຍຊີວິດ</option>
                      </select>
                  </div>
                  <div>
                      <label for="contribution" id="contributionLabel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ຈຳນວນເງີນສົມທົບ 6 ເດືອນສຸດທ້າຍ:</label>
-                     <input type="text" inputmode="numeric" id="contribution" name="contribution" oninput="formatAndRestrictNumber(this)" placeholder="ຕົວຢ່າງ: 27,000,000" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+  
+                   <input type="text" inputmode="numeric" id="contribution" name="contribution" oninput="formatAndRestrictNumber(this)" placeholder="ຕົວຢ່າງ: 27,000,000" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                  </div>
                 <div>
-                    <label for="months" id="monthsLabel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເດືອນ:</label>
-                    <input type="number" id="months" name="months" step="1" placeholder="ຕົວຢ່າງ: 12" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                     <label for="months" id="monthsLabel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເດືອນ:</label>
+                     <input type="number" id="months" name="months" step="1" placeholder="ຕົວຢ່າງ: 12" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                  </div>
                  <div class="hidden" id="entChildrenField">
-                     <label for="entChildren" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ຈຳນວນລູກ:</label>
-                    <input type="number" id="entChildren" name="children" step="1" placeholder="ຕົວຢ່າງ: 1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                     
+ <label for="entChildren" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ຈຳນວນລູກ:</label>
+                     <input type="number" id="entChildren" name="children" step="1" placeholder="ຕົວຢ່າງ: 1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                  </div>
                 <div class="flex flex-wrap justify-center gap-3 pt-4">
+  
                      <button type="button" class="text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="calculateEnterprise()"><i class="fas fa-calculator mr-2"></i>ຄຳນວນ</button>
-                     <button type="button" class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="clearEntForm()"><i class="fas fa-trash mr-2"></i>ລ້າງຂໍ້ມູນ</button>
+                      <button type="button" class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="clearEntForm()"><i class="fas fa-trash mr-2"></i>ລ້າງຂໍ້ມູນ</button>
                       <button type="button" class="text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="goCalcHome()"><i class="fas fa-arrow-left mr-2"></i>ກັບຄືນ</button>
-                 </div>
+     
+            </div>
             </form>
              <div id="entResult" class="hidden mt-6 p-5 max-w-lg mx-auto bg-gray-50 dark:bg-gray-900/70 rounded-lg border-l-4 border-emerald-500">
                  <h3 class="text-lg font-bold text-emerald-500 mb-4">ຜົນການຄຳນວນ</h3>
                 <p class="flex justify-between font-bold text-base bg-emerald-100 dark:bg-emerald-900/50 p-3 rounded-md mt-4"><strong>ລວມເງິນທັງໝົດທີ່ໄດ້ຮັບ:</strong> <span id="entTotal" class="text-emerald-500">0</span> ກີບ</p>
-            </div>
+  
+          </div>
         </div>
 
-        <div id="Search" class="calc-section bg-white dark:bg-gray-800/50 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mt-6">
+         <div id="Search" class="calc-section bg-white dark:bg-gray-800/50 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mt-6">
              <h2 class="text-xl sm:text-2xl font-bold text-emerald-500 mb-2 text-center">ຄົ້ນຫາຂໍ້ມູນ</h2>
               <p class="text-base text-gray-500 dark:text-gray-400 mb-6 md:mb-10 text-center">ຄົ້ນຫາການຄຳນວນທີ່ຜ່ານມາ ແລະ ຊອກຫາດັດສະນີ</p>
-            <form id="searchForm" class="space-y-4 max-w-lg mx-auto">
-                <div>
-                     <label for="combobox1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເລືອກລາຍການ:</label>
+             <form id="searchForm" class="space-y-4 max-w-lg mx-auto">
+     
+           <div>
+                      <label for="combobox1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ເລືອກລາຍການ:</label>
                      <select id="combobox1" name="combobox1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                        <option value="">-- ກະລຸນາເລືອກ --</option>
-                        <option value="salaryHistory">ປະຫວັດຄຳນວນເງິນເດືອນ</option>
+                       
+  <option value="">-- ກະລຸນາເລືอก --</option>
+                         <option value="salaryHistory">ປະຫວັດຄຳນວນເງິນເດືອນ</option>
                          <option value="govSupportHistory">ປະຫວັດຄຳນວນພາກລັດ</option>
                         <option value="entSupportHistory">ປະຫວັດຄຳນວນພາກວິສາຫະກິດ</option>
-                        <option value="indexData">ຄົ້ນຫາດັດສະນີ</option>
-                    </select>
+                         
+      <option value="indexData">ຄົ້ນຫາດັດສະນີ</option>
+                     </select>
                 </div>
                  <div>
                       <label for="textbox1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ໃສ່ຂໍ້ມູນເພື່ອຄົ້ນຫາ (ບໍ່ບັງຄັບ):</label>
-                     <input type="text" id="textbox1" name="textbox1" placeholder="ຕົວຢ່າງ: 4/2, ຄູອາຈານ" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+         
+            <input type="text" id="textbox1" name="textbox1" placeholder="ຕົວຢ່າງ: 4/2, ຄູອາຈານ" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                 </div>
                  <div class="flex flex-wrap justify-center gap-3 pt-4">
-                     <button type="button" id="searchButton" class="text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="searchData()"><i class="fas fa-search mr-2"></i>ຄົ້ນຫາ</button>
+                       <button type="button" id="searchButton" class="text-white bg-emerald-500 hover:bg-emerald-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="searchData()"><i class="fas fa-search mr-2"></i>ຄົ້ນຫາ</button>
                      <button type="button" class="text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 font-medium rounded-lg text-sm px-5 py-2.5" onclick="goCalcHome()"><i class="fas fa-arrow-left mr-2"></i>ກັບຄືນ</button>
                  </div>
              </form>
             <div id="searchResult" class="hidden w-full mt-6">
-                <div class="table-container overflow-x-auto" id="table-container">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+ 
+                 <div class="table-container overflow-x-auto" id="table-container">
+                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"><tr id="table-header"></tr></thead>
-                         <tbody id="table-body" class="bg-white dark:bg-gray-800"></tbody>
-                    </table>
-                </div>
+                          <tbody id="table-body" class="bg-white dark:bg-gray-800"></tbody>
+      
+              </table>
+                 </div>
             </div>
         </div>
     </div>
@@ -429,15 +591,16 @@
      <div id="contact-page" class="page">
         <section>
            <h2 class="text-xl sm:text-2xl font-bold text-emerald-500 mb-2 text-center">ກ່ຽວກັບພວກເຮົາ</h2>
-          <p class="text-base text-gray-500 dark:text-gray-400 mb-6 md:mb-10 text-center">ສອບຖາມຂໍ້ມູນເພີ່ມເຕີມ ແລະ ຂໍຄຳແນະນຳ.</p>
+           <p class="text-base text-gray-500 dark:text-gray-400 mb-6 md:mb-10 text-center">ສອບຖາມຂໍ້ມູນເພີ່ມເຕີມ ແລະ ຂໍຄຳແນະນຳ.</p>
           <div class="bg-white dark:bg-gray-800/50 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 max-w-2xl mx-auto p-8">
-            <div class="space-y-4 text-center text-lg">
+             <div class="space-y-4 text-center text-lg">
                 <p><strong>ສາຍດ່ວນ ອປຊ:</strong> <a href="tel:1508" class="text-emerald-500 hover:underline">1508</a></p>
                 <p><strong>ເຟສບຸກ:</strong> <a href="https://www.facebook.com/Phetsaiyaphoom" target="_blank" class="text-emerald-500 hover:underline">Bounpheng Phetsaiyaphoum</a></p>
-                <p><strong>ວັອດແອັບ:</strong> <a href="https://api.whatsapp.com/send/?phone=8562091270509" target="_blank" class="text-emerald-500 hover:underline">020 9127 0509</a></p>
+                   
+<p><strong>ວັອດແອັບ:</strong> <a href="https://api.whatsapp.com/send/?phone=8562091270509" target="_blank" class="text-emerald-500 hover:underline">020 9127 0509</a></p>
             </div>
           </div>
-        </section>
+         </section>
     </div>
   </main>
   
@@ -447,9 +610,9 @@
 
   <footer class="bg-gray-200 dark:bg-gray-800 border-t border-gray-300 dark:border-gray-700 mt-auto">
     <div class="container mx-auto px-4 py-5 text-center text-gray-600 dark:text-gray-400 text-xs">
-      <p>© <span id="year"></span> ສະຫງວນລິຂະສິດ. ພັດທະນາໂດຍ ທ.ບຸນເຜີ້ງ ເພັດໄຊຍະພູມ.</p>
-      <p><a href="#" onclick="adminLogin(); return false;" id="adminLoginLink" class="text-emerald-500 hover:underline">Admin Login</a> | Version 1.1 Final</p>
-    </div>
+     
+ <p>© <span id="year"></span> ສະຫງວນລິຂະສິດ. ພັດທະນາໂດຍ ທ.ບຸນເຜີ້ງ ເພັດໄຊຍະພູມ.</p>
+      </div>
   </footer>
 
 <div id="popup" class="prize-popup fixed top-1/2 left-1/2 w-[min(85vw,450px)] transform -translate-x-1/2 -translate-y-1/2 scale-50 bg-gray-900 rounded-2xl border-2 border-transparent shadow-2xl z-[1000] text-center text-white p-6 opacity-0 pointer-events-none transition-all duration-300">
@@ -460,25 +623,20 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, onSnapshot, doc, getDoc, updateDoc, arrayUnion, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  const firebaseConfig = {
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, onSnapshot, doc, getDoc, updateDoc, arrayUnion, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; const firebaseConfig = {
     apiKey: "AIzaSyD8fd_23dLQPbLqfqbakpJtlzjIOD_B-Jw",
     authDomain: "myapp-506ca.firebaseapp.com",
     projectId: "myapp-506ca",
     storageBucket: "myapp-506ca.appspot.com",
     messagingSenderId: "341275741284",
     appId: "1:341275741284:web:f955e6c5a273e4be616371"
-  };
-  const app = initializeApp(firebaseConfig);
+  }; const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   
-  window.db = db;
-  window.firestoreFunctions = {
+  window.db = db; window.firestoreFunctions = {
       collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp,
       onSnapshot, doc, getDoc, updateDoc, arrayUnion, deleteDoc
-  };
-</script>
+  }; </script>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -493,28 +651,23 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage('home'); 
     loadAndInitializeApp(); 
     displayLaoDateForCalc();
+    
 });
-
 function setupMobileMenu() {
     const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    mobileMenuButton.addEventListener('click', () => {
+    const mobileMenu = document.getElementById('mobile-menu'); mobileMenuButton.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
-    });
-}
+    }); }
 
 function setupThemeToggle() {
     const themeToggleBtn = document.getElementById('theme-toggle');
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-    const updateIcons = () => {
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon'); const updateIcons = () => {
         if (document.documentElement.classList.contains('dark')) {
-            themeToggleDarkIcon.classList.add('hidden');
-            themeToggleLightIcon.classList.remove('hidden');
+            themeToggleDarkIcon.classList.add('hidden'); themeToggleLightIcon.classList.remove('hidden');
         } else {
             themeToggleDarkIcon.classList.remove('hidden');
-            themeToggleLightIcon.classList.add('hidden');
-        }
+            themeToggleLightIcon.classList.add('hidden'); }
     };
 
     updateIcons();
@@ -527,67 +680,56 @@ function setupThemeToggle() {
             localStorage.setItem('theme', 'light');
         }
         updateIcons();
-    });
-}
+    }); }
 
 function initializeSlider() {
     const sliderTrack = document.querySelector('#image-slider .slider-track');
     if (!sliderTrack) return;
-    const slides = Array.from(sliderTrack.children);
-    const nextButton = document.getElementById('slider-next');
+    const slides = Array.from(sliderTrack.children); const nextButton = document.getElementById('slider-next');
     const prevButton = document.getElementById('slider-prev');
     const dotsNav = document.getElementById('slider-dots');
 
-    let currentIndex = 0;
-    const createDots = () => {
-        dotsNav.innerHTML = '';
-        slides.forEach((_, index) => {
+    let currentIndex = 0; const createDots = () => {
+        dotsNav.innerHTML = ''; slides.forEach((_, index) => {
             const dot = document.createElement('button');
-            dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-white/50', 'transition-colors');
+            // Class ຕ່າງໆຈະຖືກກຳນົດຜ່ານ CSS block ຂ້າງເທິງ
             dot.addEventListener('click', () => {
                 goToSlide(index);
                 resetInterval();
             });
-            dotsNav.appendChild(dot);
+      
+      dotsNav.appendChild(dot);
         });
     };
-    createDots();
-    const dots = Array.from(dotsNav.children);
+    createDots(); const dots = Array.from(dotsNav.children);
+    
     const updateDots = () => {
         dots.forEach((dot, index) => {
-            dot.classList.toggle('bg-white', index === currentIndex);
-            dot.classList.toggle('bg-white/50', index !== currentIndex);
-        });
-    };
+            // ປ່ຽນມາໃຊ້ການ toggle class 'active' ແທນ
+            dot.classList.toggle('active', index === currentIndex);
+        }); };
 
     const goToSlide = (index) => {
-        const slideWidth = slides[0].getBoundingClientRect().width;
-        if (slideWidth === 0) return;
+        const slideWidth = slides[0].getBoundingClientRect().width; if (slideWidth === 0) return;
         currentIndex = index;
         sliderTrack.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
         updateDots();
-    };
-    nextButton.addEventListener('click', () => {
+    }; nextButton.addEventListener('click', () => {
         const nextIndex = (currentIndex + 1) % slides.length;
         goToSlide(nextIndex);
         resetInterval();
-    });
-    prevButton.addEventListener('click', () => {
+    }); prevButton.addEventListener('click', () => {
         const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
         goToSlide(prevIndex);
         resetInterval();
-    });
-    let autoSlideInterval = setInterval(() => {
+    }); let autoSlideInterval = setInterval(() => {
         const nextIndex = (currentIndex + 1) % slides.length;
         goToSlide(nextIndex);
-    }, 4000);
-    const resetInterval = () => {
-        clearInterval(autoSlideInterval);
-        autoSlideInterval = setInterval(() => { 
+    }, 4000); const resetInterval = () => {
+        clearInterval(autoSlideInterval); autoSlideInterval = setInterval(() => { 
             const nextIndex = (currentIndex + 1) % slides.length;
             goToSlide(nextIndex);
-        }, 4000);
-    };
+        }, 4000); };
     
     window.addEventListener('resize', () => goToSlide(currentIndex));
     
@@ -596,16 +738,13 @@ function initializeSlider() {
 
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-  const targetPage = document.getElementById(pageId + '-page');
-  const fabHomeButton = document.getElementById('fab-home-button');
+const targetPage = document.getElementById(pageId + '-page'); const fabHomeButton = document.getElementById('fab-home-button');
 
   if(targetPage) {
-      targetPage.classList.add('active');
-  }
+      targetPage.classList.add('active'); }
   
   if (pageId === 'home') {
-      fabHomeButton.classList.add('hidden');
-  } else {
+      fabHomeButton.classList.add('hidden'); } else {
       fabHomeButton.classList.remove('hidden');
   }
   
@@ -614,14 +753,12 @@ function showPage(pageId) {
     if(link.getAttribute('data-page') === pageId) {
       link.classList.add('text-emerald-500', 'font-bold');
     }
-  });
-  const mobileMenu = document.getElementById('mobile-menu');
+  }); const mobileMenu = document.getElementById('mobile-menu');
   if (!mobileMenu.classList.contains('hidden')) {
     mobileMenu.classList.add('hidden');
   }
 
-  window.scrollTo(0, 0);
-}
+  window.scrollTo(0, 0); }
 
 function showCalcSection(sectionId) {
     document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
@@ -632,62 +769,48 @@ function goCalcHome() {
     resetSalaryForm(); 
     clearGovForm();
     clearEntForm(); 
-    document.getElementById('searchForm').reset();
-    const searchResult = document.getElementById('searchResult');
+    document.getElementById('searchForm').reset(); const searchResult = document.getElementById('searchResult');
     if(searchResult) searchResult.classList.add('hidden');
     showCalcSection('calculator-home');
 }
 
 let APP_CONFIG = null;
 let popupTimeout;
-let IS_ADMIN = false;
-let ADMIN_EMAILS = [];
+let IS_ADMIN = false; let ADMIN_EMAILS = [];
 
 async function loadAndInitializeApp() {
-    Swal.fire({ title: 'ກຳລັງໂຫຼດການຕັ້ງຄ່າ...', text: 'ກະລຸນາລໍຖ້າ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-    try {
+    Swal.fire({ title: 'ກຳລັງໂຫຼດການຕັ້ງຄ່າ...', text: 'ກະລຸນາລໍຖ້າ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() }); try {
         if (!window.db) { throw new Error("Firestore is not initialized."); }
-        const { doc, getDoc } = window.firestoreFunctions;
-        const configRef = doc(window.db, "configuration", "appConfig");
-        const docSnap = await getDoc(configRef);
-        if (docSnap.exists()) {
-            APP_CONFIG = docSnap.data();
-            if (APP_CONFIG.yearAllowanceTiers) { APP_CONFIG.yearAllowanceTiers.forEach(tier => { if (tier.maxYears === 'Infinity') { tier.maxYears = Infinity; } }); }
+        const { doc, getDoc } = window.firestoreFunctions; const configRef = doc(window.db, "configuration", "appConfig");
+        const docSnap = await getDoc(configRef); if (docSnap.exists()) {
+            APP_CONFIG = docSnap.data(); if (APP_CONFIG.yearAllowanceTiers) { APP_CONFIG.yearAllowanceTiers.forEach(tier => { if (tier.maxYears === 'Infinity') { tier.maxYears = Infinity; } }); }
             if (APP_CONFIG.taxBrackets) { APP_CONFIG.taxBrackets.forEach(bracket => { if (bracket.max === 'Infinity') { bracket.max = Infinity; } }); }
             initializeForms();
             await loadAdminList();
-            Swal.close();
-        } else { throw new Error("ບໍ່ພົບຂໍ້ມູນການຕັ້ງຄ່າໃນ Firestore (configuration/appConfig)."); }
+            Swal.close(); } else { throw new Error("ບໍ່ພົບຂໍ້ມູນການຕັ້ງຄ່າໃນ Firestore (configuration/appConfig)."); }
     } catch (error) {
-        console.error("Error loading remote configuration: ", error);
-        Swal.fire({ icon: 'error', title: 'ເກີດຂໍ້ຜິດພາດ', text: `ບໍ່ສາມາດໂຫຼດຂໍ້ມູນການຕັ້ງຄ່າຫຼັກຂອງລະບົບໄດ້. ກະລຸນາລອງໃໝ່ອີກຄັ້ງ.`, allowOutsideClick: false, });
-    }
+        console.error("Error loading remote configuration: ", error); Swal.fire({ icon: 'error', title: 'ເກີດຂໍ້ຜິດພາດ', text: `ບໍ່ສາມາດໂຫຼດຂໍ້ມູນການຕັ້ງຄ່າຫຼັກຂອງລະບົບໄດ້. ກະລຸນາລອງໃໝ່ອີກຄັ້ງ.`, allowOutsideClick: false, }); }
 }
 
 function showCustomPopup(type, message, subMessage = 'ກະລຸນາກວດສອບຂໍ້ມູນຂອງທ່ານຄືນ') {
     const popup = document.getElementById('popup');
-    const popupIcon = popup.querySelector('.icon');
-    const popupMessage = popup.querySelector('.message');
+    const popupIcon = popup.querySelector('.icon'); const popupMessage = popup.querySelector('.message');
     const popupSubMessage = popup.querySelector('.sub-message');
     if (popupTimeout) clearTimeout(popupTimeout);
-    let iconHtml = '';
-    switch (type) {
+    let iconHtml = ''; switch (type) {
       case 'success': iconHtml = '✅'; subMessage = subMessage === 'ກະລຸນາກວດສອບຂໍ້ມູນຂອງທ່ານຄືນ' ? 'ຂໍ້ມູນຂອງທ່ານໄດ້ຖືກປະມວນຜົນສຳເລັດ!' : subMessage; break;
       case 'warning': iconHtml = '⚠️'; break;
       case 'error': iconHtml = '❌'; break;
-      default: iconHtml = 'ℹ️';
-    }
+      default: iconHtml = 'ℹ️'; }
     popupIcon.innerHTML = iconHtml;
     popupMessage.textContent = message;
     popupSubMessage.textContent = subMessage;
     popup.classList.add('active', 'scale-100', 'opacity-100');
-    popup.classList.remove('scale-50', 'opacity-0');
-    popupTimeout = setTimeout(() => { hidePopup(); }, 5000);
+    popup.classList.remove('scale-50', 'opacity-0'); popupTimeout = setTimeout(() => { hidePopup(); }, 5000);
 }
 
 function hidePopup() {
-    const popup = document.getElementById('popup');
-    popup.classList.remove('active', 'scale-100', 'opacity-100');
+    const popup = document.getElementById('popup'); popup.classList.remove('active', 'scale-100', 'opacity-100');
     popup.classList.add('scale-50', 'opacity-0');
     if (popupTimeout) clearTimeout(popupTimeout);
 }
@@ -695,26 +818,21 @@ function hidePopup() {
 async function saveDataToFirestore(collectionName, data) {
     if (!window.db) { console.error("Firestore is not initialized."); showCustomPopup('error', 'ຜິດພາດ', 'ບໍ່ສາມາດເຊື່ອມຕໍ່ຖານຂໍ້ມູນໄດ້.'); return false; }
     try {
-        const { collection, addDoc, serverTimestamp } = window.firestoreFunctions;
-        const dataToSave = { ...data, savedAt: serverTimestamp() };
+        const { collection, addDoc, serverTimestamp } = window.firestoreFunctions; const dataToSave = { ...data, savedAt: serverTimestamp() };
         await addDoc(collection(window.db, collectionName), dataToSave);
-        return true;
-    } catch (error) { console.error("Error writing document: ", error); showCustomPopup('error', 'ຜິດພາດໃນການບັນທຶກ', `ເກີດຂໍ້ຜິດພາດ: ${error.message}`); return false; }
+        return true; } catch (error) { console.error("Error writing document: ", error); showCustomPopup('error', 'ຜິດພາດໃນການບັນທຶກ', `ເກີດຂໍ້ຜິດພາດ: ${error.message}`); return false; }
 }
 
 async function getDataFromFirestore(collectionName) {
     if (!window.db) { console.error("Firestore is not initialized."); return []; }
     try {
-        const { collection, getDocs, query, orderBy, limit } = window.firestoreFunctions;
-        const q = query(collection(window.db, collectionName), orderBy("savedAt", "desc"), limit(50));
+        const { collection, getDocs, query, orderBy, limit } = window.firestoreFunctions; const q = query(collection(window.db, collectionName), orderBy("savedAt", "desc"), limit(50));
         const querySnapshot = await getDocs(q);
-        const data = [];
-        querySnapshot.forEach((doc) => {
+        const data = []; querySnapshot.forEach((doc) => {
             let docData = doc.data();
             if (docData.savedAt && docData.savedAt.toDate) { docData.savedAt = docData.savedAt.toDate(); }
             data.push({ id: doc.id, ...docData });
-        });
-        return data;
+        }); return data;
     } catch (error) { console.error("Error getting documents: ", error); return []; }
 }
 
@@ -725,133 +843,136 @@ function initializeForms() {
 }
 
 function displayLaoDateForCalc() {
-    const el = document.getElementById('date-lao-calc');
-    if(!el) return;
-    const laoDays = ["ວັນອາທິດ", "ວັນຈັນ", "ວັນອັງຄານ", "ວັນພຸດ", "ວັນພະຫັດ", "ວັນສຸກ", "ວັນເສົາ"];
-    const laoMonths = ["ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ", "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ", "ຕຸລາ", "ພະຈິກ", "ທັນວາ"];
-    const now = new Date();
-    el.textContent = `${laoDays[now.getDay()]}, ວັນທີ ${now.getDate()} ເດືອນ ${laoMonths[now.getMonth()]} ປີ ${now.getFullYear()}`;
+    const el = document.getElementById('date-lao-calc'); if(!el) return;
+    const laoDays = ["ວັນອາທິດ", "ວັນຈັນ", "ວັນອັງຄານ", "ວັນພຸດ", "ວັນພະຫັດ", "ວັນສຸກ", "ວັນເສົາ"]; const laoMonths = ["ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ", "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ", "ຕຸລາ", "ພະຈິກ", "ທັນວາ"];
+    const now = new Date(); el.textContent = `${laoDays[now.getDay()]}, ວັນທີ ${now.getDate()} ເດືອນ ${laoMonths[now.getMonth()]} ປີ ${now.getFullYear()}`;
 }
 
 function formatAndRestrictNumber(input) { 
-    let value = input.value.replace(/[^0-9]/g, '');
-    if (value) { input.value = parseInt(value, 10).toLocaleString('en-US'); } else { input.value = ''; } 
+    let value = input.value.replace(/[^0-9]/g, ''); if (value) { input.value = parseInt(value, 10).toLocaleString('en-US'); } else { input.value = ''; } 
 }
 
 function toggleFields() {
     const category = document.getElementById('category').value;
     const pensionGroup = document.getElementById('pensionGroup');
-    const wifeGroup = document.getElementById('wifeGroup');
-    const wifeLabel = document.getElementById('wifeLabel');
+    const wifeGroup = document.getElementById('wifeGroup'); const wifeLabel = document.getElementById('wifeLabel');
     const deductionLabel = document.getElementById('deductionLabel'); 
     const taxLabel = document.getElementById('taxLabel');
     const isPension = category === 'pension';
-    pensionGroup.classList.toggle('hidden', !isPension);
-    wifeGroup.classList.toggle('hidden', isPension);
+    pensionGroup.classList.toggle('hidden', !isPension); wifeGroup.classList.toggle('hidden', isPension);
     if(wifeLabel) wifeLabel.style.display = isPension ? 'none' : 'flex';
-    if(taxLabel) taxLabel.style.display = isPension ? 'none' : 'flex';
-    if(deductionLabel) deductionLabel.innerHTML = `<strong>${isPension ? 'ຫັກປະກັນສຸຂະພາບ:' : 'ຫັກ 8%:'}</strong> <span id="deduction8">0</span> ກີບ`;
-}
+    if(taxLabel) taxLabel.style.display = isPension ? 'none' : 'flex'; if(deductionLabel) deductionLabel.innerHTML = `<strong>${isPension ? 'ຫັກປະກັນສຸຂະພາບ:' : 'ຫັກ 8%:'}</strong> <span id="deduction8">0</span> ກີບ`; }
 
 function updatePercentage() {
     const detail = document.getElementById('detail').value; 
-    const group = document.getElementById('percentageGroup');
-    const show = detail === 'ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ' || detail === 'ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ';
-    group.classList.toggle('hidden', !show);
-}
+    const group = document.getElementById('percentageGroup'); const show = detail === 'ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ' || detail === 'ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ';
+    group.classList.toggle('hidden', !show); }
 
 function handleEnterpriseCategoryChange() {
     const category = document.getElementById('entCategory').value;
     const childrenGroup = document.getElementById('entChildrenField');
-    const monthsInput = document.getElementById('months');
-    const monthsLabel = document.getElementById('monthsLabel');
+    const monthsInput = document.getElementById('months'); const monthsLabel = document.getElementById('monthsLabel');
     const contributionLabel = document.getElementById('contributionLabel');
     monthsInput.disabled = false;
     monthsInput.value = '';
     monthsInput.min = '1';
-    monthsInput.max = '';
-    monthsLabel.textContent = 'ເດືອນ:';
+    monthsInput.max = ''; monthsLabel.textContent = 'ເດືອນ:';
     monthsInput.placeholder = "ປ້ອນຈຳນວນເດືອນ (ຕົວຢ່າງ: 12)";
     contributionLabel.textContent = 'ຈຳນວນເງີນສົມທົບ 6 ເດືອນສຸດທ້າຍ:';
     const showChildren = category === 'ອຸດໜຸນເກີດລູກ' || category === 'ບຳເນັດເກີດລູກ';
     childrenGroup.classList.toggle('hidden', !showChildren);
     if (category === 'ເງີນເສຍຊີວິດ' || category === 'ບຳເນັດອອກການ') {
-        monthsLabel.textContent = 'ເດືອນທັງໝົດທີ່ເຂົ້າ ອປຊ:';
-    }
+        monthsLabel.textContent = 'ເດືອນທັງໝົດທີ່ເຂົ້າ ອປຊ:'; }
     if (category === 'ບຳເນັດເກີດລູກ') {
-        monthsInput.value = 1;
-        monthsInput.disabled = true;
+        monthsInput.value = 1; monthsInput.disabled = true;
     } else if (category === 'ອຸດໜຸນເກີດລູກ') {
-        monthsInput.placeholder = "ປ້ອນເດືອນ (1-4)";
-        monthsInput.min = '1';
+        monthsInput.placeholder = "ປ້ອນເດືອນ (1-4)"; monthsInput.min = '1';
         monthsInput.max = '4';
     } else if (category === 'ບຳເນັດອອກການ') {
-        contributionLabel.textContent = 'ຈຳນວນເງີນສົມທົບ <60 ເດືອນສຸດທ້າຍ:';
-        monthsInput.placeholder = "ປ້ອນເດືອນ (1-59)";
+        contributionLabel.textContent = 'ຈຳນວນເງີນສົມທົບ <60 ເດືອນສຸດທ້າຍ:'; monthsInput.placeholder = "ປ້ອນເດືອນ (1-59)";
         monthsInput.min = '1';
-        monthsInput.max = '59';
-    }
+        monthsInput.max = '59'; }
 }
 
 const clearForm = (formId, resultId, callback) => { 
     document.getElementById(formId).reset();
     const resultEl = document.getElementById(resultId); 
-    if (resultEl) resultEl.classList.add('hidden');
-    if (callback) callback();
+    if (resultEl) resultEl.classList.add('hidden'); if (callback) callback();
 };
 const resetSalaryForm = () => clearForm('salaryForm', 'salaryResult', toggleFields);
-const clearGovForm = () => clearForm('bonusForm', 'govResult', updatePercentage);
-const clearEntForm = () => clearForm('supportForm', 'entResult', handleEnterpriseCategoryChange);
+const clearGovForm = () => clearForm('bonusForm', 'govResult', updatePercentage); const clearEntForm = () => clearForm('supportForm', 'entResult', handleEnterpriseCategoryChange);
 
 function calculateYearlyBonus(years) {
-    if (!APP_CONFIG) return 0;
-    const tiers = APP_CONFIG.yearAllowanceTiers;
+    if (!APP_CONFIG) return 0; const tiers = APP_CONFIG.yearAllowanceTiers;
     for (const tier of tiers) { if (years <= tier.maxYears) { return (years - tier.previousMax) * tier.rate + tier.base; } }
-    const lastTier = tiers[tiers.length - 1]; return (years - lastTier.previousMax) * lastTier.rate + lastTier.base;
-}
+    const lastTier = tiers[tiers.length - 1]; return (years - lastTier.previousMax) * lastTier.rate + lastTier.base; }
 
 function calculateTax(taxableIncome) {
-    if (!APP_CONFIG) return 0; const brackets = APP_CONFIG.taxBrackets; let previousMax = 0;
-    for (const bracket of brackets) { if (taxableIncome <= bracket.max) { return (taxableIncome - previousMax) * bracket.rate + bracket.base; } previousMax = bracket.max; } return 0;
+    if (!APP_CONFIG) return 0; const brackets = APP_CONFIG.taxBrackets; let previousMax = 0; for (const bracket of brackets) { if (taxableIncome <= bracket.max) { return (taxableIncome - previousMax) * bracket.rate + bracket.base; } previousMax = bracket.max; } return 0;
 }
 
+// =========================================================================================
+// START: SALARY CALCULATION - ສູດຄິດໄລ່ເງິນເດືອນ
+// =========================================================================================
+// COMMENT: ຖ້າມີການປ່ຽນແປງວິທີຄິດໄລ່ເງິນເດືອນລັດຖະກອນ ຫຼື ບຳນານ, ໃຫ້ມາແກ້ໄຂ Logic ໃນ Function ນີ້
+// ຄ່າຄົງທີ່ຕ່າງໆເຊັ່ນ: ຕົວຄູນດັດສະນີ, ເງິນອຸດໜູນລູກ/ເມຍ, ຄ່າຄອງຊີບ, ອັດຕາຫັກປະກັນສັງຄົມ/ສຸຂະພາບ
+// ຖືກດຶງມາຈາກ Firebase config (APP_CONFIG) ເພື່ອຄວາມສະດວກໃນການອັບເດດໂດຍບໍ່ຕ້ອງແກ້ໄຂລະຫັດໂດຍກົງ.
+// =========================================================================================
 async function calculateSalary() {
-    if (!APP_CONFIG) { showCustomPopup('error', 'ຜິດພາດ', 'ບໍ່ສາມາດຄຳນວນໄດ້, ການຕັ້ງຄ່າຍັງບໍ່ພ້ອມໃຊ້ງານ.'); return; }
+    if (!APP_CONFIG) { showCustomPopup('error', 'ຜິດພາດ', 'ບໍ່ສາມາດຄຳນວນໄດ້, ການຕັ້ງຄ່າຍັງບໍ່ພ້ອມໃຊ້ງານ.');
+return; }
     const category = document.getElementById('category').value; const index = parseFloat(document.getElementById('index').value) || 0;
-    const year = parseFloat(document.getElementById('year').value) || 0; 
-    const position = parseFloat(document.getElementById('position').value.replace(/,/g, '')) || 0;
-    if (!category || !index || !year) { showCustomPopup('warning', 'ກະລຸນາປ້ອນຂໍ້ມູນ', 'ກະລຸນາປ້ອນຂໍ້ມູນທີ່ຈຳເປັນ (ປະເພດ, ດັດສະນີ, ປີການ) ໃຫ້ຄົບຖ້ວນ.'); return; }
+    const year = parseFloat(document.getElementById('year').value) ||
+0; const position = parseFloat(document.getElementById('position').value.replace(/,/g, '')) || 0;
+    if (!category || !index || !year) { showCustomPopup('warning', 'ກະລຸນາປ້ອນຂໍ້ມູນ', 'ກະລຸນາປ້ອນຂໍ້ມູນທີ່ຈຳເປັນ (ປະເພດ, ດັດສະນີ, ປີການ) ໃຫ້ຄົບຖ้วน.'); return; }
     Swal.fire({ title: 'ກຳລັງຄຳນວນ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-    const children = parseFloat(document.getElementById('children').value) || 0; 
+    const children = parseFloat(document.getElementById('children').value) ||
+0; 
     const wife = parseFloat(document.getElementById('wife').value) || 0; 
     const pensionPercent = parseFloat(document.getElementById('pensionPercent').value) || 0;
+    // ຄຳນວນເງິນປີການ ໂດຍອີງຕາມຂັ້ນທີ່ກຳນົດໄວ້ໃນ Firebase config
     const yearAllowance = calculateYearlyBonus(year);
-    const livingAllowance = APP_CONFIG.salary.livingAllowance; const childAllowance = children * APP_CONFIG.salary.childAllowance;
+const livingAllowance = APP_CONFIG.salary.livingAllowance;
+    // ເງິນຄ່າຄອງຊີບ
+    const childAllowance = children * APP_CONFIG.salary.childAllowance;
+    // ເງິນອຸດໜູນລູກ
+    
     let totalBeforeDeduction, deduction, tax, totalNet, wifeAllowance; let dataToSave = {};
+    // ກວດສອບປະເພດການຄຳນວນ: 'civil' = ລັດຖະກອນ, 'pension' = ບຳນານ
     if (category === 'civil') {
-        totalBeforeDeduction = (index * APP_CONFIG.salary.indexMultiplier) + position + yearAllowance;
-        wifeAllowance = wife * APP_CONFIG.salary.wifeAllowance; deduction = Math.floor(totalBeforeDeduction * APP_CONFIG.deductions.civilRate);
-        const taxableIncome = totalBeforeDeduction - deduction; tax = Math.floor(calculateTax(taxableIncome));
-        totalNet = Math.floor(totalBeforeDeduction - deduction - tax + childAllowance + wifeAllowance + livingAllowance);
-        dataToSave = { category: 'ເງີນເດືອນພະນັກງານລັດຖະກອນ', index, year, position, children, wife, totalBeforeDeduction, yearAllowance, childAllowance, wifeAllowance, deduction, tax, livingAllowance, totalNet };
-    } else {
-        totalBeforeDeduction = ((index * APP_CONFIG.salary.indexMultiplier) + position + yearAllowance) * (pensionPercent / 100);
-        wifeAllowance = 0; tax = 0; deduction = Math.floor(totalBeforeDeduction * APP_CONFIG.deductions.pensionHealthRate); totalNet = Math.floor(totalBeforeDeduction - deduction + childAllowance + livingAllowance);
-        dataToSave = { category: 'ເງີນເດືອນພະນັກງານບຳນານ', index, year, position, children, pensionPercent, totalBeforeDeduction, yearAllowance, childAllowance, deduction, livingAllowance, totalNet };
-    }
+        // --- ສູດຄິດໄລ່ເງິນເດືອນລັດຖະກອນ (ປົກກະຕິ) ---
+        // ເງິນເດືອນກ່ອນຫັກ = (ດັດສະນີ * ຕົວຄູນ) + ເງິນຕຳແໜ່ງ + ເງິນປີການ
+        totalBeforeDeduction = (index * APP_CONFIG.salary.indexMultiplier) + position + yearAllowance; wifeAllowance = wife * APP_CONFIG.salary.wifeAllowance; // ເງິນອຸດໜູນເມຍ
+        // ຫັກປະກັນສັງຄົມ = ເງິນເດືອນກ່ອນຫັກ * ອັດຕາປະກັນສັງຄົມ (ເຊັ່ນ: 8%)
+        deduction = Math.floor(totalBeforeDeduction * APP_CONFIG.deductions.civilRate); const taxableIncome = totalBeforeDeduction - deduction;
+        // ຫັກອາກອນ (ຄຳນວນຈາກເງິນເດືອນຫຼັງຫັກປະກັນສັງຄົມ)
+        tax = Math.floor(calculateTax(taxableIncome));
+        // ເງິນເດືອນຕົວຈິງ = ເງິນເດືອນກ່ອນຫັກ - ປະກັນສັງຄົມ - ອາກອນ + ອຸດໜູນລູກ + ອຸດໜູນເມຍ + ຄ່າຄອງຊີບ
+        totalNet = Math.floor(totalBeforeDeduction - deduction - tax + childAllowance + wifeAllowance + livingAllowance); dataToSave = { category: 'ເງີນເດືອນພະນັກງານລັດຖະກອນ', index, year, position, children, wife, totalBeforeDeduction, yearAllowance, childAllowance, wifeAllowance, deduction, tax, livingAllowance, totalNet }; } else {
+        // --- ສູດຄິດໄລ່ເງິນເດືອນບຳນານ ---
+        // ເງິນເດືອນກ່ອນຫັກ = ((ດັດສະນີ * ຕົວຄູນ) + ຕຳແໜ່ງ + ປີການ) * ເປີເຊັນບຳນານ
+        totalBeforeDeduction = ((index * APP_CONFIG.salary.indexMultiplier) + position + yearAllowance) * (pensionPercent / 100); wifeAllowance = 0; // ບຳນານບໍ່ມີອຸດໜູນເມຍ
+        tax = 0;
+        // ບຳນານບໍ່ເສຍອາກອນ
+        // ຫັກປະກັນສຸຂະພາບ = ເງິນເດືອນກ່ອນຫັກ * ອັດຕາປະກັນສຸຂະພາບ
+        deduction = Math.floor(totalBeforeDeduction * APP_CONFIG.deductions.pensionHealthRate);
+        // ເງິນບຳນານຕົວຈິງ = ເງິນເດືອນກ່ອນຫັກ - ປະກັນສຸຂະພາບ + ອຸດໜູນລູກ + ຄ່າຄອງຊີບ
+        totalNet = Math.floor(totalBeforeDeduction - deduction + childAllowance + livingAllowance); dataToSave = { category: 'ເງີນເດືອນພະນັກງານບຳນານ', index, year, position, children, pensionPercent, totalBeforeDeduction, yearAllowance, childAllowance, deduction, livingAllowance, totalNet }; }
     Swal.close();
-    document.getElementById('totalBeforeDeduction').textContent = totalBeforeDeduction.toLocaleString(); document.getElementById('yearAllowance').textContent = yearAllowance.toLocaleString(); document.getElementById('childAllowance').textContent = childAllowance.toLocaleString(); document.getElementById('wifeAllowance').textContent = wifeAllowance.toLocaleString(); document.getElementById('deduction8').textContent = deduction.toLocaleString();
-    document.getElementById('tax').textContent = Math.round(tax).toLocaleString(); document.getElementById('livingAllowance').textContent = livingAllowance.toLocaleString(); document.getElementById('totalNet').textContent = totalNet.toLocaleString(); 
+    document.getElementById('totalBeforeDeduction').textContent = totalBeforeDeduction.toLocaleString(); document.getElementById('yearAllowance').textContent = yearAllowance.toLocaleString(); document.getElementById('childAllowance').textContent = childAllowance.toLocaleString(); document.getElementById('wifeAllowance').textContent = wifeAllowance.toLocaleString(); document.getElementById('deduction8').textContent = deduction.toLocaleString(); document.getElementById('tax').textContent = Math.round(tax).toLocaleString(); document.getElementById('livingAllowance').textContent = livingAllowance.toLocaleString(); document.getElementById('totalNet').textContent = totalNet.toLocaleString(); 
     document.getElementById('salaryResult').classList.remove('hidden');
     if (await saveDataToFirestore('salaryHistory', dataToSave)) { showCustomPopup('success', 'ບັນທຶກສຳເລັດ!', 'ການຄຳນວນໄດ້ຖືກບັນທຶກລົງໃນປະຫວັດແລ້ວ.'); }
 }
 
 // =========================================================================================
-// START: GOVERNMENT SUBSIDY CALCULATION - ສູດຄິດໄລ່ເງິນອຸດໜູນພາກລັດ
-// ຖ້າມີການປ່ຽນແປງວິທີຄິດໄລ່ເງິນອຸດໜູນຂອງພາກລັດ, ໃຫ້ມາແກ້ໄຂ Logic ໃນ Function ນີ້
+// START: GOVERNMENT SUBSIDY CALCULATION - ສູດຄິດໄລ່ເງິນອຸດໜູນພາກລັດ (ປັບປຸງ)
 // =========================================================================================
 async function validateAndCalculateGovernment() {
-    if (!APP_CONFIG) { showCustomPopup('error', 'ຜິດພາດ', 'ບໍ່ສາມາດຄຳນວນໄດ້, ການຕັ້ງຄ່າຍັງບໍ່ພ້ອມໃຊ້ງານ.'); return; }
+    if (!APP_CONFIG) {
+        showCustomPopup('error', 'ຜິດພາດ', 'ບໍ່ສາມາດຄຳນວນໄດ້, ການຕັ້ງຄ່າຍັງບໍ່ພ້ອມໃຊ້ງານ.');
+        return;
+    }
+
     const formData = {
         detail: document.getElementById('detail').value,
         index: parseFloat(document.getElementById('govIndex').value) || 0,
@@ -859,38 +980,45 @@ async function validateAndCalculateGovernment() {
         positionSalary: parseFloat(document.getElementById('positionSalary').value.replace(/,/g, '')) || 0,
         percentage: parseFloat(document.getElementById('percentage').value) || 0
     };
-    if (!formData.detail || !formData.index || !formData.serviceYears) { showCustomPopup('warning', 'ກະລຸນາປ້ອນຂໍ້ມູນ', 'ກະລຸນາປ້ອນຂໍ້ມູນທີ່ຈຳເປັນໃຫ້ຄົບຖ້ວນ.'); return; }
-    if ((formData.detail === "ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ" || formData.detail === "ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ") && (!formData.percentage || formData.percentage <= 0)) { showCustomPopup('warning', 'ຂໍ້ມູນບໍ່ຖືກຕ້ອງ', 'ກະລຸນາໃສ່ເປີເຊັນບຳນານທີ່ຖືກຕ້ອງ'); return; }
-    Swal.fire({ title: 'ກຳລັງຄຳນວນ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-    
+
+    if (!formData.detail || !formData.index || !formData.serviceYears) {
+        showCustomPopup('warning', 'ກະລຸນາປ້ອນຂໍ້ມູນ', 'ກະລຸນາປ້ອນຂໍ້ມູນທີ່ຈຳເປັນໃຫ້ຄົບຖ້ວນ.');
+        return;
+    }
+
+    if ((formData.detail === "ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ" || formData.detail === "ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ") && (!formData.percentage || formData.percentage <= 0)) {
+        showCustomPopup('warning', 'ຂໍ້ມູນບໍ່ຖືກຕ້ອງ', 'ກະລຸນາໃສ່ເປີເຊັນບຳນານທີ່ຖືກຕ້ອງ');
+        return;
+    }
+
+    Swal.fire({
+        title: 'ກຳລັງຄຳນວນ...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
     const C = APP_CONFIG.govSubsidy;
-    // ຄ່າຄົງທີ່ຕ່າງໆແມ່ນດຶງມາຈາກ Firebase config
     const baseMonthlySalary = formData.index * APP_CONFIG.salary.indexMultiplier;
     const yearlyBonus = calculateYearlyBonus(formData.serviceYears);
     const totalBeforePensionCalc = baseMonthlySalary + yearlyBonus + formData.positionSalary;
-    let totalDeduction = 0, monthsReceived = 0, totalAmountReceived = 0;
-    // --- ສູດຄິດໄລ່ບຳເນັດອອກການ ---
-    // ຖ້າເລືອກ "ເງີນອຸດໜຸນບຳເນັດອອກການ", ລະບົບຈະຄຳນວນໃນສ່ວນນີ້
+
+    let totalDeduction = 0;
+    let monthsReceived = 0;
+    let totalAmountReceived = 0;
+
     if (formData.detail === "ເງີນອຸດໜຸນບຳເນັດອອກການ") {
         totalDeduction = Math.floor(totalBeforePensionCalc * (C.severanceRate || 0.85));
-        // ໃຊ້ 85% ຕາມຄ່າໃນ Config
         monthsReceived = C.severanceMultiplier || 1.5;
-        // ຕົວຄູນ 1.5 ຕາມຄ່າໃນ Config
         totalAmountReceived = Math.round(totalDeduction * monthsReceived * formData.serviceYears);
-    // --- ສູດຄິດໄລ່ເງິນອຸດໜູນໝ້າຍເສຍຊີວິດ ---
-    // ຖ້າເລືອກ "ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ", ລະບົບຈະຄຳນວນໃນສ່ວນນີ້
     } else if (formData.detail === "ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ") {
         totalDeduction = Math.floor(totalBeforePensionCalc * formData.percentage / 100);
-        monthsReceived = C.widowAllowanceMonths; // ຈຳນວນເດືອນທີ່ໄດ້ຮັບ ຕາມຄ່າໃນ Config
+        monthsReceived = C.widowAllowanceMonths;
         totalAmountReceived = (totalDeduction * C.widowPensionMultiplier) * monthsReceived;
-        // ຕົວຄູນບຳນານໝ້າຍ ຕາມຄ່າໃນ Config
-    
-    // --- ສູດຄິດໄລ່ເງິນເສຍຊີວິດ (ທົ່ວໄປ ແລະ ບຳນານ) ---
-    // ກໍລະນີອື່ນໆ ເຊັ່ນ "ເງິນອຸດໜຸນເສຍຊີວິດລັດຖະກອນ"
-    } else {
-        totalDeduction = (formData.detail === "ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ") ?
-        Math.floor(totalBeforePensionCalc * formData.percentage / 100) : totalBeforePensionCalc;
-        // Logic ການຄິດໄລ່ຈຳນວນເດືອນທີ່ໄດ້ຮັບ ອີງຕາມປີການ
+    } else { 
+        totalDeduction = (formData.detail === "ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ")
+            ? Math.floor(totalBeforePensionCalc * formData.percentage / 100)
+            : totalBeforePensionCalc;
+
         if (formData.serviceYears < C.deathAllowanceYearsLimit) {
             monthsReceived = formData.serviceYears + C.deathAllowanceBaseMonths;
         } else {
@@ -900,14 +1028,24 @@ async function validateAndCalculateGovernment() {
     }
 
     Swal.close();
-    document.getElementById('govBaseMonthlySalary').innerText = baseMonthlySalary.toLocaleString('en-US');
-    document.getElementById('govYearlyBonus').innerText = yearlyBonus.toLocaleString('en-US');
-    document.getElementById('govTotalDeduction').innerText = totalDeduction.toLocaleString('en-US');
-    document.getElementById('govMonthsReceived').innerText = monthsReceived;
-    document.getElementById('govTotalAmountReceived').innerText = totalAmountReceived.toLocaleString('en-US');
+    document.getElementById('govBaseMonthlySalary').innerText = `${baseMonthlySalary.toLocaleString('en-US')}`;
+    document.getElementById('govYearlyBonus').innerText = `${yearlyBonus.toLocaleString('en-US')}`;
+    document.getElementById('govTotalDeduction').innerText = `${totalDeduction.toLocaleString('en-US')}`;
+    document.getElementById('govMonthsReceived').innerText = `${monthsReceived}`;
+    document.getElementById('govTotalAmountReceived').innerText = `${totalAmountReceived.toLocaleString('en-US')}`;
     document.getElementById('govResult').classList.remove('hidden');
-    const saveData = { ...formData, baseMonthlySalary, yearlyBonus, totalDeduction, monthsReceived, totalAmountReceived };
-    if (await saveDataToFirestore('govSupportHistory', saveData)) { showCustomPopup('success', 'ບັນທຶກສຳເລັດ!', 'ການຄຳນວນໄດ້ຖືກບັນທຶກລົງໃນປະຫວັດແລ້ວ.'); }
+
+    const saveData = {
+        ...formData,
+        baseMonthlySalary,
+        yearlyBonus,
+        totalDeduction,
+        monthsReceived,
+        totalAmountReceived
+    };
+    if (await saveDataToFirestore('govSupportHistory', saveData)) {
+        showCustomPopup('success', 'ບັນທຶກສຳເລັດ!', 'ການຄຳນວນໄດ້ຖືກບັນທຶກລົງໃນປະຫວັດແລ້ວ.');
+    }
 }
 // =========================================================================================
 // END: GOVERNMENT SUBSIDY CALCULATION
@@ -915,36 +1053,28 @@ async function validateAndCalculateGovernment() {
 
 
 // =========================================================================================
-// START: ENTERPRISE SUBSIDY CALCULATION - ສູດຄິດໄລ່ເງິນອຸດໜູນພາກວິສາຫະກິດ
-// ຖ້າມີການປ່ຽນແປງວິທີຄິດໄລ່ເງິນອຸດໜູນຂອງພາກວິສາຫະກິດ, ໃຫ້ມາແກ້ໄຂ Logic ໃນ Function ນີ້
+// START: ENTERPRISE SUBSIDY CALCULATION - ສູດຄິດໄລ່ເງິນອຸດໜູນພາກວິສາຫະກິດ (ປັບປຸງ)
 // =========================================================================================
 async function calculateEnterprise() {
     if (!APP_CONFIG) { showCustomPopup('error', 'ຜິດພາດ', 'ບໍ່ສາມາດຄຳນວນໄດ້, ການຕັ້ງຄ່າຍັງບໍ່ພ້ອມໃຊ້ງານ.'); return; }
     const data = { category: document.getElementById('entCategory').value, contribution: parseFloat(document.getElementById('contribution').value.replace(/,/g, '')) || 0, months: parseFloat(document.getElementById('months').value) || 0, children: parseFloat(document.getElementById('entChildren').value) || 0 };
     if (!data.category || !data.contribution || !data.months || ( (data.category === 'ອຸດໜຸນເກີດລູກ' || data.category === 'ບຳເນັດເກີດລູກ') && !data.children) ) { showCustomPopup('warning', 'ກະລຸນາປ້ອນຂໍ້ມູນ', 'ກະລຸນາປ້ອນຂໍ້ມູນທີ່ຈຳເປັນໃຫ້ຄົບຖ້ວນ.'); return; }
+    
     Swal.fire({ title: 'ກຳລັງຄຳນວນ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
     
     const C = APP_CONFIG.entSubsidy;
-    // ຄ່າຄົງທີ່ຕ່າງໆແມ່ນດຶງມາຈາກ Firebase config
     let result = 0;
     const avgContribution = Math.floor(data.contribution / C.baseMonths);
-    // ສະເລ່ຍເງິນສົມທົບ 6 ເດືອນ
 
-    // --- ສູດຄິດໄລ່ເງິນບຳເນັດເກີດລູກ ---
     if (data.category === 'ບຳເນັດເກີດລູກ') {
         result = Math.round(avgContribution * C.childbirthBenefitMultiplier) * data.children;
-        // ຕົວຄູນ 60% ຈາກ Config
-    
-    // --- ສູດຄິດໄລ່ເງິນອຸດໜູນເກີດລູກ (ໄລຍະພັກ) ---
     } else if (data.category === 'ອຸດໜຸນເກີດລູກ') {
         const M = C.childbirthAllowanceMultipliers;
-        // ຕົວຄູນໃນແຕ່ລະເດືອນ ຈາກ Config
         const childBenefit = data.children * Math.round(avgContribution * C.childbirthBenefitMultiplier);
         if (data.months == 1) result = (Math.round(avgContribution * M.month1)) + childBenefit;
         else if (data.months == 2) result = Math.round(avgContribution * M.month2);
         else if (data.months == 3) result = Math.round(avgContribution * M.month3);
         else if (data.months == 4) result = Math.round(avgContribution * M.month4) + childBenefit;
-    // --- ສູດຄິດໄລ່ເງິນເສຍຊີວິດ ---
     } else if (data.category === 'ເງີນເສຍຊີວິດ') {
         const D = C.deathBenefit;
         var years = Math.floor(data.months / 12);
@@ -953,19 +1083,18 @@ async function calculateEnterprise() {
         } else {
             result = (Math.floor((years + D.formulaMonths1) / 2) + D.formulaMonths3) * avgContribution;
         }
-    
-    // --- ສູດຄິດໄລ່ເງິນບຳເນັດອອກການ (<60 ເດືອນ) ---
     } else if (data.category === 'ບຳເນັດອອກການ') {
         const S = C.severancePay;
         var effectiveMonths = data.months < (S.maxMonths + 1) ? data.months : S.maxMonths;
         var years = Math.floor(data.months / 12);
-        result = Math.floor(data.contribution / effectiveMonths) * S.yearMultiplier * years; // ຕົວຄູນ 20% ຈາກ Config
+        result = Math.floor(data.contribution / effectiveMonths) * S.yearMultiplier * years;
     }
-
+    
     Swal.close();
     const resultFormatted = result.toFixed(0);
     document.getElementById('entTotal').innerText = parseFloat(resultFormatted).toLocaleString('en-US');
     document.getElementById('entResult').classList.remove('hidden');
+    
     const saveData = { ...data, totalAmountReceived: resultFormatted };
     if (await saveDataToFirestore('entSupportHistory', saveData)) { showCustomPopup('success', 'ບັນທຶກສຳເລັດ!', 'ການຄຳນວນໄດ້ຖືກບັນທຶກລົງໃນປະຫວັດແລ້ວ.'); }
 }
@@ -976,46 +1105,42 @@ async function calculateEnterprise() {
 
 // =========================================================================================
 // START: INDEX DATA - ຂໍ້ມູນດັດສະນີເງິນເດືອນ
-// ຖ້າມີການອັບເດດດັດສະນີ, ຊັ້ນ, ຂັ້ນ ຂອງພະນັກງານ, ໃຫ້ມາແກ້ໄຂ ຫຼື ເພີ່ມຂໍ້ມູນໃໝ່ຢູ່ບ່ອນນີ້.
-// ຮູບແບບຂໍ້ມູນ: ['ຊັ້ນ/ຂັ້ນ', ດັດສະນີ, ຕົວຄູນ (ປັດຈຸບັນແມ່ນ 7350), 'ປະເພດ (ປົກຄອງ/ຄູອາຈານ)']
 // =========================================================================================
-const indexData = [ ['ຊັ້ນ/ຂັ້ນ', 'ດັດສະນີ', 'ຕົວຄູນ', 'ພາກສ່ວນ'], ['1/1', 135, 7350, 'ປົກຄອງ'],['1/2', 136, 7350, 'ປົກຄອງ'],['1/3', 137, 7350, 'ປົກຄອງ'],['1/4', 138, 7350, 'ປົກຄອງ'],['1/5', 139, 7350, 'ປົກຄອງ'],['1/6', 140, 7350, 'ປົກຄອງ'],['1/7', 141, 7350, 'ປົກຄອງ'],['1/8', 144, 7350, 'ປົກຄອງ'],['1/9', 147, 7350, 'ປົກຄອງ'],['1/10', 150, 7350, 'ປົກຄອງ'],['1/11', 153, 7350, 'ປົກຄອງ'],['1/12', 156, 7350, 'ປົກຄອງ'],['1/13', 159, 7350, 'ປົກຄອງ'],['1/14', 162, 7350, 'ປົກຄອງ'],['1/15', 165, 7350, 'ປົກຄອງ'],['2/1', 147, 7350, 'ປົກຄອງ'],['2/2', 150, 7350, 'ປົກຄອງ'],['2/3', 153, 7350, 'ປົກຄອງ'],['2/4', 156, 7350, 'ປົກຄອງ'],['2/5', 159, 7350, 'ປົກຄອງ'],['2/6', 162, 7350, 'ປົກຄອງ'],['2/7', 165, 7350, 'ປົກຄອງ'],['2/8', 170, 7350, 'ປົກຄອງ'],['2/9', 175, 7350, 'ປົກຄອງ'],['2/10', 180, 7350, 'ປົກຄອງ'],['2/11', 185, 7350, 'ປົກຄອງ'],['2/12', 190, 7350, 'ປົກຄອງ'],['2/13', 195, 7350, 'ປົກຄອງ'],['2/14', 200, 7350, 'ປົກຄອງ'],['2/15', 205, 7350, 'ປົກຄອງ'],['3/1', 175, 7350, 'ປົກຄອງ'],['3/2', 180, 7350, 'ປົກຄອງ'],['3/3', 185, 7350, 'ປົກຄອງ'],['3/4', 190, 7350, 'ປົກຄອງ'],['3/5', 195, 7350, 'ປົກຄອງ'],['3/6', 200, 7350, 'ປົກຄອງ'],['3/7', 205, 7350, 'ປົກຄອງ'],['3/8', 212, 7350, 'ປົກຄອງ'],['3/9', 219, 7350, 'ປົກຄອງ'],['3/10', 226, 7350, 'ປົກຄອງ'],['3/11', 233, 7350, 'ປົກຄອງ'],['3/12', 240, 7350, 'ປົກຄອງ'],['3/13', 247, 7350, 'ປົກຄອງ'],['3/14', 254, 7350, 'ປົກຄອງ'],['3/15', 261, 7350, 'ປົກຄອງ'],['4/1', 219, 7350, 'ປົກຄອງ'],['4/2', 226, 7350, 'ປົກຄອງ'],['4/3', 233, 7350, 'ປົກຄອງ'],['4/4', 240, 7350, 'ປົກຄອງ'],['4/5', 247, 7350, 'ປົກຄອງ'],['4/6', 254, 7350, 'ປົກຄອງ'],['4/7', 261, 7350, 'ປົກຄອງ'],['4/8', 270, 7350, 'ປົກຄອງ'],['4/9', 279, 7350, 'ປົກຄອງ'],['4/10', 288, 7350, 'ປົກຄອງ'],['4/11', 297, 7350, 'ປົກຄອງ'],['4/12', 306, 7350, 'ປົກຄອງ'],['4/13', 315, 7350, 'ປົກຄອງ'],['4/14', 324, 7350, 'ປົກຄອງ'],['4/15', 333, 7350, 'ປົກຄອງ'],['5/1', 279, 7350, 'ປົກຄອງ'],['5/2', 288, 7350, 'ປົກຄອງ'],['5/3', 297, 7350, 'ປົກຄອງ'],['5/4', 306, 7350, 'ປົກຄອງ'],['5/5', 315, 7350, 'ປົກຄອງ'],['5/6', 324, 7350, 'ປົກຄອງ'],['5/7', 333, 7350, 'ປົກຄອງ'],['5/8', 344, 7350, 'ປົກຄອງ'],['5/9', 355, 7350, 'ປົກຄອງ'],['5/10', 366, 7350, 'ປົກຄອງ'],['5/11', 377, 7350, 'ປົກຄອງ'],['5/12', 388, 7350, 'ປົກຄອງ'],['5/13', 399, 7350, 'ປົກຄອງ'],['5/14', 410, 7350, 'ປົກຄອງ'],['5/15', 421, 7350, 'ປົກຄອງ'],['6/1', 425, 7350, 'ປົກຄອງ'],['6/2', 450, 7350, 'ປົກຄອງ'],['6/3', 485, 7350, 'ປົກຄອງ'],['6/4', 530, 7350, 'ປົກຄອງ'],['6/5', 585, 7350, 'ປົກຄອງ'],['6/6', 650, 7350, 'ປົກຄອງ'],['6/7', 700, 7350, 'ປົກຄອງ'], ['1/1', 156, 7350, 'ຄູອາຈານ'],['1/2', 159, 7350, 'ຄູອາຈານ'],['1/3', 162, 7350, 'ຄູອາຈານ'],['1/4', 165, 7350, 'ຄູອາຈານ'],['1/5', 170, 7350, 'ຄູອາຈານ'],['1/6', 175, 7350, 'ຄູອາຈານ'],['1/7', 180, 7350, 'ຄູອາຈານ'],['1/8', 185, 7350, 'ຄູອາຈານ'],['1/9', 190, 7350, 'ຄູອາຈານ'],['1/10', 195, 7350, 'ຄູອາຈານ'],['1/11', 200, 7350, 'ຄູອາຈານ'],['1/12', 205, 7350, 'ຄູອາຈານ'],['1/13', 212, 7350, 'ຄູອາຈານ'],['1/14', 219, 7350, 'ຄູອາຈານ'],['1/15', 226, 7350, 'ຄູອາຈານ'],['1/16', 233, 7350, 'ຄູອາຈານ'],['1/17', 240, 7350, 'ຄູອາຈານ'],['1/18', 247, 7350, 'ຄູອາຈານ'],['1/19', 254, 7350, 'ຄູອາຈານ'],['1/20', 261, 7350, 'ຄູອາຈານ'],['1/21', 270, 7350, 'ຄູອາຈານ'],['1/22', 279, 7350, 'ຄູອາຈານ'],['1/23', 288, 7350, 'ຄູອາຈານ'],['1/24', 297, 7350, 'ຄູອາຈານ'],['1/25', 306, 7350, 'ຄູອາຈານ'],['2/1', 209, 7350, 'ຄູອາຈານ'],['2/2', 218, 7350, 'ຄູອາຈານ'],['2/3', 227, 7350, 'ຄູອາຈານ'],['2/4', 236, 7350, 'ຄູອາຈານ'],['2/5', 245, 7350, 'ຄູອາຈານ'],['2/6', 256, 7350, 'ຄູອາຈານ'],['2/7', 267, 7350, 'ຄູອາຈານ'],['2/8', 278, 7350, 'ຄູອາຈານ'],['2/9', 289, 7350, 'ຄູອາຈານ'],['2/10', 300, 7350, 'ຄູອາຈານ'],['2/11', 313, 7350, 'ຄູອາຈານ'],['2/12', 326, 7350, 'ຄູອາຈານ'],['2/13', 339, 7350, 'ຄູອາຈານ'],['2/14', 352, 7350, 'ຄູອາຈານ'],['2/15', 365, 7350, 'ຄູອາຈານ'],['3/1', 260, 7350, 'ຄູອາຈານ'],['3/2', 273, 7350, 'ຄູອາຈານ'],['3/3', 286, 7350, 'ຄູອາຈານ'],['3/4', 299, 7350, 'ຄູອາຈານ'],['3/5', 312, 7350, 'ຄູອາຈານ'],['3/6', 327, 7350, 'ຄູອາຈານ'],['3/7', 342, 7350, 'ຄູອາຈານ'],['3/8', 357, 7350, 'ຄູອາຈານ'],['3/9', 372, 7350, 'ຄູອາຈານ'],['3/10', 387, 7350, 'ຄູອາຈານ'],['3/11', 404, 7350, 'ຄູອາຈານ'],['3/12', 421, 7350, 'ຄູອາຈານ'],['3/13', 438, 7350, 'ຄູອາຈານ'],['3/14', 455, 7350, 'ຄູອາຈານ'],['3/15', 472, 7350, 'ຄູອາຈານ'],['4/1', 308, 7350, 'ຄູອາຈານ'],['4/2', 323, 7350, 'ຄູອາຈານ'],['4/3', 338, 7350, 'ຄູອາຈານ'],['4/4', 353, 7350, 'ຄູອາຈານ'],['4/5', 368, 7350, 'ຄູອາຈານ'],['4/6', 385, 7350, 'ຄູອາຈານ'],['4/7', 402, 7350, 'ຄູອາຈານ'],['4/8', 419, 7350, 'ຄູອາຈານ'],['4/9', 436, 7350, 'ຄູອາຈານ'],['4/10', 453, 7350, 'ຄູອາຈານ'],['4/11', 470, 7350, 'ຄູອາຈານ'],['4/12', 475, 7350, 'ຄູອາຈານ'],['4/13', 480, 7350, 'ຄູອາຈານ'],['4/14', 485, 7350, 'ຄູອາຈານ'],['4/15', 490, 7350, 'ຄູອາຈານ'],['5/1', 369, 7350, 'ຄູອາຈານ'],['5/2', 384, 7350, 'ຄູອາຈານ'],['5/3', 399, 7350, 'ຄູອາຈານ'],['5/4', 414, 7350, 'ຄູອາຈານ'],['5/5', 429, 7350, 'ຄູອາຈານ'],['5/6', 444, 7350, 'ຄູອາຈານ'],['5/7', 459, 7350, 'ຄູອາຈານ'],['5/8', 474, 7350, 'ຄູອາຈານ'],['5/9', 489, 7350, 'ຄູອາຈານ'],['5/10', 505, 7350, 'ຄູອາຈານ'],['5/11', 510, 7350, 'ຄູອາຈານ'],['5/12', 515, 7350, 'ຄູອາຈານ'],['5/13', 520, 7350, 'ຄູອາຈານ'],['5/14', 525, 7350, 'ຄູອາຈານ'],['5/15', 530, 7350, 'ຄູອາຈານ'],['5/16', 535, 7350, 'ຄູອາຈານ'],['5/17', 540, 7350, 'ຄູອາຈານ'],['5/18', 545, 7350, 'ຄູອາຈານ'],['5/19', 550, 7350, 'ຄູອາຈານ'],['5/20', 555, 7350, 'ຄູອາຈານ'],['5/21', 560, 7350, 'ຄູອາຈານ'],['5/22', 565, 7350, 'ຄູອາຈານ'],['5/23', 570, 7350, 'ຄູອາຈານ'],['5/24', 575, 7350, 'ຄູອາຈານ'],['5/25', 580, 7350, 'ຄູອາຈານ'],
+const indexData = [ ['ຊັ້ນ/ຂັ້ນ', 'ດັດສະນີ', 'ຕົວຄູນ', 'ພາກສ່ວນ'], ['1/1', 135, 7350, 'ປົກຄອງ'],['1/2', 136, 7350, 'ປົກຄອງ'],['1/3', 137, 7350, 'ປົກຄອງ'],['1/4', 138, 7350, 'ປົກຄອງ'],['1/5', 139, 7350, 'ປົກຄອງ'],['1/6', 140, 7350, 'ປົກຄອງ'],['1/7', 141, 7350, 'ປົກຄອງ'],['1/8', 144, 7350, 'ປົກຄອງ'],['1/9', 147, 7350, 'ປົກຄອງ'],['1/10', 150, 7350, 'ປົກຄອງ'],['1/11', 153, 7350, 'ປົກຄອງ'],['1/12', 156, 7350, 'ປົກຄອງ'],['1/13', 159, 7350, 'ປົກຄອງ'],['1/14', 162, 7350, 'ປົກຄອງ'],['1/15', 165, 7350, 'ປົກຄອງ'],['2/1', 147, 7350, 'ປົກຄອງ'],['2/2', 150, 7350, 'ປົກຄອງ'],['2/3', 153, 7350, 'ປົກຄອງ'],['2/4', 156, 7350, 'ປົກຄອງ'],['2/5', 159, 7350, 'ປົກຄອງ'],['2/6', 162, 7350, 'ປົກຄອງ'],['2/7', 165, 7350, 'ປົກຄອງ'],['2/8', 170, 7350, 'ປົກຄອງ'],['2/9', 175, 7350, 'ປົກຄອງ'],['2/10', 180, 7350, 'ປົກຄອງ'],['2/11', 185, 7350, 'ປົກຄອງ'],['2/12', 190, 7350, 'ປົກຄອງ'],['2/13', 195, 
+7350, 'ປົກຄອງ'],['2/14', 200, 7350, 'ປົກຄອງ'],['2/15', 205, 7350, 'ປົກຄອງ'],['3/1', 175, 7350, 'ປົກຄອງ'],['3/2', 180, 7350, 'ປົກຄອງ'],['3/3', 185, 7350, 'ປົກຄອງ'],['3/4', 190, 7350, 'ປົກຄອງ'],['3/5', 195, 7350, 'ປົກຄອງ'],['3/6', 200, 7350, 'ປົກຄອງ'],['3/7', 205, 7350, 'ປົກຄອງ'],['3/8', 212, 7350, 'ປົກຄອງ'],['3/9', 219, 7350, 'ປົກຄອງ'],['3/10', 226, 7350, 'ປົກຄອງ'],['3/11', 233, 7350, 'ປົກຄອງ'],['3/12', 240, 7350, 'ປົກຄອງ'],['3/13', 247, 7350, 'ປົກຄອງ'],['3/14', 254, 7350, 'ປົກຄອງ'],['3/15', 261, 7350, 'ປົກຄອງ'],['4/1', 219, 7350, 'ປົກຄອງ'],['4/2', 226, 7350, 'ປົກຄອງ'],['4/3', 233, 7350, 'ປົກຄອງ'],['4/4', 240, 7350, 'ປົກຄອງ'],['4/5', 247, 7350, 'ປົກຄອງ'],['4/6', 254, 7350, 'ປົກຄອງ'],['4/7', 261, 7350, 'ປົກຄອງ'],['4/8', 270, 7350, 'ປົກຄອງ'],['4/9', 279, 7350, 'ປົກຄອງ'],['4/10', 288, 7350, 'ປົກຄອງ'],['4/11', 297, 7350, 'ປົກຄອງ'],['4/12', 306, 7350, 'ປົກຄອງ'],['4/13', 315, 7350, 'ປົກຄອງ'],['4/14', 324, 7350, 'ປົກຄອງ'],['4/15', 333, 7350, 'ປົກຄອງ'],['5/1', 279, 7350, 
+'ປົກຄອງ'],['5/2', 288, 7350, 'ປົກຄອງ'],['5/3', 297, 7350, 'ປົກຄອງ'],['5/4', 306, 7350, 'ປົກຄອງ'],['5/5', 315, 7350, 'ປົກຄອງ'],['5/6', 324, 7350, 'ປົກຄອງ'],['5/7', 333, 7350, 'ປົກຄອງ'],['5/8', 344, 7350, 'ປົກຄອງ'],['5/9', 355, 7350, 'ປົກຄອງ'],['5/10', 366, 7350, 'ປົກຄອງ'],['5/11', 377, 7350, 'ປົກຄອງ'],['5/12', 388, 7350, 'ປົກຄອງ'],['5/13', 399, 7350, 'ປົກຄອງ'],['5/14', 410, 7350, 'ປົກຄອງ'],['5/15', 421, 7350, 'ປົກຄອງ'],['6/1', 425, 7350, 'ປົກຄອງ'],['6/2', 450, 7350, 'ປົກຄອງ'],['6/3', 485, 7350, 'ປົກຄອງ'],['6/4', 530, 7350, 'ປົກຄອງ'],['6/5', 585, 7350, 'ປົກຄອງ'],['6/6', 650, 7350, 'ປົກຄອງ'],['6/7', 700, 7350, 'ປົກຄອງ'], ['1/1', 156, 7350, 'ຄູອາຈານ'],['1/2', 159, 7350, 'ຄູອາຈານ'],['1/3', 162, 7350, 'ຄູອາຈານ'],['1/4', 165, 7350, 'ຄູອາຈານ'],['1/5', 170, 7350, 'ຄູອາຈານ'],['1/6', 175, 7350, 'ຄູອາຈານ'],['1/7', 180, 7350, 'ຄູອາຈານ'],['1/8', 185, 7350, 'ຄູອາຈານ'],['1/9', 190, 7350, 'ຄູອາຈານ'],['1/10', 195, 7350, 'ຄູອາຈານ'],['1/11', 200, 7350, 'ຄູອາຈານ'],['1/12', 205, 7350, 
+'ຄູອາຈານ'],['1/13', 212, 7350, 'ຄູອາຈານ'],['1/14', 219, 7350, 'ຄູອາຈານ'],['1/15', 226, 7350, 'ຄູອາຈານ'],['1/16', 233, 7350, 'ຄູອາຈານ'],['1/17', 240, 7350, 'ຄູອາຈານ'],['1/18', 247, 7350, 'ຄູອາຈານ'],['1/19', 254, 7350, 'ຄູອາຈານ'],['1/20', 261, 7350, 'ຄູອາຈານ'],['1/21', 270, 7350, 'ຄູອາຈານ'],['1/22', 279, 7350, 'ຄູອາຈານ'],['1/23', 288, 7350, 'ຄູອາຈານ'],['1/24', 297, 7350, 'ຄູອາຈານ'],['1/25', 306, 7350, 'ຄູອາຈານ'],['2/1', 209, 7350, 'ຄູອາຈານ'],['2/2', 218, 7350, 'ຄູອາຈານ'],['2/3', 227, 7350, 'ຄູອາຈານ'],['2/4', 236, 7350, 'ຄູອາຈານ'],['2/5', 245, 7350, 'ຄູອາຈານ'],['2/6', 256, 7350, 'ຄູອາຈານ'],['2/7', 267, 7350, 'ຄູອາຈານ'],['2/8', 278, 7350, 'ຄູອາຈານ'],['2/9', 289, 7350, 'ຄູອາຈານ'],['2/10', 300, 7350, 'ຄູອາຈານ'],['2/11', 313, 7350, 'ຄູອາຈານ'],['2/12', 326, 7350, 'ຄູອາຈານ'],['2/13', 339, 7350, 'ຄູອາຈານ'],['2/14', 352, 7350, 'ຄູອາຈານ'],['2/15', 365, 7350, 'ຄູອາຈານ'],['3/1', 260, 7350, 'ຄູອາຈານ'],['3/2', 273, 7350, 'ຄູອາຈານ'],['3/3', 286, 7350, 'ຄູອາຈານ'],['3/4', 299, 7350, 'ຄູອາຈານ'],['3/5', 312, 7350, 'ຄູອາຈານ'],['3/6', 
+327, 7350, 'ຄູອາຈານ'],['3/7', 342, 7350, 'ຄູອາຈານ'],['3/8', 357, 7350, 'ຄູອາຈານ'],['3/9', 372, 7350, 'ຄູອາຈານ'],['3/10', 387, 7350, 'ຄູອາຈານ'],['3/11', 404, 7350, 'ຄູອາຈານ'],['3/12', 421, 7350, 'ຄູອາຈານ'],['3/13', 438, 7350, 'ຄູອາຈານ'],['3/14', 455, 7350, 'ຄູອາຈານ'],['3/15', 472, 7350, 'ຄູອາຈານ'],['4/1', 308, 7350, 'ຄູອາຈານ'],['4/2', 323, 7350, 'ຄູອາຈານ'],['4/3', 338, 7350, 'ຄູອາຈານ'],['4/4', 353, 7350, 'ຄູອາຈານ'],['4/5', 368, 7350, 'ຄູອາຈານ'],['4/6', 385, 7350, 'ຄູອາຈານ'],['4/7', 402, 7350, 'ຄູອາຈານ'],['4/8', 419, 7350, 'ຄູອາຈານ'],['4/9', 436, 7350, 'ຄູອາຈານ'],['4/10', 453, 7350, 'ຄູອາຈານ'],['4/11', 470, 7350, 'ຄູອາຈານ'],['4/12', 475, 7350, 'ຄູອາຈານ'],['4/13', 480, 7350, 'ຄູອາຈານ'],['4/14', 485, 7350, 'ຄູອາຈານ'],['4/15', 490, 7350, 'ຄູອາຈານ'],['5/1', 369, 7350, 'ຄູອາຈານ'],['5/2', 384, 7350, 'ຄູອາຈານ'],['5/3', 399, 7350, 'ຄູອາຈານ'],['5/4', 414, 7350, 'ຄູອາຈານ'],['5/5', 429, 7350, 'ຄູອາຈານ'],['5/6', 444, 7350, 'ຄູອາຈານ'],['5/7', 459, 7350, 'ຄູອາຈານ'],['5/8', 474, 7350, 'ຄູອາຈານ'],['5/9', 489, 
+7350, 'ຄູອາຈານ'],['5/10', 505, 7350, 'ຄູອາຈານ'],['5/11', 510, 7350, 'ຄູອາຈານ'],['5/12', 515, 7350, 'ຄູອາຈານ'],['5/13', 520, 7350, 'ຄູອາຈານ'],['5/14', 525, 7350, 'ຄູອາຈານ'],['5/15', 530, 7350, 'ຄູອາຈານ'],['5/16', 535, 7350, 'ຄູອາຈານ'],['5/17', 540, 7350, 'ຄູອາຈານ'],['5/18', 545, 7350, 'ຄູອາຈານ'],['5/19', 550, 7350, 'ຄູອາຈານ'],['5/20', 555, 7350, 'ຄູອາຈານ'],['5/21', 560, 7350, 'ຄູອາຈານ'],['5/22', 565, 7350, 'ຄູອາຈານ'],['5/23', 570, 7350, 'ຄູອາຈານ'],['5/24', 575, 7350, 'ຄູອາຈານ'],['5/25', 580, 7350, 'ຄູອາຈານ'],
 ];
 // =========================================================================================
 // END: INDEX DATA
 // =========================================================================================
 
 async function searchData() {
-    const collectionName = document.getElementById('combobox1').value; const searchTerm = document.getElementById('textbox1').value.trim().toLowerCase();
-    if (!collectionName) { showCustomPopup('warning', 'ກະລຸນາເລືอก', 'ກະລຸນາເລືอกລາຍການທີ່ຈະຄົ້ນຫາກ່ອນ!'); return; }
-    Swal.fire({ title: 'ກຳລັງຄົ້ນຫາ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-    let headers = []; let dataRows = [];
+    const collectionName = document.getElementById('combobox1').value; const searchTerm = document.getElementById('textbox1').value.trim().toLowerCase(); if (!collectionName) { showCustomPopup('warning', 'ກະລຸນາເລືอก', 'ກະລຸນາເລືอกລາຍການທີ່ຈະຄົ້ນຫາກ່ອນ!'); return; }
+    Swal.fire({ title: 'ກຳລັງຄົ້ນຫາ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() }); let headers = []; let dataRows = [];
     if (collectionName === 'indexData') {
-        headers = indexData[0];
-        let data = indexData.slice(1);
-        if (searchTerm) { data = data.filter(row => row.some(cell => cell && cell.toString().toLowerCase().includes(searchTerm))); } dataRows = data;
-    } else {
-        const firestoreData = await getDataFromFirestore(collectionName);
-        switch (collectionName) {
+        headers = indexData[0]; let data = indexData.slice(1);
+        if (searchTerm) { data = data.filter(row => row.some(cell => cell && cell.toString().toLowerCase().includes(searchTerm))); } dataRows = data; } else {
+        const firestoreData = await getDataFromFirestore(collectionName); switch (collectionName) {
             case 'salaryHistory':
-                headers = ['ວັນທີ', 'ເນື້ອໃນ', 'ດັດສະນີ', 'ປີການ', 'ຕຳແໜ່ງ', 'ລູກ', 'ເມຍ', '%ບຳນານ', 'ລວມກ່ອນຫັກ', 'ເງິນປີການ', 'ເງິນລູກ', 'ເງິນເມຍ', 'ຫັກ(8%/ປະກັນ)', 'ອາກອນ', 'ຄ່າຄອງຊີບ', 'ລວມທັງໝົດ'];
-                dataRows = firestoreData.map(r => {
+                headers = ['ວັນທີ', 'ເນື້ອໃນ', 'ດັດສະນີ', 'ປີການ', 'ຕຳແໜ່ງ', 'ລູກ', 'ເມຍ', '%ບຳນານ', 'ລວມກ່ອນຫັກ', 'ເງິນປີການ', 'ເງິນລູກ', 'ເງິນເມຍ', 'ຫັກ(8%/ປະກັນ)', 'ອາກອນ', 'ຄ່າຄອງຊີບ', 'ລວມທັງໝົດ']; dataRows = firestoreData.map(r => {
                     const isCivil = r.category === 'ເງີນເດືອນພະນັກງານລັດຖະກອນ';
                     return [ r.savedAt ? new Date(r.savedAt).toLocaleString('lo-LA') : 'N/A', r.category, r.index, r.year, r.position, r.children, isCivil ? r.wife : '-', isCivil ? '-' : r.pensionPercent, r.totalBeforeDeduction, r.yearAllowance, r.childAllowance, isCivil ? r.wifeAllowance : '-', r.deduction, isCivil ? r.tax : '-', r.livingAllowance, r.totalNet, r.id ];
-                }); break;
+           
+  }); break;
             case 'govSupportHistory':
-                headers = ['ວັນທີ', 'ເນື້ອໃນ', 'ດັດສະນີ', 'ປີການ', 'ຕຳແໜ່ງ', '%ບຳນານ', 'ເງິນເດືອນພື້ນຖານ', 'ເງິນປີການ', 'ລວມກ່ອນຫັກ', 'ເດືອນທີ່ໄດ້ຮັບ', 'ລວມທັງໝົດ'];
-                dataRows = firestoreData.map(r => [ r.savedAt ? new Date(r.savedAt).toLocaleString('lo-LA') : 'N/A', r.detail, r.index, r.serviceYears, r.positionSalary, r.percentage || '-', r.baseMonthlySalary, r.yearlyBonus, r.totalDeduction, r.monthsReceived, r.totalAmountReceived, r.id ]);
-                break;
+                headers = ['ວັນທີ', 'ເນື້ອໃນ', 'ດັດສະນີ', 'ປີການ', 'ຕຳແໜ່ງ', '%ບຳນານ', 'ເງິນເດືອນພື້ນຖານ', 'ເງິນປີການ', 'ລວມກ່ອນຫັກ', 'ເດືອນທີ່ໄດ້ຮັບ', 'ລວມທັງໝົດ']; dataRows = firestoreData.map(r => [ r.savedAt ? new Date(r.savedAt).toLocaleString('lo-LA') : 'N/A', r.detail, r.index, r.serviceYears, r.positionSalary, r.percentage || '-', r.baseMonthlySalary, r.yearlyBonus, r.totalDeduction, r.monthsReceived, r.totalAmountReceived, r.id ]); break;
             case 'entSupportHistory':
-                headers = ['ວັນທີ', 'ເນື້ອໃນ', 'ເງິນສົມທົບ', 'ເດືອນ', 'ຈຳນວນລູກ', 'ລວມທັງໝົດ'];
-                dataRows = firestoreData.map(r => [ r.savedAt ? new Date(r.savedAt).toLocaleString('lo-LA') : 'N/A', r.category, r.contribution, r.months, r.children, r.totalAmountReceived, r.id ]); break;
-        }
+                headers = ['ວັນທີ', 'ເນື້ອໃນ', 'ເງິນສົມທົບ', 'ເດືອນ', 'ຈຳນວນລູກ', 'ລວມທັງໝົດ']; dataRows = firestoreData.map(r => [ r.savedAt ? new Date(r.savedAt).toLocaleString('lo-LA') : 'N/A', r.category, r.contribution, r.months, r.children, r.totalAmountReceived, r.id ]); break; }
         if (searchTerm) { dataRows = dataRows.filter(row => row.slice(0, -1).some(cell => cell && cell.toString().toLowerCase().includes(searchTerm))); }
     }
-    displaySearchResults(collectionName, [headers, ...dataRows]); Swal.close();
-}
+    displaySearchResults(collectionName, [headers, ...dataRows]); Swal.close(); }
 
+// =========================================================================================
+// START: DISPLAY SEARCH RESULTS - ຟັງຊັນສະແດງຜົນການຄົ້ນຫາ (ປັບປຸງ)
+// =========================================================================================
 function displaySearchResults(collectionName, parsedData) {
     const tableHeader = document.getElementById('table-header');
     const tableBody = document.getElementById('table-body');
@@ -1028,6 +1153,7 @@ function displaySearchResults(collectionName, parsedData) {
         tableBody.innerHTML = `<tr><td colspan="${colspan}" class="text-center p-4">ບໍ່ພົບຂໍ້ມູນທີ່ຕົງກັບການຄົ້ນຫາ</td></tr>`;
         return;
     }
+
     const headers = [...parsedData[0], 'ດຳເນີນການ'];
     headers.forEach(header => {
         const th = document.createElement('th');
@@ -1036,26 +1162,54 @@ function displaySearchResults(collectionName, parsedData) {
         th.className = 'px-6 py-3';
         tableHeader.appendChild(th);
     });
+
     const rows = parsedData.slice(1);
     rows.forEach(row => {
         const tr = document.createElement('tr');
         tr.className = "border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600";
         const docId = collectionName !== 'indexData' ? row[row.length - 1] : null;
         const displayRow = collectionName !== 'indexData' ? row.slice(0, -1) : row;
-        
+        const rowType = row[1];
+
         displayRow.forEach((value, index) => {
             const td = document.createElement('td');
             td.className = "px-6 py-4";
             const header = headers[index];
-            td.setAttribute('data-label', header);
-            
+            let customLabel = header;
+            let displayValue = value;
+
+            if (collectionName === 'govSupportHistory' && rowType === 'ເງີນອຸດໜຸນບຳເນັດອອກການ') {
+                if (header === '%ບຳນານ') { td.classList.add('mobile-hidden'); }
+                if (header === 'ເດືອນທີ່ໄດ້ຮັບ') {
+                    customLabel = 'ເດືອນທີ່ໄດ້ຮັບ';
+                    displayValue = '1.5';
+                }
+            }
+
+            if (collectionName === 'entSupportHistory') {
+                if ((rowType === 'ເງີນເສຍຊີວິດ' || rowType === 'ບຳເນັດອອກການ') && header === 'ຈຳນວນລູກ') {
+                    td.classList.add('mobile-hidden');
+                }
+                if (header === 'ເງິນສົມທົບ') {
+                    if (rowType === 'ເງີນເສຍຊີວິດ' || rowType === 'ອຸດໜຸນເກີດລູກ' || rowType === 'ບຳເນັດເກີດລູກ') { customLabel = 'ເງີນສົບທົບ 6 ເດືອນສຸດທ້າຍ'; } 
+                    else if (rowType === 'ບຳເນັດອອກການ') { customLabel = 'ເງີນສົບທົບ <60 ເດືອນສຸດທ້າຍ'; }
+                }
+                if (header === 'ເດືອນ') {
+                    if (rowType === 'ເງີນເສຍຊີວິດ' || rowType === 'ບຳເນັດອອກການ') { customLabel = 'ເດືອນທັງໝົດທີ່ເຂົ້າ ອປຊ'; }
+                }
+            }
+            td.setAttribute('data-label', customLabel);
+
             let finalDisplayValue;
-            if (typeof value === 'number' && value >= 1000) {
-                 finalDisplayValue = value.toLocaleString('en-US', { maximumFractionDigits: 0 });
+            if (collectionName === 'entSupportHistory' && header === 'ລວມທັງໝົດ') {
+                finalDisplayValue = parseFloat(displayValue).toLocaleString('en-US', { maximumFractionDigits: 0 });
+            } else if (typeof displayValue === 'number' && displayValue >= 1000) {
+                finalDisplayValue = displayValue.toLocaleString('en-US', { maximumFractionDigits: 2 });
             } else {
-                 finalDisplayValue = value === '-' ? '' : (value === null || typeof value === 'undefined' ? '' : value);
+                finalDisplayValue = displayValue === '-' ? '' : (displayValue === null || typeof displayValue === 'undefined' ? '' : displayValue);
             }
             td.textContent = finalDisplayValue;
+
             if (value === '-' || value === '' || value === null || typeof value === 'undefined') {
                 td.classList.add('mobile-hidden');
             }
@@ -1071,6 +1225,12 @@ function displaySearchResults(collectionName, parsedData) {
         actionTd.appendChild(downloadBtn);
 
         if (IS_ADMIN && collectionName !== 'indexData') {
+            const editBtn = document.createElement('button');
+            editBtn.className = 'text-white bg-orange-500 hover:bg-orange-600 font-medium rounded-lg text-sm p-2 text-center';
+            editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+            editBtn.onclick = () => editRecord(collectionName, docId);
+            actionTd.appendChild(editBtn);
+
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm p-2 text-center';
             deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
@@ -1081,38 +1241,39 @@ function displaySearchResults(collectionName, parsedData) {
         tableBody.appendChild(tr);
     });
 }
+// =========================================================================================
+// END: DISPLAY SEARCH RESULTS
+// =========================================================================================
 
 function downloadRowAsImage(elementToCapture) {
     if (!elementToCapture) return;
-    Swal.fire({ title: 'ກຳລັງສ້າງຮູບພາບ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-    const actionCell = elementToCapture.lastElementChild; const originalDisplay = actionCell.style.display;
-    actionCell.style.display = 'none';
-    html2canvas(elementToCapture, { scale: 2, backgroundColor: '#111827', useCORS: true }).then(canvas => {
+    Swal.fire({ title: 'ກຳລັງສ້າງຮູບພາບ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() }); const actionCell = elementToCapture.lastElementChild; const originalDisplay = actionCell.style.display;
+    actionCell.style.display = 'none'; html2canvas(elementToCapture, { scale: 2, backgroundColor: '#111827', useCORS: true }).then(canvas => {
         actionCell.style.display = originalDisplay; const link = document.createElement('a'); link.href = canvas.toDataURL('image/jpeg', 0.95); link.download = `calculation_result_${Date.now()}.jpg`; link.click(); Swal.close(); showCustomPopup('success', 'ບັນທຶກຮູບພາບແລ້ວ!');
-    }).catch(error => { actionCell.style.display = originalDisplay; showCustomPopup('error', 'ຜິດພາດ', `ບໍ່ສາມາດບັນທຶກຮູບພາບໄດ້: ${error}`); });
-}
+    }).catch(error => { actionCell.style.display = originalDisplay; showCustomPopup('error', 'ຜິດພາດ', `ບໍ່ສາມາດບັນທຶກຮູບພາບໄດ້: ${error}`); }); }
 
 async function loadAdminList() {
     try {
-        if (!window.db || !window.firestoreFunctions) return;
-        const { collection, getDocs } = window.firestoreFunctions;
+        if (!window.db || !window.firestoreFunctions) return; const { collection, getDocs } = window.firestoreFunctions;
         const adminSnapshot = await getDocs(collection(window.db, "admins"));
-        adminSnapshot.forEach((doc) => { if(doc.data().email) ADMIN_EMAILS.push(doc.data().email); });
-        console.log("Admin list loaded:", ADMIN_EMAILS);
+        adminSnapshot.forEach((doc) => { if(doc.data().email) ADMIN_EMAILS.push(doc.data().email); }); console.log("Admin list loaded:", ADMIN_EMAILS);
     } catch (error) { console.error("Could not load admin list:", error); }
 }
 
 async function adminLogin() {
     if (IS_ADMIN) { showCustomPopup('success', 'ເຂົ້າສູ່ລະບົບແລ້ວ', 'ທ່ານໄດ້ເຂົ້າສູ່ລະບົບໃນຖານະຜູ້ດູແລລະບົບແລ້ວ.'); return; }
-    const { value: email } = await Swal.fire({ title: 'ເຂົ້າສູ່ລະບົບ Admin', input: 'email', inputPlaceholder: 'ກະລຸນາປ້ອນອີເມວ admin ຂອງທ່ານ' });
-    if (email && ADMIN_EMAILS.includes(email)) { IS_ADMIN = true; document.getElementById('adminLoginLink').textContent = `ສະບາຍດີ, ${email.split('@')[0]}`; Swal.fire('ສຳເລັດ!', 'ທ່ານໄດ້ເຂົ້າສູ່ລະບົບໃນຖານະຜູ້ດູແລລະບົບ.', 'success'); }
+    const { value: email } = await Swal.fire({ title: 'ເຂົ້າສູ່ລະບົບ Admin', input: 'email', inputPlaceholder: 'ກະລຸນາປ້ອນອີເມວ admin ຂອງທ່ານ' }); if (email && ADMIN_EMAILS.includes(email)) { IS_ADMIN = true; document.getElementById('adminLoginLink').textContent = `ສະບາຍດີ, ${email.split('@')[0]}`; Swal.fire('ສຳເລັດ!', 'ທ່ານໄດ້ເຂົ້າສູ່ລະບົບໃນຖານະຜູ້ດູແລລະບົບ.', 'success'); }
     else if (email) { Swal.fire('ຜິດພາດ!', 'ອີເມວນີ້ບໍ່ແມ່ນຜູ້ດູແລລະບົບ.', 'error'); }
+}
+
+function editRecord(collectionName, docId) {
+    if (!IS_ADMIN) { showCustomPopup('error', 'ບໍ່ມີສິດ', 'ທ່ານບໍ່ได้รับອະນຸຍາດໃຫ້ດຳເນີນການນີ້.'); return; }
+    Swal.fire('ແຈ້ງເຕືອນ', `ຟັງຊັນແກ້ໄຂຍັງບໍ່ພ້ອມໃຊ້ງານ.\nCollection: ${collectionName}\nID: ${docId}`, 'info');
 }
 
 async function deleteRecord(collectionName, docId) {
     if (!IS_ADMIN) { showCustomPopup('error', 'ບໍ່ມີສິດ', 'ທ່ານບໍ່ได้รับອະນຸຍາດໃຫ້ດຳເນີນການນີ້.'); return; }
-    const { doc, deleteDoc } = window.firestoreFunctions;
-    Swal.fire({
+    const { doc, deleteDoc } = window.firestoreFunctions; Swal.fire({
         title: 'ທ່ານແນ່ໃຈບໍ່?', text: "ທ່ານຈະບໍ່ສາມາດກູ້ຄືນຂໍ້ມູນນີ້ໄດ້!", icon: 'warning',
         showCancelButton: true, confirmButtonColor: '#10b981', cancelButtonColor: '#ef4444',
         confirmButtonText: 'ແມ່ນ, ລຶບເລີຍ!', cancelButtonText: 'ຍົກເລີກ'
@@ -1120,12 +1281,25 @@ async function deleteRecord(collectionName, docId) {
         if (result.isConfirmed) {
             try {
                 await deleteDoc(doc(window.db, collectionName, docId));
-                Swal.fire('ລຶບສຳເລັດ!', 'ຂໍ້ມູນໄດ້ຖືກລຶບອອກແລ້ວ.', 'success');
+             
+    Swal.fire('ລຶບສຳເລັດ!', 'ຂໍ້ມູນໄດ້ຖືກລຶບອອກແລ້ວ.', 'success');
                 document.getElementById('searchButton').click();
             } catch (error) { console.error("Error deleting document: ", error); Swal.fire('ຜິດພາດ!', 'ບໍ່ສາມາດລຶບຂໍ້ມູນໄດ້.', 'error'); }
         }
-    });
-}
+    }); }
+</script>
+<script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registered: ', registration);
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed: ', error);
+          });
+      });
+    }
 </script>
 </body>
 </html>
