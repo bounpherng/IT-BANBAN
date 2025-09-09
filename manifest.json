@@ -1,7 +1,7 @@
 {
-  "name": "IT-BANBAN",
-  "short_name": "IT-BANBAN",
-  "description": "ຄິດໄລ່ເງິນເດືອນ,ອຸດໜູນພາກລັດ-ວິສາຫະກິດ(ອປຊ)",
+  "name": "IT-banban",
+  "short_name": "IT-banban",
+  "description": "ເວບແນະນຳຟັງຊັນການ: ຄິດໄລ່ເງິນເດືອນ,ອຸດໜູນພາກລັດ-ວິສາຫະກິດ(ອປຊ)",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1a2525",
@@ -20,4 +20,5 @@
     }
   ],
   "scope": "./"
+
 }
