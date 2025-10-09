@@ -117,6 +117,12 @@
       transform: scale(1.4);
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
     }
+    
+    /* [ເພີ່ມໃໝ່] ເພີ່ມເງົາໃຫ້ກັບຂໍ້ຄວາມໃນ Banner */
+    .text-shadow-lg {
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
 
     /* --- [ຄົງເດີມ] Responsive Table Styles --- */
     @media (max-width: 768px) {
@@ -295,50 +301,37 @@
     </div>
 </header>
 <main class="w-full mx-auto flex-grow flex flex-col mt-0">
+ <div id="home-page" class="page space-y-10 md:space-y-16 pb-20">
 
-    <div id="home-page" class="page space-y-10 md:space-y-16 pb-20">
+<!-- =============================== [ປັບປຸງໃໝ່] Hero Section =============================== -->
+<section class="relative h-[60vh] md:h-[70vh] w-full flex items-center justify-center text-white overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://i.ibb.co/mFr4rmMc/3.jpg" alt="" class="w-full h-full object-cover">
+        <!-- Overlay -->
+		
+		
+        <div class="absolute inset-0 bg-black/60"></div>
+    </div>
 
-<section class="w-full mt-0 text-center py-6 px-0 md:px-6 shadow-md md:rounded-lg md:max-w-4xl md:mx-auto">
-    <h1 class="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
-        ຍິນດີຕ້ອນຮັບ
-    </h1>
-    <p class="mt-1 text-lg md:text-xl text-gray-700 dark:text-gray-300">
-        ເວັບໄຊທ໌ ໃຫ້ຂໍ້ມູນ ແລະ ຄິດໄລ່ເງິນອຸດໜູນປະເພດຕ່າງໆຂອງພາກລັດ ແລະ ພາກວິສາຫະກິດ
-    </p>
-    <p id="date-lao-calc" class="mt-1 text-ms text-emerald-500 dark:text-emerald-400"></p>
+    <!-- Content -->
+    <div class="relative z-10 text-center px-4 space-y-4 max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-shadow-lg animate-fadeIn" style="animation-delay: 0.2s;">
+            ຍິນດີຕ້ອນຮັບ
+        </h1>
+        <h2 class="text-lg md:text-2xl font-semibold text-gray-200 animate-fadeIn" style="animation-delay: 0.4s;">
+            ເວັບໄຊທ໌ ໃຫ້ຂໍ້ມູນ ແລະ ຄິດໄລ່ເງິນອຸດໜູນປະເພດຕ່າງໆຂອງພາກລັດ ແລະ ພາກວິສາຫະກິດ
+        </h2>
+        <p class="text-base md:text-lg text-gray-300 max-w-2xl mx-auto animate-fadeIn" style="animation-delay: 0.6s;">
+            ຍົກລະດັບການເຮັດວຽກຂອງທ່ານດ້ວຍເຄື່ອງມື ແລະ ບໍລິການລະດັບມືອາຊີບ ເພີ່ມປະສິດທິພາບ, ຫຼຸດຄວາມຜິດພາດ, ແລະ ເຮັດວຽກໃຫ້ສຳເລັດໄວຂຶ້ນຢ່າງບໍ່ເຄີຍມີມາກ່ອນ.
+        </p>
+        <p id="date-lao-calc" class="mt-4 text-sm text-emerald-300 tracking-wider animate-fadeIn" style="animation-delay: 0.8s;"></p>
+    </div>
 </section>
-
-      <section id="image-slider" class="relative w-full overflow-hidden md:max-w-2xl md:mx-auto md:shadow-2xl md:rounded-2xl">
-        <div class="slider-track flex bg-gray-200 dark:bg-gray-800">
-          <img src="https://i.ibb.co/nqTv1vZV/1.jpg" alt="Slider Image 1" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/Ts5MSmR/2.jpg" alt="Slider Image 2" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/wFf12DQT/3.jpg" alt="Slider Image 3" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/0yN9yVwk/4.jpg" alt="Slider Image 4" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/sJQ4ZDHh/5.jpg" alt="Slider Image 5" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/gbpmb9mv/6.jpg" alt="Slider Image 6" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/bMLV5gWX/7.jpg" alt="Slider Image 7" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/JWZvhrVY/8.jpg" alt="Slider Image 8" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/rKjghb9t/9.jpg" alt="Slider Image 9" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/tTmj9syL/10.jpg" alt="Slider Image 10" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-          <img src="https://i.ibb.co/j9d2fWhL/23.jpg" alt="Slider Image 11" class="w-full flex-shrink-0 object-contain h-64 md:h-96">
-        </div>
-        <button id="slider-prev" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-black/60 hover:scale-110 active:scale-95 transition-all duration-300 ease-in-out">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button id="slider-next" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-black/60 hover:scale-110 active:scale-95 transition-all duration-300 ease-in-out">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-        <div id="slider-dots" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2"></div>
-      </section>
-	  
+<!-- =============================== [ຈົບສ່ວນປັບປຸງ] Hero Section =============================== -->
 	  
 <section class="w-full px-0 md:px-4 md:max-w-4xl md:mx-auto">
-
- <div class="text-center mb-10 px-4">
-        <h2 class="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">ຍົກລະດັບການເຮັດວຽກຂອງທ່ານດ້ວຍເຄື່ອງມື ແລະ ບໍລິການລະດັບມືອາຊີບ</h2>
-        <p class="mt-3 text-base sm:text-lg text-gray-600 dark:text-gray-400">ເພີ່ມປະສິດທິພາບ, ຫຼຸດຄວາມຜິດພາດ, ແລະ ເຮັດວຽກໃຫ້ສຳເລັດໄວຂຶ້ນຢ່າງບໍ່ເຄີຍມີມາກ່ອນ.</p>
-    </div>
-    <div class="bg-white dark:bg-gray-800/50 p-6 md:p-8 shadow-lg space-y-6">
+    <div class="bg-white dark:bg-gray-800/50 p-6 md:p-8 shadow-lg space-y-6 -mt-20 relative z-20 rounded-t-2xl">
         <details class="group border-b-2 border-gray-200 pb-4">
             <summary class="flex justify-between items-center text-base md:text-xl font-bold text-sky-600 dark:text-sky-400 cursor-pointer list-none py-2 transition-colors duration-300 group-hover:text-sky-500">
                 <span class="font-semibold flex items-center gap-3"><i class="fas fa-calculator text-sky-500"></i>Add-in: ສຸດຍອດເຄື່ອງມືຄຳນວນເງິນອຸດໜູນ</span>
@@ -1071,6 +1064,8 @@
   <a href="#" onclick="showPage('home')" id="fab-home-button" class="hidden fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-40">
     <i class="fas fa-home text-xl"></i>
   </a>
+
+
 
   <!-- =============================== Footer =============================== -->
   <footer class="fixed bottom-0 left-0 w-full bg-gray-200 dark:bg-gray-800 border-t border-gray-300 dark:border-gray-700">
