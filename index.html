@@ -1667,38 +1667,49 @@ async function loadAndInitializeApp() {
         didOpen: () => Swal.showLoading()
       });
       const C = APP_CONFIG.govSubsidy;
-      const baseMonthlySalary = formData.index * APP_CONFIG.salary.indexMultiplier;
-      const yearlyBonus = calculateYearlyBonus(formData.serviceYears);
+      // [ແກ້ໄຂ] ຮັບປະກັນວ່າຄ່າເງິນຕ່າງໆເປັນເລກຖ້ວນ (ບໍ່ມີຈຸດ)
+      const baseMonthlySalary = Math.floor(formData.index * APP_CONFIG.salary.indexMultiplier);
+      const yearlyBonus = Math.floor(calculateYearlyBonus(formData.serviceYears));
       const totalBeforePensionCalc = baseMonthlySalary + yearlyBonus + formData.positionSalary;
+
       let totalDeduction = 0;
       let monthsReceived = 0;
       let totalAmountReceived = 0;
+
       if (formData.detail === "ເງີນອຸດໜຸນບຳເນັດອອກການ") {
         totalDeduction = Math.floor(totalBeforePensionCalc * (C.severanceRate || 0.85));
         monthsReceived = C.severanceMultiplier || 1.5;
-        totalAmountReceived = Math.round(totalDeduction * monthsReceived * formData.serviceYears);
+        // [ແກ້ໄຂ] ປ່ຽນເປັນ Math.floor ເພື່ອຕັດເລກທົດສະນິຍົມອອກຕາມທີ່ຕ້ອງການ
+        totalAmountReceived = Math.floor(totalDeduction * monthsReceived * formData.serviceYears);
       } else if (formData.detail === "ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ") {
         totalDeduction = Math.floor(totalBeforePensionCalc * formData.percentage / 100);
         monthsReceived = C.widowAllowanceMonths;
-        totalAmountReceived = (totalDeduction * C.widowPensionMultiplier) * monthsReceived;
-      } else {
+        // [ແກ້ໄຂ] ເພີ່ມ Math.floor ເພື່ອຕັດເລກທົດສະນິຍົມອອກ
+        totalAmountReceived = Math.floor((totalDeduction * C.widowPensionMultiplier) * monthsReceived);
+      } else { // ກໍລະນີ: ເງິນອຸດໜຸນເສຍຊີວິດລັດຖະກອນ ແລະ ເງິນອຸດໜຸນບຳນານເສຍຊີວິດ
         totalDeduction = (formData.detail === "ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ") ?
           Math.floor(totalBeforePensionCalc * formData.percentage / 100) :
           totalBeforePensionCalc;
+
         if (formData.serviceYears < C.deathAllowanceYearsLimit) {
           monthsReceived = formData.serviceYears + C.deathAllowanceBaseMonths;
         } else {
-          monthsReceived = (Math.floor((formData.serviceYears + C.deathAllowanceFormulaMonths1) / C.deathAllowanceFormulaMonths2)) + C.deathAllowanceFormulaMonths3;
+          // [ແກ້ໄຂ] ລຶບ Math.floor ອອກຈາກການຄຳນວນເດືອນ ເພື່ອໃຫ້ໄດ້ຜົນລັບເປັນທົດສະນິຍົມ (ເຊັ່ນ 37.5)
+          monthsReceived = ((formData.serviceYears + C.deathAllowanceFormulaMonths1) / C.deathAllowanceFormulaMonths2) + C.deathAllowanceFormulaMonths3;
         }
-        totalAmountReceived = totalDeduction * monthsReceived;
+        // [ແກ້ໄຂ] ເພີ່ມ Math.floor ໃຫ້ກັບຜົນລວມສຸດທ້າຍ ເພື່ອຕັດເລກທົດສະນິຍົມອອກ
+        totalAmountReceived = Math.floor(totalDeduction * monthsReceived);
       }
       Swal.close();
+
+      // [ບໍ່ປ່ຽນແປງ] ສ່ວນສະແດງຜົນ
       document.getElementById('govBaseMonthlySalary').innerText = `${baseMonthlySalary.toLocaleString('en-US')}`;
       document.getElementById('govYearlyBonus').innerText = `${yearlyBonus.toLocaleString('en-US')}`;
       document.getElementById('govTotalDeduction').innerText = `${totalDeduction.toLocaleString('en-US')}`;
-      document.getElementById('govMonthsReceived').innerText = `${monthsReceived}`;
+      document.getElementById('govMonthsReceived').innerText = `${monthsReceived}`; // ຈະສະແດງເລກທົດສະນິຍົມໄດ້
       document.getElementById('govTotalAmountReceived').innerText = `${totalAmountReceived.toLocaleString('en-US')}`;
       document.getElementById('govResult').classList.remove('hidden');
+
       const saveData = { ...formData,
         baseMonthlySalary,
         yearlyBonus,
@@ -1710,6 +1721,7 @@ async function loadAndInitializeApp() {
         showCustomPopup('success', 'ບັນທຶກສຳເລັດ!', 'ການຄຳນວນໄດ້ຖືກບັນທຶກລົງໃນປະຫວັດແລ້ວ.');
       }
     }
+
 
     async function calculateEnterprise() {
       if (!APP_CONFIG) {
@@ -1998,6 +2010,8 @@ async function loadAndInitializeApp() {
       Swal.close();
     }
 
+
+
     function displaySearchResults(collectionName, parsedData) {
       const tableHeader = document.getElementById('table-header');
       const tableBody = document.getElementById('table-body');
@@ -2223,6 +2237,3 @@ async function loadAndInitializeApp() {
 </body>
 
 </html>
-
-
-
