@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="lo" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>IT-banban Search</title>
+  <meta name="theme-color" content="#10b981" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Noto Sans Lao', 'sans-serif'] },
+          colors: { emerald: { 50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 900: '#064e3b' } },
+          animation: { 'fade-in': 'fadeIn 0.3s ease-out', 'slide-up': 'slideUp 0.4s ease-out' },
+          keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }, slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } } }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    body { font-family: 'Noto Sans Lao', sans-serif; -webkit-tap-highlight-color: transparent; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+    .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+    .dark .glass-effect { background: rgba(17, 24, 39, 0.95); }
+    .modern-input { transition: all 0.3s ease; border: 1px solid #e5e7eb; }
+    .modern-input:focus { border-color: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); transform: translateY(-1px); }
+    .table-container { overflow-x: auto; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .view-section { display: block; animation: slideUp 0.4s ease-out; }
+
+    @media (max-width: 768px) {
+      .responsive-table thead { display: none; }
+      .responsive-table tr { display: block; margin-bottom: 1rem; background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #f3f4f6; padding: 1rem; position: relative; overflow: hidden; }
+      .dark .responsive-table tr { background: #1f2937; border-color: #374151; }
+      .responsive-table td { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6; font-size: 0.95rem; }
+      .dark .responsive-table td { border-color: #374151; }
+      .responsive-table td:last-child { border-bottom: none; padding-top: 1.5rem; justify-content: center; gap: 0.5rem; }
+      .responsive-table td::before { content: attr(data-label); font-weight: 600; color: #6b7280; text-align: left; margin-right: 1rem; }
+      .dark .responsive-table td::before { color: #9ca3af; }
+      .responsive-table td[data-label="ລວມທັງໝົດ"] { color: #10b981; font-weight: 700; font-size: 1.1rem; border-top: 2px dashed #e5e7eb; margin-top: 0.5rem; padding-top: 1rem; }
+      .responsive-table tr::after { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: #10b981; }
+      .mobile-hidden { display: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex flex-col transition-colors duration-300">
+
+<header class="sticky top-0 z-50 glass-effect border-b border-gray-200 dark:border-gray-800 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html'">
+      <img src="https://i.ibb.co/Fk9XKZSH/icon200.png" alt="Logo" class="w-10 h-10 object-contain">
+      <h1 class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">IT-banban</h1>
+    </div>
+    <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+      <i class="fas fa-moon text-lg dark:hidden"></i>
+      <i class="fas fa-sun text-lg hidden dark:block text-yellow-400"></i>
+    </button>
+  </div>
+</header>
+
+<main class="flex-grow w-full mx-auto px-4 py-6 relative">
+    <div id="search-view" class="view-section w-full"> 
+      <div class="max-w-md mx-auto mb-8">
+        <div class="flex items-center gap-4 mb-6">
+          <a href="index.html" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-emerald-100 text-gray-600 dark:text-gray-300 transition-colors">
+            <i class="fas fa-arrow-left"></i>
+          </a>
+          <h2 class="text-xl font-bold">ຄົ້ນຫາຂໍ້ມູນ</h2>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+          <form id="searchForm" class="space-y-4">
+            <div>
+              <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ເລືອກລາຍການ</label>
+              <select id="combobox1" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none">
+                <option value="">-- ກະລຸນາເລືອກ --</option>
+                <option value="salaryHistory">ປະຫວັດເງິນເດືອນ</option>
+                <option value="govSupportHistory">ປະຫວັດພາກລັດ</option>
+                <option value="entSupportHistory">ປະຫວັດວິສາຫະກິດ</option>
+                <option value="indexData">ຄົ້ນຫາດັດສະນີ</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ຄຳຄົ້ນຫາ (ບໍ່ບັງຄັບ)</label>
+              <input type="text" id="textbox1" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="ເຊັ່ນ: 4/2, ຄູອາຈານ">
+            </div>
+            <button type="button" onclick="searchData()" id="searchButton" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-500/30 transition-all active:scale-95">
+              ຄົ້ນຫາ
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Result Section -->
+      <div id="searchResult" class="hidden w-full max-w-7xl mx-auto animate-fade-in">
+         <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 p-4 md:p-6 table-container">
+            <table class="w-full text-sm text-left responsive-table">
+              <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg">
+                <tr id="table-header"></tr>
+              </thead>
+              <tbody id="table-body" class="divide-y divide-gray-200 dark:divide-gray-700"></tbody>
+            </table>
+         </div>
+         <div class="mt-4 text-center">
+            <a href="#" id="adminLoginLink" onclick="adminLogin()" class="text-xs text-gray-300 hover:text-emerald-500 transition-colors">Admin Login</a>
+         </div>
+      </div>
+    </div>
+</main>
+
+  <footer class="mt-auto py-6 text-center text-xs text-gray-400">
+    <p>© <span id="footer-year"></span> MR.BOUNPHEUNG PHETXAINYAPHOUM</p>
+  </footer>
+
+  <!-- Firebase Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, onSnapshot, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8fd_23dLQPbLqfqbakpJtlzjIOD_B-Jw",
+      authDomain: "myapp-506ca.firebaseapp.com",
+      projectId: "myapp-506ca",
+      storageBucket: "myapp-506ca.appspot.com",
+      messagingSenderId: "341275741284",
+      appId: "1:341275741284:web:f955e6c5a273e4be616371"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+    window.firestoreFunctions = { collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, onSnapshot, doc, getDoc, updateDoc, deleteDoc };
+  </script>
+
+  <script>
+    let IS_ADMIN = false;
+    let ADMIN_EMAILS = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
+        setupThemeToggle();
+        loadAdminList();
+    });
+
+    function setupThemeToggle() {
+      const btn = document.getElementById('theme-toggle');
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+      btn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      });
+    }
+
+    async function loadAdminList() {
+        try {
+            setTimeout(async () => {
+                if (!window.db) return;
+                const { collection, getDocs } = window.firestoreFunctions;
+                const adminSnapshot = await getDocs(collection(window.db, "admins"));
+                adminSnapshot.forEach(doc => {
+                    if(doc.data().email) ADMIN_EMAILS.push(doc.data().email);
+                });
+            }, 1000);
+        } catch(e) { console.error(e); }
+    }
+
+    async function getDataFromFirestore(collectionName) {
+        if (!window.db) return [];
+        try {
+            const { collection, getDocs, query, orderBy, limit } = window.firestoreFunctions;
+            const q = query(collection(window.db, collectionName), orderBy("savedAt", "desc"), limit(50));
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map(doc => {
+                let d = doc.data();
+                if (d.savedAt?.toDate) d.savedAt = d.savedAt.toDate();
+                return { id: doc.id, ...d };
+            });
+        } catch (error) { return []; }
+    }
+
+    const indexData = [
+      ['ຊັ້ນ/ຂັ້ນ', 'ດັດສະນີ', 'ຕົວຄູນ', 'ພາກສ່ວນ'],
+      // ຂໍ້ມູນໃໝ່ 'ລັດຖະກອນ'
+      ['1/1', 260, 9500, 'ລັດຖະກອນ'],
+      ['1/2', 261, 9500, 'ລັດຖະກອນ'],
+      ['1/3', 262, 9500, 'ລັດຖະກອນ'],
+      ['1/4', 263, 9500, 'ລັດຖະກອນ'],
+      ['1/5', 264, 9500, 'ລັດຖະກອນ'],
+      ['1/6', 265, 9500, 'ລັດຖະກອນ'],
+      ['1/7', 266, 9500, 'ລັດຖະກອນ'],
+      ['1/8', 267, 9500, 'ລັດຖະກອນ'],
+      ['1/9', 268, 9500, 'ລັດຖະກອນ'],
+      ['1/10', 269, 9500, 'ລັດຖະກອນ'],
+      ['1/11', 270, 9500, 'ລັດຖະກອນ'],
+      ['1/12', 271, 9500, 'ລັດຖະກອນ'],
+      ['1/13', 272, 9500, 'ລັດຖະກອນ'],
+      ['1/14', 273, 9500, 'ລັດຖະກອນ'],
+      ['1/15', 274, 9500, 'ລັດຖະກອນ'],
+      ['2/1', 268, 9500, 'ລັດຖະກອນ'],
+      ['2/2', 269, 9500, 'ລັດຖະກອນ'],
+      ['2/3', 270, 9500, 'ລັດຖະກອນ'],
+      ['2/4', 271, 9500, 'ລັດຖະກອນ'],
+      ['2/5', 272, 9500, 'ລັດຖະກອນ'],
+      ['2/6', 273, 9500, 'ລັດຖະກອນ'],
+      ['2/7', 274, 9500, 'ລັດຖະກອນ'],
+      ['2/8', 275, 9500, 'ລັດຖະກອນ'],
+      ['2/9', 276, 9500, 'ລັດຖະກອນ'],
+      ['2/10', 277, 9500, 'ລັດຖະກອນ'],
+      ['2/11', 278, 9500, 'ລັດຖະກອນ'],
+      ['2/12', 279, 9500, 'ລັດຖະກອນ'],
+      ['2/13', 280, 9500, 'ລັດຖະກອນ'],
+      ['2/14', 281, 9500, 'ລັດຖະກອນ'],
+      ['2/15', 282, 9500, 'ລັດຖະກອນ'],
+      ['3/1', 277, 9500, 'ລັດຖະກອນ'],
+      ['3/2', 278, 9500, 'ລັດຖະກອນ'],
+      ['3/3', 279, 9500, 'ລັດຖະກອນ'],
+      ['3/4', 280, 9500, 'ລັດຖະກອນ'],
+      ['3/5', 281, 9500, 'ລັດຖະກອນ'],
+      ['3/6', 282, 9500, 'ລັດຖະກອນ'],
+      ['3/7', 283, 9500, 'ລັດຖະກອນ'],
+      ['3/8', 285, 9500, 'ລັດຖະກອນ'],
+      ['3/9', 287, 9500, 'ລັດຖະກອນ'],
+      ['3/10', 289, 9500, 'ລັດຖະກອນ'],
+      ['3/11', 291, 9500, 'ລັດຖະກອນ'],
+      ['3/12', 293, 9500, 'ລັດຖະກອນ'],
+      ['3/13', 295, 9500, 'ລັດຖະກອນ'],
+      ['3/14', 297, 9500, 'ລັດຖະກອນ'],
+      ['3/15', 299, 9500, 'ລັດຖະກອນ'],
+      ['4/1', 287, 9500, 'ລັດຖະກອນ'],
+      ['4/2', 289, 9500, 'ລັດຖະກອນ'],
+      ['4/3', 291, 9500, 'ລັດຖະກອນ'],
+      ['4/4', 293, 9500, 'ລັດຖະກອນ'],
+      ['4/5', 295, 9500, 'ລັດຖະກອນ'],
+      ['4/6', 297, 9500, 'ລັດຖະກອນ'],
+      ['4/7', 299, 9500, 'ລັດຖະກອນ'],
+      ['4/8', 304, 9500, 'ລັດຖະກອນ'],
+      ['4/9', 309, 9500, 'ລັດຖະກອນ'],
+      ['4/10', 314, 9500, 'ລັດຖະກອນ'],
+      ['4/11', 319, 9500, 'ລັດຖະກອນ'],
+      ['4/12', 324, 9500, 'ລັດຖະກອນ'],
+      ['4/13', 329, 9500, 'ລັດຖະກອນ'],
+      ['4/14', 334, 9500, 'ລັດຖະກອນ'],
+      ['4/15', 339, 9500, 'ລັດຖະກອນ'],
+      ['5/1', 309, 9500, 'ລັດຖະກອນ'],
+      ['5/2', 314, 9500, 'ລັດຖະກອນ'],
+      ['5/3', 319, 9500, 'ລັດຖະກອນ'],
+      ['5/4', 324, 9500, 'ລັດຖະກອນ'],
+      ['5/5', 329, 9500, 'ລັດຖະກອນ'],
+      ['5/6', 334, 9500, 'ລັດຖະກອນ'],
+      ['5/7', 339, 9500, 'ລັດຖະກອນ'],
+      ['5/8', 349, 9500, 'ລັດຖະກອນ'],
+      ['5/9', 359, 9500, 'ລັດຖະກອນ'],
+      ['5/10', 369, 9500, 'ລັດຖະກອນ'],
+      ['5/11', 379, 9500, 'ລັດຖະກອນ'],
+      ['5/12', 389, 9500, 'ລັດຖະກອນ'],
+      ['5/13', 399, 9500, 'ລັດຖະກອນ'],
+      ['5/14', 409, 9500, 'ລັດຖະກອນ'],
+      ['5/15', 419, 9500, 'ລັດຖະກອນ'],
+      ['6/1', 600, 9500, 'ລັດຖະກອນ'],
+      ['6/2', 700, 9500, 'ລັດຖະກອນ'],
+      ['6/3', 800, 9500, 'ລັດຖະກອນ'],
+      ['6/4', 900, 9500, 'ລັດຖະກອນ'],
+      ['6/5', 1000, 9500, 'ລັດຖະກອນ'],
+      ['6/6', 1100, 9500, 'ລັດຖະກອນ'],
+      ['6/7', 1200, 9500, 'ລັດຖະກອນ'],
+    ];
+
+    async function searchData() {
+        const col = document.getElementById('combobox1').value;
+        const term = document.getElementById('textbox1').value.trim().toLowerCase();
+        
+        if (!col) {
+            Swal.fire({ icon: 'warning', text: 'ກະລຸນາເລືອກລາຍການ', confirmButtonColor: '#10b981' });
+            return;
+        }
+
+        Swal.showLoading();
+        let headers = [], dataRows = [];
+
+        if (col === 'indexData') {
+            headers = indexData[0];
+            let data = indexData.slice(1);
+            if (term) data = data.filter(r => r.some(c => c && c.toString().toLowerCase().includes(term)));
+            dataRows = data;
+        } else {
+            const fsData = await getDataFromFirestore(col);
+            switch (col) {
+                case 'salaryHistory':
+                    headers = ['ວັນທີ', 'ເນື້ອໃນ', 'ດັດສະນີ', 'ປີການ', 'ຕຳແໜ່ງ', 'ລູກ', 'ເມຍ', '%ບຳນານ', 'ລວມກ່ອນຫັກ', 'ເງິນປີການ', 'ເງິນລູກ', 'ເງິນເມຍ', 'ຫັກ', 'ອາກອນ', 'ລວມທັງໝົດ'];
+                    dataRows = fsData.map(r => {
+                        const isCivil = r.category === 'ເງີນເດືອນພະນັກງານລັດຖະກອນ';
+                        return [new Date(r.savedAt).toLocaleDateString('lo-LA'), r.category, r.index, r.year, r.position, r.children, isCivil ? r.wife : '-', isCivil ? '-' : r.pensionPercent, r.totalBeforeDeduction, r.yearAllowance, r.childAllowance, isCivil ? r.wifeAllowance : '-', r.deduction, isCivil ? r.tax : '-', r.totalNet, r.id];
+                    });
+                    break;
+                case 'govSupportHistory':
+                    headers = ['ວັນທີ', 'ເນື້ອໃນ', 'ດັດສະນີ', 'ປີການ', 'ຕຳແໜ່ງ', '%ບຳນານ', 'ເງິນພື້ນຖານ', 'ເງິນປີການ', 'ລວມກ່ອນຫັກ', 'ເດືອນໄດ້ຮັບ', 'ລວມທັງໝົດ'];
+                    dataRows = fsData.map(r => [new Date(r.savedAt).toLocaleDateString('lo-LA'), r.detail, r.index, r.serviceYears, r.positionSalary, r.percentage || '-', r.baseMonthlySalary, r.yearlyBonus, r.totalDeduction, r.monthsReceived, r.totalAmountReceived, r.id]);
+                    break;
+                case 'entSupportHistory':
+                    headers = ['ວັນທີ', 'ເນື້ອໃນ', 'ເງິນສົມທົບ', 'ເດືອນ', 'ລູກ', 'ລວມທັງໝົດ'];
+                    dataRows = fsData.map(r => [new Date(r.savedAt).toLocaleDateString('lo-LA'), r.category, r.contribution, r.months, r.children, r.totalAmountReceived, r.id]);
+                    break;
+            }
+            if (term) dataRows = dataRows.filter(r => r.slice(0, -1).some(c => c && c.toString().toLowerCase().includes(term)));
+        }
+        
+        displaySearchResults(col, [headers, ...dataRows]);
+        Swal.close();
+    }
+
+    function displaySearchResults(colName, data) {
+        const thead = document.getElementById('table-header');
+        const tbody = document.getElementById('table-body');
+        thead.innerHTML = '';
+        tbody.innerHTML = '';
+        document.getElementById('searchResult').classList.remove('hidden');
+
+        if (data.length <= 1) {
+            tbody.innerHTML = '<tr><td colspan="100%" class="text-center p-4 text-gray-500">ບໍ່ພົບຂໍ້ມູນ</td></tr>';
+            return;
+        }
+
+        const headers = [...data[0], 'ຈັດການ'];
+        headers.forEach(h => {
+            const th = document.createElement('th');
+            th.className = 'px-6 py-4 font-semibold whitespace-nowrap mobile-hidden';
+            th.textContent = h;
+            thead.appendChild(th);
+        });
+
+        data.slice(1).forEach(row => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors";
+            
+            const docId = colName !== 'indexData' ? row[row.length - 1] : null;
+            const contentRow = colName !== 'indexData' ? row.slice(0, -1) : row;
+
+            contentRow.forEach((val, idx) => {
+                const td = document.createElement('td');
+                td.className = "px-6 py-4 whitespace-nowrap";
+                td.setAttribute('data-label', headers[idx]);
+                let displayVal = val;
+                if (typeof val === 'number' && val >= 1000) displayVal = val.toLocaleString();
+                if (val === '-' || val === '' || val == null) {
+                    td.classList.add('mobile-hidden');
+                    td.textContent = '-';
+                } else {
+                    td.textContent = displayVal;
+                }
+                tr.appendChild(td);
+            });
+
+            const actTd = document.createElement('td');
+            actTd.className = "px-6 py-4 flex items-center justify-center gap-2";
+            actTd.setAttribute('data-label', 'ຈັດການ');
+
+            const dlBtn = document.createElement('button');
+            dlBtn.className = "w-8 h-8 rounded bg-emerald-100 text-emerald-600 hover:bg-emerald-200 flex items-center justify-center";
+            dlBtn.innerHTML = '<i class="fas fa-download"></i>';
+            dlBtn.onclick = () => downloadRowAsImage(tr);
+            actTd.appendChild(dlBtn);
+
+            if (IS_ADMIN && colName !== 'indexData') {
+                const delBtn = document.createElement('button');
+                delBtn.className = "w-8 h-8 rounded bg-red-100 text-red-600 hover:bg-red-200 flex items-center justify-center";
+                delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                delBtn.onclick = () => deleteRecord(colName, docId);
+                actTd.appendChild(delBtn);
+            }
+            tr.appendChild(actTd);
+            tbody.appendChild(tr);
+        });
+    }
+
+    function downloadRowAsImage(el) {
+        Swal.showLoading();
+        const originalBg = el.style.background;
+        el.style.background = "#ffffff";
+        const lastChild = el.lastElementChild;
+        const lastDisplay = lastChild.style.display;
+        lastChild.style.display = 'none';
+
+        html2canvas(el, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
+            el.style.background = originalBg;
+            lastChild.style.display = lastDisplay;
+            
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.download = `result_${Date.now()}.jpg`;
+            link.click();
+            Swal.close();
+            Swal.fire({ icon: 'success', title: 'ບັນທຶກແລ້ວ', timer: 1500, showConfirmButton: false });
+        }).catch(() => {
+             el.style.background = originalBg;
+             lastChild.style.display = lastDisplay;
+             Swal.fire('Error', 'ບໍ່ສາມາດບັນທຶກຮູບໄດ້', 'error');
+        });
+    }
+
+    async function adminLogin() {
+        if(IS_ADMIN) return;
+        const { value: email } = await Swal.fire({ input: 'email', title: 'Admin Login', inputPlaceholder: 'Email' });
+        if (email && ADMIN_EMAILS.includes(email)) {
+            IS_ADMIN = true;
+            Swal.fire('Success', 'Logged in as Admin', 'success');
+            document.getElementById('adminLoginLink').classList.add('hidden');
+        } else {
+            Swal.fire('Error', 'Invalid Email', 'error');
+        }
+    }
+
+    async function deleteRecord(col, id) {
+        const res = await Swal.fire({ title: 'ລຶບຂໍ້ມູນ?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'ລຶບ' });
+        if (res.isConfirmed) {
+            try {
+                const { doc, deleteDoc } = window.firestoreFunctions;
+                await deleteDoc(doc(window.db, col, id));
+                Swal.fire('ລຶບສຳເລັດ', '', 'success');
+                searchData();
+            } catch (e) { Swal.fire('Error', e.message, 'error'); }
+        }
+    }
+  </script>
+</body>
+</html>

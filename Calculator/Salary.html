@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="lo" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>IT-banban Salary</title>
+  <meta name="theme-color" content="#10b981" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Noto Sans Lao', 'sans-serif'] },
+          colors: { emerald: { 50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 900: '#064e3b' } },
+          animation: { 'slide-up': 'slideUp 0.4s ease-out' },
+          keyframes: { slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } } }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body { font-family: 'Noto Sans Lao', sans-serif; -webkit-tap-highlight-color: transparent; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+    .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+    .dark .glass-effect { background: rgba(17, 24, 39, 0.95); }
+    .modern-input { transition: all 0.3s ease; border: 1px solid #e5e7eb; }
+    .modern-input:focus { border-color: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); transform: translateY(-1px); }
+    .view-section { display: block; animation: slideUp 0.4s ease-out; }
+  </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex flex-col transition-colors duration-300">
+
+<header class="sticky top-0 z-50 glass-effect border-b border-gray-200 dark:border-gray-800 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html'">
+      <img src="https://i.ibb.co/Fk9XKZSH/icon200.png" alt="Logo" class="w-10 h-10 object-contain">
+      <h1 class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">IT-banban</h1>
+    </div>
+    <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+      <i class="fas fa-moon text-lg dark:hidden"></i>
+      <i class="fas fa-sun text-lg hidden dark:block text-yellow-400"></i>
+    </button>
+  </div>
+</header>
+
+<main class="flex-grow w-full mx-auto px-4 py-6 relative">
+    <div id="salary-view" class="view-section max-w-md mx-auto">
+      <div class="flex items-center gap-4 mb-6">
+        <a href="index.html" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-emerald-100 text-gray-600 dark:text-gray-300 transition-colors">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <h2 class="text-xl font-bold">ຄຳນວນເງິນເດືອນ</h2>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <form id="salaryForm" class="space-y-5">
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ປະເພດ</label>
+            <select id="category" onchange="toggleFields()" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none">
+              <option value="">-- ເລືອກປະເພດ --</option>
+              <option value="civil">ເງິນເດືອນລັດຖະກອນ</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ດັດສະນີ</label>
+              <input type="number" id="index" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="260">
+            </div>
+            <div>
+              <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ປີການ</label>
+              <input type="number" id="year" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="10">
+            </div>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ເງິນຕຳແໜ່ງ</label>
+            <input type="text" id="position" oninput="formatAndRestrictNumber(this)" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="200,000">
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ຈຳນວນລູກ</label>
+              <input type="number" id="children" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="0">
+            </div>
+            <div id="wifeGroup">
+              <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ຈຳນວນເມຍ</label>
+              <input type="number" id="wife" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="0">
+            </div>
+          </div>
+
+          <div id="pensionGroup" class="hidden">
+            <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ເປີເຊັນບຳນານ (%)</label>
+            <input type="number" id="pensionPercent" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="80">
+          </div>
+
+          <div class="flex gap-3 pt-2">
+            <button type="button" onclick="calculateSalary()" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-500/30 transition-all active:scale-95">
+              ຄຳນວນ
+            </button>
+            <button type="button" onclick="resetSalaryForm()" class="px-5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-600 dark:text-gray-300 font-medium rounded-xl transition-all">
+              <i class="fas fa-rotate-right"></i>
+            </button>
+          </div>
+        </form>
+
+        <!-- Result Card -->
+        <div id="salaryResult" class="hidden mt-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-5 border border-emerald-100 dark:border-emerald-800/30 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-20 h-20 bg-emerald-500 opacity-10 rounded-full -mr-10 -mt-10"></div>
+          <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-4 border-b border-emerald-200 dark:border-emerald-800 pb-2">ຜົນການຄຳນວນ</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between"><span>ລວມເງິນກ່ອນຫັກ:</span> <span class="font-medium" id="totalBeforeDeduction">0</span></div>
+            <div class="flex justify-between text-gray-500"><span>+ ເງິນປີການ:</span> <span id="yearAllowance">0</span></div>
+            <div class="flex justify-between text-gray-500"><span>+ ເງິນລູກ:</span> <span id="childAllowance">0</span></div>
+            <div id="wifeLabel" class="flex justify-between text-gray-500"><span>+ ເງິນເມຍ:</span> <span id="wifeAllowance">0</span></div>
+            <div id="deductionLabel" class="flex justify-between text-red-400"><span>- ຫັກ:</span> <span id="deduction8">0</span></div>
+            <div id="taxLabel" class="flex justify-between text-red-400"><span>- ອາກອນ:</span> <span id="tax">0</span></div>
+            
+            <div class="mt-4 pt-3 border-t border-emerald-200 dark:border-emerald-800 flex justify-between items-center">
+              <span class="font-bold text-gray-700 dark:text-gray-200">ຮັບຕົວຈິງ:</span>
+              <span class="font-bold text-xl text-emerald-600 dark:text-emerald-400"><span id="totalNet">0</span> ກີບ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
+
+  <footer class="mt-auto py-6 text-center text-xs text-gray-400">
+    <p>© <span id="footer-year"></span> MR.BOUNPHEUNG PHETXAINYAPHOUM</p>
+  </footer>
+
+  <!-- Firebase Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, onSnapshot, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8fd_23dLQPbLqfqbakpJtlzjIOD_B-Jw",
+      authDomain: "myapp-506ca.firebaseapp.com",
+      projectId: "myapp-506ca",
+      storageBucket: "myapp-506ca.appspot.com",
+      messagingSenderId: "341275741284",
+      appId: "1:341275741284:web:f955e6c5a273e4be616371"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+    window.firestoreFunctions = { collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, onSnapshot, doc, getDoc, updateDoc, deleteDoc };
+  </script>
+
+  <script>
+    let APP_CONFIG = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
+        setupThemeToggle();
+        loadAndInitializeApp();
+    });
+
+    function setupThemeToggle() {
+      const btn = document.getElementById('theme-toggle');
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+      btn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      });
+    }
+
+    async function loadAndInitializeApp() {
+        try {
+            // Wait a bit for firebase module to load
+            setTimeout(async () => {
+                if (!window.db) return;
+                const { doc, getDoc } = window.firestoreFunctions;
+                const configRef = doc(window.db, "configuration", "appConfig");
+                const docSnap = await getDoc(configRef);
+                if (docSnap.exists()) {
+                    APP_CONFIG = docSnap.data();
+                    if (APP_CONFIG.yearAllowanceTiers) {
+                        APP_CONFIG.yearAllowanceTiers.forEach(tier => {
+                            if (tier.maxYears === 'Infinity') tier.maxYears = Infinity;
+                        });
+                    }
+                    if (APP_CONFIG.taxBrackets) {
+                        APP_CONFIG.taxBrackets.forEach(bracket => {
+                            if (bracket.max === 'Infinity') bracket.max = Infinity;
+                        });
+                    }
+                    toggleFields();
+                }
+            }, 500);
+        } catch (error) { console.error("Config Error:", error); }
+    }
+
+    async function saveDataToFirestore(collectionName, data) {
+        if (!window.db) return false;
+        try {
+            const { collection, addDoc, serverTimestamp } = window.firestoreFunctions;
+            await addDoc(collection(window.db, collectionName), { ...data, savedAt: serverTimestamp() });
+            return true;
+        } catch (error) { return false; }
+    }
+
+    function formatAndRestrictNumber(input) {
+        let value = input.value.replace(/[^0-9]/g, '');
+        input.value = value ? parseInt(value, 10).toLocaleString('en-US') : '';
+    }
+
+    function calculateYearlyBonus(years) {
+        if (!APP_CONFIG) return 0;
+        const tiers = APP_CONFIG.yearAllowanceTiers;
+        for (const tier of tiers) {
+            if (years <= tier.maxYears) return (years - tier.previousMax) * tier.rate + tier.base;
+        }
+        const last = tiers[tiers.length - 1];
+        return (years - last.previousMax) * last.rate + last.base;
+    }
+
+    function calculateTax(income) {
+        if (!APP_CONFIG) return 0;
+        let previousMax = 0;
+        for (const bracket of APP_CONFIG.taxBrackets) {
+            if (income <= bracket.max) return (income - previousMax) * bracket.rate + bracket.base;
+            previousMax = bracket.max;
+        }
+        return 0;
+    }
+
+    function toggleFields() {
+        const cat = document.getElementById('category').value;
+        const isPension = cat === 'pension';
+        document.getElementById('pensionGroup').classList.toggle('hidden', !isPension);
+        document.getElementById('wifeGroup').classList.toggle('hidden', isPension);
+        document.getElementById('wifeLabel').style.display = isPension ? 'none' : 'flex';
+        document.getElementById('taxLabel').style.display = isPension ? 'none' : 'flex';
+        document.getElementById('deductionLabel').innerHTML = `<span>- ${isPension ? 'ຫັກປະກັນ:' : 'ຫັກ 8%:'}</span> <span id="deduction8">0</span>`;
+    }
+
+    function resetSalaryForm() {
+        document.getElementById('salaryForm').reset();
+        document.getElementById('salaryResult').classList.add('hidden');
+        toggleFields();
+    }
+
+    async function calculateSalary() {
+        if (!APP_CONFIG) return;
+        const cat = document.getElementById('category').value;
+        const index = parseFloat(document.getElementById('index').value) || 0;
+        const year = parseFloat(document.getElementById('year').value) || 0;
+        const pos = parseFloat(document.getElementById('position').value.replace(/,/g, '')) || 0;
+
+        if (!cat || !index || !year) {
+            Swal.fire({ icon: 'warning', text: 'ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບ', confirmButtonColor: '#10b981' });
+            return;
+        }
+
+        const children = parseFloat(document.getElementById('children').value) || 0;
+        const wife = parseFloat(document.getElementById('wife').value) || 0;
+        const pensionPct = parseFloat(document.getElementById('pensionPercent').value) || 0;
+        
+        const yearAllow = calculateYearlyBonus(year);
+        const childAllow = children * APP_CONFIG.salary.childAllowance;
+        
+        let totalBefore, deduction, tax, totalNet, wifeAllow;
+        let dataToSave = {};
+
+        if (cat === 'civil') {
+            totalBefore = (index * APP_CONFIG.salary.indexMultiplier) + pos + yearAllow;
+            wifeAllow = wife * APP_CONFIG.salary.wifeAllowance;
+            deduction = Math.floor(totalBefore * APP_CONFIG.deductions.civilRate);
+            tax = Math.floor(calculateTax(totalBefore - deduction));
+            totalNet = Math.floor(totalBefore - deduction - tax + childAllow + wifeAllow);
+            dataToSave = { category: 'ເງີນເດືອນພະນັກງານລັດຖະກອນ', index, year, position: pos, children, wife, totalBeforeDeduction: totalBefore, yearAllowance: yearAllow, childAllowance: childAllow, wifeAllowance: wifeAllow, deduction, tax, totalNet };
+        } else {
+            // Pension logic kept for safety though option hidden
+            totalBefore = ((index * APP_CONFIG.salary.indexMultiplier) + pos + yearAllow) * (pensionPct / 100);
+            wifeAllow = 0; tax = 0;
+            deduction = Math.floor(totalBefore * APP_CONFIG.deductions.pensionHealthRate);
+            totalNet = Math.floor(totalBefore - deduction + childAllow);
+            dataToSave = { category: 'ເງີນເດືອນພະນັກງານບຳນານ', index, year, position: pos, children, pensionPercent: pensionPct, totalBeforeDeduction: totalBefore, yearAllowance: yearAllow, childAllowance: childAllow, deduction, totalNet };
+        }
+
+        document.getElementById('totalBeforeDeduction').textContent = totalBefore.toLocaleString();
+        document.getElementById('yearAllowance').textContent = yearAllow.toLocaleString();
+        document.getElementById('childAllowance').textContent = childAllow.toLocaleString();
+        document.getElementById('wifeAllowance').textContent = wifeAllow.toLocaleString();
+        document.getElementById('deduction8').textContent = deduction.toLocaleString();
+        document.getElementById('tax').textContent = tax.toLocaleString();
+        document.getElementById('totalNet').textContent = totalNet.toLocaleString();
+        document.getElementById('salaryResult').classList.remove('hidden');
+
+        await saveDataToFirestore('salaryHistory', dataToSave);
+    }
+  </script>
+</body>
+</html>

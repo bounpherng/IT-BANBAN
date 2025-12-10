@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="lo" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>IT-banban Public Sector</title>
+  <meta name="theme-color" content="#10b981" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Noto Sans Lao', 'sans-serif'] },
+          colors: { emerald: { 50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 900: '#064e3b' } },
+          animation: { 'slide-up': 'slideUp 0.4s ease-out' },
+          keyframes: { slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } } }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body { font-family: 'Noto Sans Lao', sans-serif; -webkit-tap-highlight-color: transparent; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+    .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+    .dark .glass-effect { background: rgba(17, 24, 39, 0.95); }
+    .modern-input { transition: all 0.3s ease; border: 1px solid #e5e7eb; }
+    .modern-input:focus { border-color: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); transform: translateY(-1px); }
+    .view-section { display: block; animation: slideUp 0.4s ease-out; }
+  </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex flex-col transition-colors duration-300">
+
+<header class="sticky top-0 z-50 glass-effect border-b border-gray-200 dark:border-gray-800 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html'">
+      <img src="https://i.ibb.co/Fk9XKZSH/icon200.png" alt="Logo" class="w-10 h-10 object-contain">
+      <h1 class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">IT-banban</h1>
+    </div>
+    <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+      <i class="fas fa-moon text-lg dark:hidden"></i>
+      <i class="fas fa-sun text-lg hidden dark:block text-yellow-400"></i>
+    </button>
+  </div>
+</header>
+
+<main class="flex-grow w-full mx-auto px-4 py-6 relative">
+    <div id="gov-view" class="view-section max-w-md mx-auto">
+      <div class="flex items-center gap-4 mb-6">
+        <a href="index.html" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-emerald-100 text-gray-600 dark:text-gray-300 transition-colors">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <h2 class="text-xl font-bold">ອຸດໜຸນພາກລັດ</h2>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <form id="bonusForm" class="space-y-5">
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ປະເພດອຸດໜຸນ</label>
+            <select id="detail" onchange="updatePercentage()" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none">
+              <option value="">-- ເລືອກ --</option>
+              <option value="ເງີນອຸດໜຸນບຳເນັດອອກການ">ເງີນອຸດໜຸນບຳເນັດອອກການ</option>
+              <option value="ເງີນອຸດໜຸນເສຍຊີວິດລັດຖະກອນ">ເງິນອຸດໜຸນເສຍຊີວິດລັດຖະກອນ</option>
+              <option value="ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ">ເງິນອຸດໜຸນບຳນານເສຍຊີວິດ</option>
+              <option value="ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ">ເງິນອຸດໜຸນໝາຍເສຍຊີວິດ</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ດັດສະນີ</label>
+              <input type="number" id="govIndex" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="260">
+            </div>
+            <div>
+              <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ປີການ</label>
+              <input type="number" id="serviceYears" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="10">
+            </div>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ເງິນຕຳແໜ່ງ</label>
+            <input type="text" id="positionSalary" oninput="formatAndRestrictNumber(this)" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="200,000">
+          </div>
+
+          <div id="percentageGroup" class="hidden">
+            <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ເປີເຊັນບຳນານ (%)</label>
+            <input type="number" id="percentage" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="85">
+          </div>
+
+          <div class="flex gap-3 pt-2">
+            <button type="button" onclick="validateAndCalculateGovernment()" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-500/30 transition-all active:scale-95">
+              ຄຳນວນ
+            </button>
+            <button type="button" onclick="clearGovForm()" class="px-5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-600 dark:text-gray-300 font-medium rounded-xl transition-all">
+              <i class="fas fa-rotate-right"></i>
+            </button>
+          </div>
+        </form>
+
+        <div id="govResult" class="hidden mt-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-5 border border-emerald-100 dark:border-emerald-800/30">
+          <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-4 border-b border-emerald-200 dark:border-emerald-800 pb-2">ຜົນການຄຳນວນ</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between"><span>ເງິນເດືອນພື້ນຖານ:</span> <span id="govBaseMonthlySalary">0</span></div>
+            <div class="flex justify-between"><span>ເງິນປີການ:</span> <span id="govYearlyBonus">0</span></div>
+            <div class="flex justify-between font-medium"><span>ລວມເງິນກ່ອນຫັກ:</span> <span id="govTotalDeduction">0</span></div>
+            <div class="flex justify-between text-blue-500"><span>x ເດືອນທີ່ໄດ້ຮັບ:</span> <span id="govMonthsReceived">0</span> ເດືອນ</div>
+            <div class="mt-4 pt-3 border-t border-emerald-200 dark:border-emerald-800 flex justify-between items-center">
+              <span class="font-bold text-gray-700 dark:text-gray-200">ລວມທັງໝົດ:</span>
+              <span class="font-bold text-xl text-emerald-600 dark:text-emerald-400"><span id="govTotalAmountReceived">0</span> ກີບ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
+
+  <footer class="mt-auto py-6 text-center text-xs text-gray-400">
+    <p>© <span id="footer-year"></span> MR.BOUNPHEUNG PHETXAINYAPHOUM</p>
+  </footer>
+
+  <!-- Firebase Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, onSnapshot, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8fd_23dLQPbLqfqbakpJtlzjIOD_B-Jw",
+      authDomain: "myapp-506ca.firebaseapp.com",
+      projectId: "myapp-506ca",
+      storageBucket: "myapp-506ca.appspot.com",
+      messagingSenderId: "341275741284",
+      appId: "1:341275741284:web:f955e6c5a273e4be616371"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+    window.firestoreFunctions = { collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, onSnapshot, doc, getDoc, updateDoc, deleteDoc };
+  </script>
+
+  <script>
+    let APP_CONFIG = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
+        setupThemeToggle();
+        loadAndInitializeApp();
+    });
+
+    function setupThemeToggle() {
+      const btn = document.getElementById('theme-toggle');
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+      btn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      });
+    }
+
+    async function loadAndInitializeApp() {
+        try {
+            setTimeout(async () => {
+                if (!window.db) return;
+                const { doc, getDoc } = window.firestoreFunctions;
+                const configRef = doc(window.db, "configuration", "appConfig");
+                const docSnap = await getDoc(configRef);
+                if (docSnap.exists()) {
+                    APP_CONFIG = docSnap.data();
+                    if (APP_CONFIG.yearAllowanceTiers) {
+                        APP_CONFIG.yearAllowanceTiers.forEach(tier => {
+                            if (tier.maxYears === 'Infinity') tier.maxYears = Infinity;
+                        });
+                    }
+                    updatePercentage();
+                }
+            }, 500);
+        } catch (error) { console.error("Config Error:", error); }
+    }
+
+    async function saveDataToFirestore(collectionName, data) {
+        if (!window.db) return false;
+        try {
+            const { collection, addDoc, serverTimestamp } = window.firestoreFunctions;
+            await addDoc(collection(window.db, collectionName), { ...data, savedAt: serverTimestamp() });
+            return true;
+        } catch (error) { return false; }
+    }
+
+    function formatAndRestrictNumber(input) {
+        let value = input.value.replace(/[^0-9]/g, '');
+        input.value = value ? parseInt(value, 10).toLocaleString('en-US') : '';
+    }
+
+    function calculateYearlyBonus(years) {
+        if (!APP_CONFIG) return 0;
+        const tiers = APP_CONFIG.yearAllowanceTiers;
+        for (const tier of tiers) {
+            if (years <= tier.maxYears) return (years - tier.previousMax) * tier.rate + tier.base;
+        }
+        const last = tiers[tiers.length - 1];
+        return (years - last.previousMax) * last.rate + last.base;
+    }
+
+    function updatePercentage() {
+        const detail = document.getElementById('detail').value;
+        const specificShow = detail === 'ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ' || detail === 'ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ';
+        document.getElementById('percentageGroup').classList.toggle('hidden', !specificShow);
+    }
+
+    function clearGovForm() {
+        document.getElementById('bonusForm').reset();
+        document.getElementById('govResult').classList.add('hidden');
+        updatePercentage();
+    }
+
+    async function validateAndCalculateGovernment() {
+        if (!APP_CONFIG) return;
+        const detail = document.getElementById('detail').value;
+        const index = parseFloat(document.getElementById('govIndex').value) || 0;
+        const years = parseInt(document.getElementById('serviceYears').value) || 0;
+        const pos = parseFloat(document.getElementById('positionSalary').value.replace(/,/g, '')) || 0;
+        const pct = parseFloat(document.getElementById('percentage').value) || 0;
+
+        if (!detail || !index || !years) {
+            Swal.fire({ icon: 'warning', text: 'ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບ', confirmButtonColor: '#10b981' });
+            return;
+        }
+
+        const C = APP_CONFIG.govSubsidy;
+        const base = Math.floor(index * APP_CONFIG.salary.indexMultiplier);
+        const yearBonus = Math.floor(calculateYearlyBonus(years));
+        const totalBefore = base + yearBonus + pos;
+        
+        let deduction = 0, months = 0, total = 0;
+
+        if (detail === "ເງີນອຸດໜຸນບຳເນັດອອກການ") {
+            deduction = Math.floor(totalBefore * (C.severanceRate || 0.85));
+            months = C.severanceMultiplier || 1.5;
+            total = Math.floor(deduction * months * years);
+        } else if (detail === "ເງີນອຸດໜຸນໝາຍເສຍຊີວິດ") {
+            deduction = Math.floor(totalBefore * pct / 100);
+            months = C.widowAllowanceMonths;
+            total = Math.floor((deduction * C.widowPensionMultiplier) * months);
+        } else {
+            deduction = (detail === "ເງີນອຸດໜຸນບຳນານເສຍຊີວິດ") ? Math.floor(totalBefore * pct / 100) : totalBefore;
+            if (years < C.deathAllowanceYearsLimit) {
+                months = years + C.deathAllowanceBaseMonths;
+            } else {
+                months = ((years + C.deathAllowanceFormulaMonths1) / C.deathAllowanceFormulaMonths2) + C.deathAllowanceFormulaMonths3;
+            }
+            total = Math.floor(deduction * months);
+        }
+
+        document.getElementById('govBaseMonthlySalary').innerText = base.toLocaleString();
+        document.getElementById('govYearlyBonus').innerText = yearBonus.toLocaleString();
+        document.getElementById('govTotalDeduction').innerText = deduction.toLocaleString();
+        document.getElementById('govMonthsReceived').innerText = months;
+        document.getElementById('govTotalAmountReceived').innerText = total.toLocaleString();
+        document.getElementById('govResult').classList.remove('hidden');
+
+        await saveDataToFirestore('govSupportHistory', { detail, index, serviceYears: years, positionSalary: pos, percentage: pct, baseMonthlySalary: base, yearlyBonus: yearBonus, totalDeduction: deduction, monthsReceived: months, totalAmountReceived: total });
+    }
+  </script>
+</body>
+</html>
