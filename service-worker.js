@@ -1,14 +1,24 @@
-const CACHE_NAME = 'online-system-cache-v1.1.6';
+const CACHE_NAME = 'it-banban-v1';
 const urlsToCache = [
   './',
   './index.html',
-  './icon-192.png',
-  './icon-512.png',
-  'https://i.ibb.co/F4VGPVB1/image.png',
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;700&display=swap'
-
+  './Calculator/index.html',
+  './Calculator/Salary.html',
+  './Calculator/Publicsector.html',
+  './Calculator/Enterprise.html',
+  './Calculator/Search.html'
 ];
 
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+  );
+});
 
-
-
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
+});
