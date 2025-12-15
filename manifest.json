@@ -1,5 +1,5 @@
 {
-    "name": "IT-banban Calculator",
+    "name": "IT-banban IT SOLUTIONS",
     "short_name": "IT-banban",
     "start_url": "./index.html",
     "display": "standalone",
@@ -17,4 +17,5 @@
         "type": "image/png"
       }
     ]
+
   }
