@@ -188,20 +188,28 @@
     <div id="home-page" class="page active">
       
       <!-- Hero Section -->
-      <section class="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
+      <!-- Adjusted md:h to 80vh to give more room -->
+      <section class="relative h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 z-0">
           <img src="https://i.ibb.co/4ZHfVTkK/02091270509-2.jpg" alt="Background" class="w-full h-full object-cover">
           <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-gray-50 dark:to-gray-900"></div>
         </div>
 
-        <div class="relative z-10 text-center px-3 max-w-4xl mx-auto space-y-4 md:space-y-6">
-          <h1 class="text-3xl md:text-6xl font-extrabold text-white tracking-tight text-shadow-lg animate-float mt-5">
+        <!-- Added md:pb-32 to lift content up significantly on desktop -->
+        <div class="relative z-10 text-center px-3 max-w-4xl mx-auto space-y-2 md:space-y-4 pb-20 md:pb-32"> 
+          <h1 class="text-3xl md:text-6xl font-extrabold text-white tracking-tight text-shadow-lg animate-float mt-5 mb-4">
             IT SOLUTIONS
           </h1>
+          
+          <!-- Description -->
           <p class="text-base md:text-xl text-gray-200 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-md px-2">
             ລວມເຄື່ອງມື ແລະ ບໍລິການລະດັບມືອາຊີບ ເພີ່ມປະສິດທິພາບ, ຫຼຸດຄວາມຜິດພາດ, ແລະ ເຮັດວຽກໃຫ້ສຳເລັດເມັ້ນຢຳຖືກຕ້ອງ.
           </p>
-          <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center pt-4 px-6 md:px-0">
+
+          <!-- Modified Date Styling -->
+          <p id="date-lao" class="text-xs md:text-sm text-emerald-300 font-medium bg-black/40 inline-block px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/10 mb-6"></p>
+
+          <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center pt-2 px-6 md:px-0">
              <a href="#" onclick="showPage('contact')" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full font-bold shadow-lg shadow-emerald-500/30 transition transform hover:-translate-y-1 text-center">
                <i class="fas fa-heart mr-2"></i> ສະໜັບສະໜູນ
              </a>
@@ -209,7 +217,7 @@
                ບໍລິການຂອງພວກເຮົາ
              </a>
           </div>
-          <p id="date-lao" class="text-xs md:text-sm text-emerald-400 mt-8 font-mono"></p>
+          
         </div>
       </section>
 
@@ -223,6 +231,9 @@
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">ບໍລິການ ແລະ ເຄື່ອງມືພິເສດ</h2>
                 <div class="w-20 md:w-24 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-400 mx-auto mt-3 rounded-full"></div>
             </div>
+
+
+
 
             <!-- 1. Add-in Calculation -->
             <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800 open">
