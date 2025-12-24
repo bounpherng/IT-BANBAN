@@ -54,6 +54,21 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+
+        /* Modal Styles */
+        #passwordModal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #passwordModal.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #passwordModal:not(.hidden) {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
     </style>
      <script>
         // Theme Check for standalone file
@@ -144,12 +159,11 @@
                 </div>
 
                 <div class="flex flex-col md:flex-row items-center gap-12">
-                    <!-- Word Image -->
+                    <!-- Word Image Updated -->
                     <div class="w-full md:w-1/2">
                         <div class="relative rounded-2xl shadow-2xl overflow-hidden border-4 border-white dark:border-gray-700 transform rotate-2 hover:rotate-0 transition duration-500 group">
                             <div class="bg-blue-600 h-64 md:h-80 flex items-center justify-center text-white flex-col relative">
-                                <!-- Using uploaded image -->
-                                <img src="word99.jpg" alt="Word Add-in Interface" class="absolute inset-0 w-full h-full object-cover"> 
+                                <img src="https://i.ibb.co/XxCPFb70/word99.jpg" alt="Word Add-in Interface" class="absolute inset-0 w-full h-full object-cover"> 
                                 <div class="absolute inset-0 bg-blue-900/20 group-hover:bg-transparent transition"></div>
                             </div>
                         </div>
@@ -204,12 +218,11 @@
                 </div>
 
                 <div class="flex flex-col md:flex-row-reverse items-center gap-12">
-                    <!-- Excel Image -->
+                    <!-- Excel Image Updated -->
                     <div class="w-full md:w-1/2">
                         <div class="relative rounded-2xl shadow-2xl overflow-hidden border-4 border-white dark:border-gray-700 transform -rotate-2 hover:rotate-0 transition duration-500 group">
                              <div class="bg-green-600 h-64 md:h-80 flex items-center justify-center text-white flex-col relative">
-                                <!-- Using uploaded image -->
-                                <img src="ເອັກເຊວ.jpg" alt="Excel Add-in Interface" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="https://i.ibb.co/whfLTHhr/image.jpg" alt="Excel Add-in Interface" class="absolute inset-0 w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-green-900/20 group-hover:bg-transparent transition"></div>
                             </div>
                         </div>
@@ -252,7 +265,8 @@
                         <i class="fa-brands fa-microsoft text-4xl mb-4 group-hover:text-green-400 transition"></i>
                         <h3 class="text-xl font-bold mb-2">Setup_Word.exe</h3>
                         <p class="text-gray-400 text-sm mb-4">Add-in ສໍາລັບ Microsoft Word</p>
-                        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded transition">
+                        <!-- Added onClick handler -->
+                        <button onclick="openDownloadModal('word')" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded transition">
                             ດາວໂຫຼດດຽວນີ້
                         </button>
                     </div>
@@ -260,7 +274,8 @@
                         <i class="fa-solid fa-table text-4xl mb-4 group-hover:text-green-400 transition"></i>
                         <h3 class="text-xl font-bold mb-2">Setup_Excel.exe</h3>
                         <p class="text-gray-400 text-sm mb-4">Add-in ສໍາລັບ Microsoft Excel</p>
-                        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded transition">
+                        <!-- Added onClick handler -->
+                        <button onclick="openDownloadModal('excel')" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded transition">
                             ດາວໂຫຼດດຽວນີ້
                         </button>
                     </div>
@@ -282,6 +297,104 @@
         </a>
     </div>
 
+    <!-- Password Modal -->
+    <div id="passwordModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full p-6 transform transition-all scale-100">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 dark:bg-green-900 mb-4">
+                    <i class="fa-solid fa-lock text-green-600 dark:text-green-400 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white mb-2">ປ້ອນລະຫັດເພື່ອດາວໂຫຼດ</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    ກະລຸນາປ້ອນລະຫັດຜ່ານທີ່ຖືກຕ້ອງເພື່ອດຳເນີນການດາວໂຫຼດໄຟລ໌.
+                </p>
+                
+                <input type="password" id="downloadPassword" 
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white mb-2"
+                    placeholder="ໃສ່ລະຫັດຜ່ານ..."
+                    onkeypress="handleEnter(event)">
+                
+                <p id="passwordError" class="text-red-500 text-xs hidden mb-4 text-left"><i class="fa-solid fa-circle-exclamation mr-1"></i> ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ!</p>
+
+                <div class="flex gap-3 mt-4">
+                    <button onclick="closeModal()" class="w-1/2 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        ຍົກເລີກ
+                    </button>
+                    <button onclick="checkPassword()" class="w-1/2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-bold">
+                        ຢືນຢັນ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const PASSWORD = "XW2026"; // <--- ປ່ຽນລະຫັດຜ່ານຢູ່ບ່ອນນີ້ (Change password here)
+        
+        // Download Links
+        const wordLink = "https://drive.google.com/file/d/1SpGUXu526HfQVxg_O7vaqhhTZatFIfjp/view?usp=sharing";
+        const excelLink = "https://drive.google.com/file/d/1Gd_W4itmTyvqivYFTPGF8W3DJ4wlsUuB/view?usp=sharing";
+
+        let currentDownloadType = '';
+
+        function openDownloadModal(type) {
+            currentDownloadType = type;
+            const modal = document.getElementById('passwordModal');
+            const input = document.getElementById('downloadPassword');
+            const errorMsg = document.getElementById('passwordError');
+            
+            // Reset state
+            input.value = '';
+            errorMsg.classList.add('hidden');
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            input.focus();
+        }
+
+        function closeModal() {
+            document.getElementById('passwordModal').classList.add('hidden');
+            currentDownloadType = '';
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('downloadPassword').value;
+            const errorMsg = document.getElementById('passwordError');
+
+            if (input === PASSWORD) {
+                // Correct Password
+                closeModal();
+                if (currentDownloadType === 'word') {
+                    window.open(wordLink, '_blank');
+                } else if (currentDownloadType === 'excel') {
+                    window.open(excelLink, '_blank');
+                }
+            } else {
+                // Incorrect Password
+                errorMsg.classList.remove('hidden');
+                // Shake animation effect
+                const inputField = document.getElementById('downloadPassword');
+                inputField.classList.add('ring-2', 'ring-red-500', 'border-red-500');
+                setTimeout(() => {
+                    inputField.classList.remove('ring-2', 'ring-red-500', 'border-red-500');
+                }, 500);
+            }
+        }
+
+        function handleEnter(event) {
+            if (event.key === "Enter") {
+                checkPassword();
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('passwordModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+
 </body>
 </html>
-
