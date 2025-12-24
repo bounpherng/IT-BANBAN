@@ -115,12 +115,11 @@
   </script>
 </head>
 
-<!-- ປັບ text-base ເປັນຄ່າເລີ່ມຕົ້ນ ເພື່ອໃຫ້ຕົວໜັງສືໃຫຍ່ຂຶ້ນໃນມືຖື -->
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 text-base md:text-base flex flex-col min-h-screen">
 
   <!-- =============================== Header =============================== -->
   <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
-    <div class="w-full max-w-6xl mx-auto px-2 md:px-4"> <!-- ປັບ padding ໃນມືຖືເປັນ px-2 ໃຫ້ກວ້າງສຸດ -->
+    <div class="w-full max-w-6xl mx-auto px-2 md:px-4"> 
       <nav class="flex justify-between items-center py-2 md:py-3">
         <!-- Logo -->
         <a href="#" onclick="showPage('home')" class="flex items-center gap-2 md:gap-3 group">
@@ -132,12 +131,18 @@
         </a>
 
         <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center space-x-8 font-medium">
+        <div class="hidden md:flex items-center space-x-6 lg:space-x-8 font-medium">
           <a href="#" onclick="showPage('home')" class="nav-link text-gray-600 dark:text-gray-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors relative group" data-page="home">
             ໜ້າຫຼັກ
             <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
           </a>
-          <!-- Updated Link -->
+          
+          <!-- LINK TO EXTERNAL FILE -->
+          <a href="Setup_Word-Excel.html" class="nav-link text-gray-600 dark:text-gray-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors relative group">
+            ຄູ່ມືຕິດຕັ້ງ
+            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+
 		  <a href="./Calculator/index.html" class="nav-link text-gray-600 dark:text-gray-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors relative group">
             ເຄື່ອງຄຳນວນ
             <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
@@ -168,7 +173,12 @@
           <a href="#" onclick="showPage('home')" class="px-4 py-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 transition-colors">
             <i class="fas fa-home w-5 text-emerald-500"></i> ໜ້າຫຼັກ
           </a>
-          <!-- Updated Mobile Link -->
+          
+          <!-- Mobile Install Link -->
+          <a href="Setup_Word-Excel.html" class="px-4 py-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 transition-colors">
+            <i class="fas fa-download w-5 text-emerald-500"></i> ຄູ່ມືຕິດຕັ້ງ
+          </a>
+
 		  <a href="./Calculator/index.html" class="px-4 py-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 transition-colors">
             <i class="fas fa-calculator w-5 text-emerald-500"></i> ເຄື່ອງຄຳນວນ
           </a>
@@ -188,25 +198,21 @@
     <div id="home-page" class="page active">
       
       <!-- Hero Section -->
-      <!-- Adjusted md:h to 80vh to give more room -->
       <section class="relative h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 z-0">
           <img src="https://i.ibb.co/4ZHfVTkK/02091270509-2.jpg" alt="Background" class="w-full h-full object-cover">
           <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-gray-50 dark:to-gray-900"></div>
         </div>
 
-        <!-- Added md:pb-32 to lift content up significantly on desktop -->
         <div class="relative z-10 text-center px-3 max-w-4xl mx-auto space-y-2 md:space-y-4 pb-20 md:pb-32"> 
           <h1 class="text-3xl md:text-6xl font-extrabold text-white tracking-tight text-shadow-lg animate-float mt-5 mb-4">
             IT SOLUTIONS
           </h1>
           
-          <!-- Description -->
           <p class="text-base md:text-xl text-gray-200 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-md px-2">
             ລວມເຄື່ອງມື ແລະ ບໍລິການລະດັບມືອາຊີບ ເພີ່ມປະສິດທິພາບ, ຫຼຸດຄວາມຜິດພາດ, ແລະ ເຮັດວຽກໃຫ້ສຳເລັດເມັ້ນຢຳຖືກຕ້ອງ.
           </p>
 
-          <!-- Modified Date Styling -->
           <p id="date-lao" class="text-xs md:text-sm text-emerald-300 font-medium bg-black/40 inline-block px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/10 mb-6"></p>
 
           <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center pt-2 px-6 md:px-0">
@@ -222,9 +228,7 @@
       </section>
 
       <!-- Services / Details Section -->
-      <!-- ປັບ px-4 ເປັນ px-1 ໃນມືຖືເພື່ອຂະຫຍາຍພື້ນທີ່ໃຫ້ສຸດໆ -->
       <section id="services" class="max-w-4xl mx-auto px-1 md:px-4 -mt-16 md:-mt-20 relative z-20 pb-20">
-        <!-- ປັບ p-6 ເປັນ p-2 ໃນມືຖື ເພື່ອໃຫ້ເນື້ອຫາໃນກ່ອງຂາວຂະຫຍາຍອອກ -->
         <div class="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-xl p-2 md:p-8 space-y-4 md:space-y-6 border border-gray-100 dark:border-gray-700">
             
             <div class="text-center mb-4 md:mb-8 pt-2">
@@ -232,16 +236,11 @@
                 <div class="w-20 md:w-24 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-400 mx-auto mt-3 rounded-full"></div>
             </div>
 
-
-
-
             <!-- 1. Add-in Calculation -->
             <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800 open">
-                <!-- ປັບ padding summary ເປັນ p-3 ໃນມືຖື -->
                 <summary class="flex justify-between items-center p-3 md:p-5 cursor-pointer font-bold text-base md:text-lg text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400">
                     <span class="flex items-center gap-2 md:gap-3"><i class="fas fa-calculator text-emerald-500 text-xl md:text-2xl"></i> Add-in: ເຄື່ອງມືຄຳນວນເງິນອຸດໜູນ</span>
                 </summary>
-                <!-- ປັບ padding content ເປັນ px-2 ໃນມືຖື -->
                 <div class="accordion-content px-2 pb-3 md:px-6 md:pb-6 text-gray-600 dark:text-gray-300">
                     <p class="mb-3 bg-emerald-50 dark:bg-emerald-900/30 p-3 md:p-4 rounded-lg border-l-4 border-emerald-500 text-base">
                         💡 <strong>Add-in Calculation:</strong> ປ່ຽນການຄຳນວນເງິນອຸດໜູນທີ່ຊັບຊ້ອນໃຫ້ກາຍເປັນເລື່ອງງ່າຍດ້ວຍຄວາມຖືກຕ້ອງ, ວ່ອງໄວ ແລະ ເປັນມືອາຊີບ.
@@ -269,9 +268,9 @@
                     </div>
                 </div>
             </details>
-
-            <!-- 2. Add-in SpellNumber -->
-            <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800">
+            
+             <!-- 2. Add-in SpellNumber -->
+             <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800">
                 <summary class="flex justify-between items-center p-3 md:p-5 cursor-pointer font-bold text-base md:text-lg text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400">
                     <span class="flex items-center gap-2 md:gap-3"><i class="fas fa-language text-emerald-500 text-xl md:text-2xl"></i> Add-in: ແປງຕົວເລກເປັນຕົວໜັງສື</span>
                 </summary>
@@ -422,10 +421,8 @@
 
     </div>
 
-    <!-- ***************** CONTACT PAGE (MODIFIED) ***************** -->
-    <!-- ເພີ່ມ pb-24 ເພື່ອບໍ່ໃຫ້ປຸ່ມລອຍບັງເນື້ອຫາດ້ານລຸ່ມສຸດ -->
+    <!-- ***************** CONTACT PAGE ***************** -->
     <div id="contact-page" class="page w-full pb-24">
-      <!-- ປັບ px-2 ໃນມືຖືເພື່ອຂະຫຍາຍພື້ນທີ່ -->
       <section class="px-2 py-8 max-w-3xl mx-auto">
         
         <div class="text-center mb-6 animate-fadeIn">
@@ -433,8 +430,7 @@
             <p class="text-gray-500 dark:text-gray-400">ຂອບໃຈທີ່ທ່ານເຂົ້າມາຢ້ຽມຊົມ ແລະ ນຳໃຊ້ບໍລິການຂອງພວກເຮົາ</p>
         </div>
 
-        <!-- QR Code Section (Highlighted) -->
-        <!-- ປັບ padding ໃນມືຖືເປັນ p-4 ເພື່ອເພີ່ມພື້ນທີ່ -->
+        <!-- QR Code Section -->
         <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-4 md:p-8 mb-8 border border-emerald-100 dark:border-gray-700 text-center relative overflow-hidden transform hover:scale-[1.02] transition duration-300">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
             
@@ -476,20 +472,17 @@
             </a>
         </div>
 
-        <!-- ປຸ່ມກັບຄືນແບບລອຍ (Floating Back Button) ສວຍງາມທີ່ສຸດ -->
-<button onclick="showPage('home')"
-  class="fixed bottom-5 right-4 z-50
-         w-11 h-11
-         bg-emerald-500 hover:bg-emerald-400
-         text-white
-         rounded-full shadow-lg
-         flex items-center justify-center
-         transition-all duration-300
-         hover:-translate-y-1">
-
-  <i class="fas fa-home text-sm"></i>
-</button>
-
+        <button onclick="showPage('home')"
+          class="fixed bottom-5 right-4 z-50
+                 w-11 h-11
+                 bg-emerald-500 hover:bg-emerald-400
+                 text-white
+                 rounded-full shadow-lg
+                 flex items-center justify-center
+                 transition-all duration-300
+                 hover:-translate-y-1">
+          <i class="fas fa-home text-sm"></i>
+        </button>
 
       </section>
     </div>
