@@ -4,22 +4,27 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IT-banban - Support</title>
+  <!-- Adjusted viewport for full screen immersive feel on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>IT-banban - Future Support</title>
 
-  <meta name="description" content="ເວັບໄຊທ໌ໃຫ້ຂໍ້ມູນ ແລະ ບໍລິການດ້ານ IT" />
+  <meta name="description" content="ເວັບໄຊທ໌ໃຫ້ຂໍ້ມູນ ແລະ ບໍລິການດ້ານ IT ທີ່ທັນສະໄໝ" />
   <meta name="theme-color" content="#10b981" />
+  
+  <!-- Mobile App Capable -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon-512.png" type="image/png" />
   <link rel="apple-touch-icon" href="./icon-512.png" />
-
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -31,10 +36,15 @@
           fontFamily: {
             sans: ['Noto Sans Lao', 'sans-serif'],
           },
+          colors: {
+            emerald: {
+              450: '#10b981', // Custom emerald
+            }
+          },
           animation: {
-            'float': 'float 3s ease-in-out infinite',
-            'fadeIn': 'fadeIn 0.5s ease-in-out forwards',
-            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'fadeIn': 'fadeIn 0.6s ease-out forwards',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           },
           keyframes: {
             float: {
@@ -45,6 +55,9 @@
               'from': { opacity: '0', transform: 'translateY(10px)' },
               'to': { opacity: '1', transform: 'translateY(0)' },
             }
+          },
+          screens: {
+            'xs': '375px', // Extra small screen breakpoint
           }
         }
       }
@@ -57,9 +70,57 @@
   <style>
     body {
       font-family: 'Noto Sans Lao', sans-serif;
-      transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
-      /* ປ້ອງກັນການເລື່ອນແນວນອນໃນມືຖື */
-      overflow-x: hidden; 
+      transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none; 
+    }
+
+    /* Refined Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    .dark .glass {
+      background: rgba(17, 24, 39, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    .dark .glass-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Sub-section style inside combined cards */
+    .glass-section {
+        background: rgba(255,255,255, 0.5);
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    .dark .glass-section {
+        background: rgba(0,0,0, 0.2);
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Gradient Text */
+    .text-gradient {
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .dark .text-gradient {
+      background: linear-gradient(135deg, #34d399 0%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .page {
@@ -67,42 +128,23 @@
       opacity: 0;
       transition: opacity 0.3s ease-in-out;
     }
-
     .page.active {
       display: block;
       opacity: 1;
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    /* Details/Summary Styles */
-    details > summary { list-style: none; }
-    details > summary::-webkit-details-marker { display: none; }
-    details > summary::after {
-      content: '+'; float: right; font-size: 1.5rem; font-weight: bold;
-      transition: transform 0.3s ease;
-      color: #10b981; /* Emerald-500 */
-      margin-left: 10px;
-    }
-    details[open] > summary::after { transform: rotate(45deg); color: #ef4444; /* Red-500 */ }
-    details .accordion-content {
       animation: fadeIn 0.4s ease-in-out;
     }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #059669; }
-    .dark ::-webkit-scrollbar-track { background: #1f2937; }
-    
-    .text-shadow-lg {
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    /* Code Badge Style */
+    code {
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: 600;
     }
     
-    /* Floating Button Styles */
-    .floating-btn {
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-    }
+    /* Compact scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .dark ::-webkit-scrollbar-thumb { background: #475569; }
   </style>
 
   <script>
@@ -115,77 +157,76 @@
   </script>
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 text-base md:text-base flex flex-col min-h-screen">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 text-sm md:text-base flex flex-col min-h-screen selection:bg-emerald-500 selection:text-white">
+
+  <!-- =============================== Background Mesh Gradient =============================== -->
+  <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-400/10 blur-[80px] animate-pulse-slow"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-cyan-400/10 blur-[80px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+  </div>
 
   <!-- =============================== Header =============================== -->
-  <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
-    <div class="w-full max-w-6xl mx-auto px-2 md:px-4"> 
-      <nav class="flex justify-between items-center py-2 md:py-3">
+  <header class="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 md:px-6"> 
+      <nav class="flex justify-between items-center h-14 md:h-16">
         <!-- Logo -->
-        <a href="#" onclick="showPage('home')" class="flex items-center gap-2 md:gap-3 group">
+        <a href="#" onclick="showPage('home')" class="flex items-center gap-2.5 group">
           <div class="relative">
-            <div class="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-200"></div>
-            <!-- Updated Icon Source from External URL to Local File -->
-            <img src="./icon-512.png" alt="Logo" class="relative w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-white dark:border-gray-800 shadow-md">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-full blur opacity-40 group-hover:opacity-80 transition duration-300"></div>
+            <img src="./icon-512.png" onerror="this.src='https://ui-avatars.com/api/?name=IT&background=10b981&color=fff'" alt="Logo" class="relative w-8 h-8 md:w-9 md:h-9 rounded-full border border-white dark:border-gray-800 shadow-sm object-cover">
           </div>
-          <span class="text-lg md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300">IT-banban</span>
+          <span class="text-lg md:text-xl font-bold text-gradient tracking-tight">IT-banban</span>
         </a>
 
         <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center space-x-6 lg:space-x-8 font-medium">
-          <a href="#" onclick="showPage('home')" class="nav-link text-gray-600 dark:text-gray-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors relative group" data-page="home">
+        <div class="hidden md:flex items-center space-x-1 p-1">
+          <a href="#" onclick="showPage('home')" class="nav-link px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 hover:text-emerald-500 text-gray-600 dark:text-gray-300" data-page="home">
             ໜ້າຫຼັກ
-            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
           </a>
           
-          <!-- LINK TO EXTERNAL FILE -->
-          <a href="Setup_Word-Excel.html" class="nav-link text-gray-600 dark:text-gray-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors relative group">
-            ຄູ່ມືຕິດຕັ້ງ
-            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
+          <a href="Setup_Word-Excel.html" class="nav-link px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 hover:text-emerald-500 text-gray-600 dark:text-gray-300">
+            ການຕິດຕັ້ງ-ໄຊ້ງານ
           </a>
 
-		  <a href="./Calculator/index.html" class="nav-link text-gray-600 dark:text-gray-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors relative group">
+          <a href="./Calculator/index.html" class="nav-link px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 hover:text-emerald-500 text-gray-600 dark:text-gray-300">
             ເຄື່ອງຄຳນວນ
-            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
           </a>
 
-          <a href="#" onclick="showPage('contact')" class="nav-link text-gray-600 dark:text-gray-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors relative group" data-page="contact">
+          <a href="#" onclick="showPage('contact')" class="nav-link px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 hover:text-emerald-500 text-gray-600 dark:text-gray-300" data-page="contact">
             ຕິດຕໍ່ & ສະໜັບສະໜູນ
-            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
           </a>
         </div>
 
         <!-- Right Side: Theme Toggle & Mobile Menu -->
-        <div class="flex items-center gap-2">
-          <button id="theme-toggle" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500">
-            <i class="fas fa-moon hidden dark:block"></i>
-            <i class="fas fa-sun block dark:hidden"></i>
+        <div class="flex items-center gap-2.5">
+          <button id="theme-toggle" class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 hover:text-emerald-500 transition-all duration-300 focus:outline-none ring-1 ring-gray-200 dark:ring-gray-700 active:scale-95">
+            <i class="fas fa-moon hidden dark:block text-xs md:text-sm"></i>
+            <i class="fas fa-sun block dark:hidden text-xs md:text-sm"></i>
           </button>
 
-          <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-            <i class="fas fa-bars text-xl"></i>
+          <button id="mobile-menu-button" class="md:hidden w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors active:scale-95">
+            <i class="fas fa-bars text-sm"></i>
           </button>
         </div>
       </nav>
 
       <!-- Mobile Menu -->
-      <div id="mobile-menu" class="hidden md:hidden pb-4 pt-2 border-t border-gray-100 dark:border-gray-800">
-        <div class="flex flex-col space-y-1">
-          <a href="#" onclick="showPage('home')" class="px-4 py-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 transition-colors">
-            <i class="fas fa-home w-5 text-emerald-500"></i> ໜ້າຫຼັກ
+      <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl absolute left-0 right-0 top-14 shadow-lg rounded-b-2xl">
+        <div class="flex flex-col p-2 space-y-1">
+          <a href="#" onclick="showPage('home')" class="px-4 py-3 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 active:bg-emerald-100">
+            <i class="fas fa-home w-5 text-center text-emerald-500"></i> ໜ້າຫຼັກ
           </a>
           
-          <!-- Mobile Install Link -->
-          <a href="Setup_Word-Excel.html" class="px-4 py-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 transition-colors">
-            <i class="fas fa-download w-5 text-emerald-500"></i> ຄູ່ມືຕິດຕັ້ງ
+          <a href="Setup_Word-Excel.html" class="px-4 py-3 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 active:bg-emerald-100">
+            <i class="fas fa-download w-5 text-center text-emerald-500"></i> ການຕິດຕັ້ງ-ໄຊ້ງານ
           </a>
 
-		  <a href="./Calculator/index.html" class="px-4 py-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 transition-colors">
-            <i class="fas fa-calculator w-5 text-emerald-500"></i> ເຄື່ອງຄຳນວນ
+          <a href="./Calculator/index.html" class="px-4 py-3 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 active:bg-emerald-100">
+            <i class="fas fa-calculator w-5 text-center text-emerald-500"></i> ເຄື່ອງຄຳນວນ
           </a>
 
-          <a href="#" onclick="showPage('contact')" class="px-4 py-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 transition-colors">
-            <i class="fas fa-heart w-5 text-rose-500"></i> ຕິດຕໍ່ & ສະໜັບສະໜູນ
+          <a href="#" onclick="showPage('contact')" class="px-4 py-3 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-gray-700 dark:text-gray-200 font-medium flex items-center gap-3 active:bg-emerald-100">
+            <i class="fas fa-heart w-5 text-center text-rose-500"></i> ຕິດຕໍ່ & ສະໜັບສະໜູນ
           </a>
         </div>
       </div>
@@ -199,291 +240,319 @@
     <div id="home-page" class="page active">
       
       <!-- Hero Section -->
-      <section class="relative h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
+      <section class="relative w-full md:w-[96%] max-w-7xl mx-auto md:rounded-3xl overflow-hidden shadow-lg h-[350px] md:h-[420px] flex items-center justify-center mb-6 md:mb-10 group md:mt-4">
         <div class="absolute inset-0 z-0">
-          <img src="https://i.ibb.co/4ZHfVTkK/02091270509-2.jpg" alt="Background" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-gray-50 dark:to-gray-900"></div>
+          <img src="https://i.ibb.co/4ZHfVTkK/02091270509-2.jpg" alt="Background" class="w-full h-full object-cover transition-transform duration-[15s] ease-in-out group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
+          <div class="absolute inset-0 bg-emerald-900/10 mix-blend-overlay"></div>
         </div>
 
-        <div class="relative z-10 text-center px-3 max-w-4xl mx-auto space-y-2 md:space-y-4 pb-20 md:pb-32"> 
-          <h1 class="text-3xl md:text-6xl font-extrabold text-white tracking-tight text-shadow-lg animate-float mt-5 mb-4">
-            IT SOLUTIONS
-          </h1>
-          
-          <p class="text-base md:text-xl text-gray-200 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-md px-2">
-            ລວມເຄື່ອງມື ແລະ ບໍລິການລະດັບມືອາຊີບ ເພີ່ມປະສິດທິພາບ, ຫຼຸດຄວາມຜິດພາດ, ແລະ ເຮັດວຽກໃຫ້ສຳເລັດເມັ້ນຢຳຖືກຕ້ອງ.
+        <div class="relative z-10 text-center px-4 max-w-3xl mx-auto space-y-3 md:space-y-5"> 
+          <div class="inline-block animate-float">
+             <span class="px-3 py-1 rounded-full border border-emerald-400/30 bg-black/30 backdrop-blur-md text-emerald-300 text-[10px] md:text-xs font-medium tracking-wider uppercase shadow-lg">
+               Next Generation Tools
+             </span>
+          </div>  
+          <p class="text-base md:text-xl text-gray-100 max-w-lg mx-auto font-light leading-relaxed px-2 drop-shadow-md">
+            ຍົກລະດັບການເຮັດວຽກຂອງທ່ານດ້ວຍເຄື່ອງມືລະດັບມືອາຊີບ. <br class="hidden xs:block" />ຖືກຕ້ອງ, ວ່ອງໄວ, ແລະ ສວຍງາມ.
           </p>
 
-          <p id="date-lao" class="text-xs md:text-sm text-emerald-300 font-medium bg-black/40 inline-block px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/10 mb-6"></p>
+          <p id="date-lao" class="text-xs md:text-sm text-emerald-50/90 font-medium bg-black/20 px-3 py-1 rounded-full inline-block backdrop-blur-sm border border-white/10"></p>
 
-          <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center pt-2 px-6 md:px-0">
-             <a href="#" onclick="showPage('contact')" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full font-bold shadow-lg shadow-emerald-500/30 transition transform hover:-translate-y-1 text-center">
-               <i class="fas fa-heart mr-2"></i> ສະໜັບສະໜູນ
-             </a>
-             <a href="#services" class="px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full font-bold transition text-center">
-               ບໍລິການຂອງພວກເຮົາ
+          <div class="pt-3 md:pt-5">
+             <a href="#" onclick="showPage('contact')" class="group relative inline-flex items-center justify-center px-6 py-2.5 md:py-3 text-sm md:text-base font-bold text-white transition-all duration-200 bg-emerald-600 font-pj rounded-full focus:outline-none hover:bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] transform hover:-translate-y-0.5 active:scale-95">
+               <span class="relative flex items-center gap-2">
+                 <i class="fas fa-heart text-rose-300 group-hover:animate-pulse"></i> ສະໜັບສະໜູນ
+               </span>
              </a>
           </div>
-          
         </div>
       </section>
 
-      <!-- Services / Details Section -->
-      <section id="services" class="max-w-4xl mx-auto px-1 md:px-4 -mt-16 md:-mt-20 relative z-20 pb-20">
-        <div class="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-xl p-2 md:p-8 space-y-4 md:space-y-6 border border-gray-100 dark:border-gray-700">
-            
-            <div class="text-center mb-4 md:mb-8 pt-2">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">ບໍລິການ ແລະ ເຄື່ອງມືພິເສດ</h2>
-                <div class="w-20 md:w-24 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-400 mx-auto mt-3 rounded-full"></div>
-            </div>
+      <!-- Content Section -->
+      <section class="max-w-7xl mx-auto px-3 md:px-4 pb-20">
+        
+        <div class="text-center mb-6 md:mb-10">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">ບໍລິການ ແລະ ເຄື່ອງມື</h2>
+            <div class="w-16 h-1 bg-gradient-to-r from-emerald-500 to-cyan-500 mx-auto rounded-full shadow-sm"></div>
+        </div>
 
-            <!-- 1. Add-in Calculation -->
-            <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800 open">
-                <summary class="flex justify-between items-center p-3 md:p-5 cursor-pointer font-bold text-base md:text-lg text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400">
-                    <span class="flex items-center gap-2 md:gap-3"><i class="fas fa-calculator text-emerald-500 text-xl md:text-2xl"></i> Add-in: ເຄື່ອງມືຄຳນວນເງິນອຸດໜູນ</span>
-                </summary>
-                <div class="accordion-content px-2 pb-3 md:px-6 md:pb-6 text-gray-600 dark:text-gray-300">
-                    <p class="mb-3 bg-emerald-50 dark:bg-emerald-900/30 p-3 md:p-4 rounded-lg border-l-4 border-emerald-500 text-base">
-                        💡 <strong>Add-in Calculation:</strong> ປ່ຽນການຄຳນວນເງິນອຸດໜູນທີ່ຊັບຊ້ອນໃຫ້ກາຍເປັນເລື່ອງງ່າຍດ້ວຍຄວາມຖືກຕ້ອງ, ວ່ອງໄວ ແລະ ເປັນມືອາຊີບ.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
-                        <div class="p-3 md:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-600">
-                            <p class="text-base font-semibold text-sky-600 dark:text-sky-400 mb-2"><i class="fas fa-check-circle mr-2"></i>ຟັງຊັ້ນການຄຳນວນຕ່າງໆ (ພາກລັດ):</p>
-                            <ul class="space-y-2 text-sm md:text-base">
-                                <li class="flex items-center gap-2 flex-wrap"><code class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-pink-600 dark:text-pink-400">Ph_Akon</code> (ຄຳນວນເງີນອາກອນ)</li>
-                                <li class="flex items-center gap-2 flex-wrap"><code class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-pink-600 dark:text-pink-400">Ph_Datsani</code> (ຊອກຫາດັດສະນີ)</li>
-                                <li class="flex items-center gap-2 flex-wrap"><code class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-pink-600 dark:text-pink-400">Ph_Pikan</code> (ຄຳນວນເງີນປີການ)</li>
-                                <li class="flex items-center gap-2 flex-wrap"><code class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-pink-600 dark:text-pink-400">Ph_Ngoenduean_lk</code> (ຄຳນວນເງີນເດືອນລັດຖະກອນ)</li>
-                                <li class="flex items-center gap-2 flex-wrap"><code class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-pink-600 dark:text-pink-400">Ph_bumnet</code> (ຄຳນວນເງີນບຳເນັດ)</li>
-                            </ul>
-                        </div>
-                        <div class="p-3 md:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-600">
-                            <p class="text-base font-semibold text-rose-500 dark:text-rose-400 mb-2"><i class="fas fa-check-circle mr-2"></i>ຟັງຊັ້ນການຄຳນວນຕ່າງໆ (ພາກວິສາຫະກິດ):</p>
-                            <ul class="space-y-2 text-sm md:text-base">
-                                <li class="flex items-center gap-2 flex-wrap"><code class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-pink-600 dark:text-pink-400">bp_UtNunkoedluk</code> (ຄຳນວນເງີນບຳເນັດເກີດລູກ)</li>
-                                <li class="flex items-center gap-2 flex-wrap"><code class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-pink-600 dark:text-pink-400">Bp_bamnedkoedluk</code> (ຄຳນວນອຸດໜຸນເກີດລູກ)</li>
-                                <li class="flex items-center gap-2 flex-wrap"><code class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-pink-600 dark:text-pink-400">Bp_bumnat</code> (ຄຳນວນເງີນບຳເນັດ)</li>
-                                <li class="flex items-center gap-2 flex-wrap"><code class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-pink-600 dark:text-pink-400">Bp_SiaChiwit</code> (ຄຳນວນດງີນເສຍຊີວິດ)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </details>
-            
-             <!-- 2. Add-in SpellNumber -->
-             <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800">
-                <summary class="flex justify-between items-center p-3 md:p-5 cursor-pointer font-bold text-base md:text-lg text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400">
-                    <span class="flex items-center gap-2 md:gap-3"><i class="fas fa-language text-emerald-500 text-xl md:text-2xl"></i> Add-in: ແປງຕົວເລກເປັນຕົວໜັງສື</span>
-                </summary>
-                <div class="accordion-content px-2 pb-3 md:px-6 md:pb-6 text-gray-600 dark:text-gray-300">
-                    <p class="mb-3 bg-emerald-50 dark:bg-emerald-900/30 p-3 md:p-4 rounded-lg border-l-4 border-emerald-500 text-base">
-                        💡 <strong>it_SpellNumber:</strong> ປົດລັອກຄວາມສາມາດໃໝ່ໃນ Excel! ແປງຕົວເລກເປັນຕົວໜັງສືໄດ້ທັນທີແບບອັດຕະໂນມັດ. ຮອງຮັບເຖິງ 5 ພາສາ.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 mb-3">
-                        <div class="bg-red-50 dark:bg-red-900/20 p-3 md:p-4 rounded-lg">
-                            <h4 class="font-bold text-red-600 dark:text-red-400 mb-2 text-base">📌 ບັນຫາເດີມໆ</h4>
-                            <ul class="list-disc list-inside text-sm md:text-base">
-                                <li>ເສຍເວລານັ່ງພິມເອງ</li>
-                                <li>ສ່ຽງຕໍ່ການພິມຜິດ</li>
-                            </ul>
-                        </div>
-                        <div class="bg-green-50 dark:bg-green-900/20 p-3 md:p-4 rounded-lg">
-                            <h4 class="font-bold text-green-600 dark:text-green-400 mb-2 text-base">🚀 ສິ່ງທີ່ຈະໄດ້ຮັບ</h4>
-                            <ul class="list-disc list-inside text-sm md:text-base">
-                                <li>ແປງອັດຕະໂນມັດ ພຽງແຕ່ພິມສູດ</li>
-                                <li>ຮອງຮັບ: ລາວ, ໄທ, ອັງກິດ, ຫວຽດ, ຈີນ</li>
-                            </ul>
-                        </div>
+        <!-- NEW GRID LAYOUT: Consolidated Cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+
+            <!-- 1. EXCEL ADD-IN COMBINED CARD (Calculation + SpellNumber) -->
+            <div class="glass-card rounded-2xl p-5 hover:border-emerald-500/30 transition-all duration-300 relative group">
+                <!-- Header -->
+                <div class="flex items-center gap-4 mb-4 pb-3 border-b border-gray-100 dark:border-gray-700/50">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-900/40 dark:to-green-900/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-2xl shrink-0 shadow-sm">
+                        <i class="fas fa-file-excel"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2 text-base">🎯 ຕົວຢ່າງການໃຊ້ງານຟັງຊັ້ນ:</h4>
-                        <div class="bg-gray-900 text-gray-300 p-3 md:p-4 rounded-lg font-mono text-xs md:text-sm overflow-x-auto">
+                        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 leading-tight">Add-in Excel ລວມມິດ</h3>
+                        <p class="text-xs text-gray-500 mt-1">ເຄື່ອງມືຄຳນວນ & ແປງເລກເປັນໜັງສື</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Part A: Calculation -->
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                            <i class="fas fa-calculator text-emerald-500"></i> ຟັງຊັນຄຳນວນເງິນ
+                        </h4>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="glass-section p-2.5 rounded-lg">
+                                <h5 class="font-bold text-sky-600 dark:text-sky-400 text-xs mb-2 border-b border-gray-200/50 dark:border-gray-700/50 pb-1">ພາກລັດ</h5>
+                                <ul class="space-y-1.5 text-[11px] md:text-xs text-gray-600 dark:text-gray-300">
+                                    <li><span class="badge-func">Ph_Akon</span> (ຄຳນວນອາກອນ)</li>
+                                    <li><span class="badge-func">Ph_Datsani</span> (ຊອກດັດສະນີ)</li>
+                                    <li><span class="badge-func">Ph_Pikan</span> (ຄຳນວນເງິນປີການ)</li>
+                                    <li><span class="badge-func">Ph_Ngoenduean_lk</span> (ຄຳນວນເງິນເດືອນ)</li>
+                                
+                                </ul>
+                            </div>
+                            <div class="glass-section p-2.5 rounded-lg">
+                                <h5 class="font-bold text-rose-500 dark:text-rose-400 text-xs mb-2 border-b border-gray-200/50 dark:border-gray-700/50 pb-1">ວິສາຫະກິດ</h5>
+                                <ul class="space-y-1.5 text-[11px] md:text-xs text-gray-600 dark:text-gray-300">
+                                    <li><span class="badge-func-rose">bp_UtNunkoedluk</span> (ຄຳນວນເກີດລູກ)</li>
+                                    <li><span class="badge-func-rose">Bp_bamnedkoedluk</span> (ຄຳນວນບຳເນັດລູກ)</li>
+                                    <li><span class="badge-func-rose">Bp_bumnat</span> (ຄຳນວນບຳເນັດ)</li>
+                                    <li><span class="badge-func-rose">Bp_SiaChiwit</span> (ຄຳນວນເສຍຊີວິດ)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="h-px bg-gray-100 dark:bg-gray-700/50 w-full"></div>
+
+                    <!-- Part B: SpellNumber -->
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                            <i class="fas fa-language text-blue-500"></i> ແປງເລກເປັນໜັງສື
+                        </h4>
+                        <div class="flex flex-wrap gap-1 mb-2">
+                             <span class="flag-badge text-[10px] bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300">ລາວ</span>
+                             <span class="flag-badge text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">ໄທ</span>
+                             <span class="flag-badge text-[10px] bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">Eng</span>
+                             <span class="flag-badge text-[10px] bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">ຫວຽດ</span>
+                             <span class="flag-badge text-[10px] bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300">ຈີນ</span>
+                        </div>
+                        <div class="bg-gray-900 rounded-lg p-2.5 border border-gray-700 shadow-inner">
+                            <div class="font-mono text-[10px] text-gray-400 space-y-1 overflow-x-auto">
                             <div class="whitespace-nowrap"><span class="text-sky-400">=it_SpellNumber</span>(<span class="text-orange-400">A1</span>, <span class="text-green-400">"la"</span>) <span class="text-gray-500">// ຜົນລັບເປັນພາສາລາວ</span></div>
                             <div class="whitespace-nowrap"><span class="text-sky-400">=it_SpellNumber</span>(<span class="text-orange-400">A1</span>, <span class="text-green-400">"th"</span>) <span class="text-gray-500">// ຜົນລັບເປັນພາສາໄທ</span></div>
                             <div class="whitespace-nowrap"><span class="text-sky-400">=it_SpellNumber</span>(<span class="text-orange-400">A1</span>, <span class="text-green-400">"us"</span>) <span class="text-gray-500">// ຜົນລັບເປັນພາສາອັງກິດ</span></div>
 							<div class="whitespace-nowrap"><span class="text-sky-400">=it_SpellNumber</span>(<span class="text-orange-400">A1</span>, <span class="text-green-400">"vn"</span>) <span class="text-gray-500">// ຜົນລັບເປັນພາສາວຽດນາມ</span></div>
                             <div class="whitespace-nowrap"><span class="text-sky-400">=it_SpellNumber</span>(<span class="text-orange-400">A1</span>, <span class="text-green-400">"cn"</span>) <span class="text-gray-500">// ຜົນລັບເປັນພາສາຈີນ</span></div>
                         </div>
+                        </div>
                     </div>
                 </div>
-            </details>
-            
-            <!-- 3. Font Usage -->
-            <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800">
-                <summary class="flex justify-between items-center p-3 md:p-5 cursor-pointer font-bold text-base md:text-lg text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400">
-                    <span class="flex items-center gap-2 md:gap-3"><i class="fas fa-font text-emerald-500 text-xl md:text-2xl"></i> ການນຳໃຊ້ Font Phetsarath OT+TNR</span>
-                </summary>
-                <div class="accordion-content px-2 pb-3 md:px-6 md:pb-6 text-gray-600 dark:text-gray-300">
-                    <p class="mb-4 text-base">
-                        ເພື່ອຄວາມເປັນລະບຽບ ແລະ ມາດຕະຖານດຽວກັນໃນທົ່ວປະເທດ. ຟ້ອນທີ່ປະສົມປະສານລະຫວ່າງ Phetsarath OT ແລະ Times New Roman.
-                    </p>
-                     <ul class="list-disc list-inside space-y-2 text-sm md:text-base bg-sky-50 dark:bg-sky-900/20 p-3 md:p-4 rounded-lg border-l-4 border-sky-400">
-                        <li><strong>ເອກະພາບ:</strong> ໃຊ້ສຳລັບເອກະສານທາງລັດຖະການທັງໝົດ.</li>
-                        <li><strong>ຊັດເຈນ:</strong> ຂະໜາດແນະນຳ 12pt ສຳລັບເນື້ອໃນທົ່ວໄປ.</li>
-                        <li><strong>ມືອາຊີບ:</strong> ສະແດງເຖິງຄວາມຖືກຕ້ອງຕາມລະບຽບການ.</li>
-                    </ul>
-                </div>
-            </details>
-
-            <!-- 4. Windows & Office -->
-            <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800">
-                <summary class="flex justify-between items-center p-3 md:p-5 cursor-pointer font-bold text-base md:text-lg text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400">
-                    <span class="flex items-center gap-2 md:gap-3"><i class="fab fa-windows text-emerald-500 text-xl md:text-2xl"></i> ຮັບລົງ Windows ແລະ Office...</span>
-                </summary>
-                <div class="accordion-content px-2 pb-3 md:px-6 md:pb-6 text-gray-600 dark:text-gray-300">
-                    <p class="mb-4 text-base">
-                        Activate ຜະລິດຕະພັນ Microsoft ຂອງທ່ານຢ່າງຖືກຕ້ອງ, ປອດໄພ, ແລະ ອັບເດດໄດ້ຕະຫຼອດ.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
-                         <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-600">
-                             <i class="fab fa-windows text-blue-500 text-2xl"></i>
-                             <div>
-                                 <p class="font-bold text-base">Windows OS</p>
-                                 <p class="text-xs text-gray-500">Win 10, 11, ...</p>
-                             </div>
-                         </div>
-                         <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-600">
-                             <i class="fas fa-file-word text-blue-700 text-2xl"></i>
-                             <div>
-                                 <p class="font-bold text-base">Microsoft Office</p>
-                                 <p class="text-xs text-gray-500">Office 2016, 2019, 2021...</p>
-                             </div>
-                         </div>
-                    </div>
-                </div>
-            </details>
-
-             <!-- 5. Teaching Word/Excel -->
-             <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800">
-                <summary class="flex justify-between items-center p-3 md:p-5 cursor-pointer font-bold text-base md:text-lg text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400">
-                    <span class="flex items-center gap-2 md:gap-3"><i class="fas fa-chalkboard-teacher text-emerald-500 text-xl md:text-2xl"></i> ຮັບສອນ Word ແລະ Excel ພື້ນຖານ</span>
-                </summary>
-                <div class="accordion-content px-2 pb-3 md:px-6 md:pb-6 text-gray-600 dark:text-gray-300">
-                    <p class="mb-4 text-base">ເໝາະສຳລັບຜູ້ເລີ່ມຕົ້ນ, ນັກຮຽນ, ນັກສຶກສາ ແລະ ພະນັກງານ ທີ່ຕ້ອງການປູພື້ນຖານໃຫ້ແໜ້ນ.</p>
-                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4">
-                        <ul class="list-disc list-inside text-sm md:text-base bg-blue-50 dark:bg-blue-900/20 p-3 md:p-4 rounded-lg">
-                            <li class="font-bold text-blue-600 mb-2">Microsoft Word</li>
-                            <li>ຈັດໜ້າເອກະສານ, ຂອບເຈ້ຍ</li>
-                            <li>ສ້າງສາລະບານອັດຕະໂນມັດ</li>
-                            <li>ຈັດຮູບແບບບົດລາຍງານ</li>
-                        </ul>
-                        <ul class="list-disc list-inside text-sm md:text-base bg-green-50 dark:bg-green-900/20 p-3 md:p-4 rounded-lg">
-                            <li class="font-bold text-green-600 mb-2">Microsoft Excel</li>
-                            <li>ສູດຄຳນວນພື້ນຖານ (SUM, IF...)</li>
-                            <li>ສ້າງກຣາຟ ແລະ ຕາຕະລາງ</li>
-                            <li>ຈັດຮຽງ ແລະ ກັ່ນຕອງຂໍ້ມູນ</li>
-                        </ul>
-                     </div>
-                </div>
-            </details>
-
-            <!-- 6. Custom Functions -->
-            <details class="group bg-white dark:bg-gray-700/30 rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800">
-                <summary class="flex justify-between items-center p-3 md:p-5 cursor-pointer font-bold text-base md:text-lg text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400">
-                    <span class="flex items-center gap-2 md:gap-3"><i class="fas fa-cogs text-emerald-500 text-xl md:text-2xl"></i> ຮັບສ້າງຟັງຊັນ Excel ຕາມສັ່ງ</span>
-                </summary>
-                <div class="accordion-content px-2 pb-3 md:px-6 md:pb-6 text-gray-600 dark:text-gray-300">
-                    <p class="mb-4 text-base">
-                        ປ່ຽນວຽກທີ່ຊັບຊ້ອນ ແລະ ເຮັດຊ້ຳໆ ໃຫ້ເປັນເລື່ອງງ່າຍ ດ້ວຍລະບົບຄຳນວນອັດຕະໂນມັດທີ່ອອກແບບສະເພາະສຳລັບວຽກຂອງທ່ານ.
-                    </p>
-                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3 text-center text-sm">
-                        <div class="p-2 md:p-3 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-600">
-                            <i class="fas fa-money-bill-wave text-green-500 mb-1 block text-lg"></i> ຄຳນວນເງິນເດືອນ
-                        </div>
-                        <div class="p-2 md:p-3 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-600">
-                            <i class="fas fa-bolt text-yellow-500 mb-1 block text-lg"></i> ຄ່າໄຟຟ້າ/ນ້ຳປະປາ
-                        </div>
-                        <div class="p-2 md:p-3 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-600">
-                            <i class="fas fa-boxes text-purple-500 mb-1 block text-lg"></i> ຈັດການສະຕັອກ
-                        </div>
-                        <div class="p-2 md:p-3 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-600">
-                            <i class="fas fa-file-invoice-dollar text-red-500 mb-1 block text-lg"></i> ຄິດໄລ່ອາກອນ
-                        </div>
-                        <div class="p-2 md:p-3 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-600">
-                            <i class="fas fa-chart-line text-indigo-500 mb-1 block text-lg"></i> ບົດລາຍງານຕ່າງໆ
-                        </div>
-                        <div class="p-2 md:p-3 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-600">
-                            <i class="fas fa-tasks text-emerald-500 mb-1 block text-lg"></i> ລະບົບຕາມໃຈທ່ານ
-                        </div>
-                     </div>
-                </div>
-            </details>
-
-            <!-- Call to Action -->
-            <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 text-center animate-fadeIn">
-                <p class="text-gray-500 mb-4 text-base">ຕ້ອງການເຄື່ອງມືເຫຼົ່ານີ້ໄປຊ່ວຍວຽກຂອງທ່ານບໍ?</p>
-                <a href="#" onclick="showPage('contact')" class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-full shadow-lg transition transform hover:scale-105">
-                    <i class="fab fa-whatsapp text-xl"></i>
-                    <span>ຕິດຕໍ່ພວກເຮົາເລີຍ</span>
-                </a>
             </div>
+
+            <!-- 2. WORD ADD-IN CARD (Kept Separate) -->
+            <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/30 transition-all duration-300 relative group">
+                <!-- Header -->
+                <div class="flex items-center gap-4 mb-4 pb-3 border-b border-gray-100 dark:border-gray-700/50">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-100 to-blue-100 dark:from-indigo-900/40 dark:to-blue-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-2xl shrink-0 shadow-sm">
+                        <i class="fas fa-file-word"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 leading-tight">Add-in Word ຈັດການເອກະສານ</h3>
+                        <p class="text-xs text-gray-500 mt-1">ຈັດການເອກະສານ ແລະ ຄຳນວນໃນ Word</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 text-xs md:text-sm h-full">
+                    <!-- Highlight Feature -->
+                    <div class="bg-yellow-50 dark:bg-yellow-900/10 p-3 rounded-xl border border-yellow-200 dark:border-yellow-700/50">
+                        <h4 class="font-bold text-yellow-700 dark:text-yellow-400 mb-2 flex items-center gap-2">
+                             <i class="fas fa-highlighter"></i> ຄຳນວນດ້ວຍສີ (Highlight)
+                        </h4>
+                        <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                             <div class="flex items-start gap-3">
+                                 <span class="w-6 h-6 rounded bg-yellow-300 border border-gray-300 shrink-0"></span>
+                                 <span><strong>ທາສີເຫຼືອງ:</strong> ເພື່ອລະບຸຕົວເລກທີ່ຕ້ອງການຫາຄ່າ (Input)</span>
+                             </div>
+                             <div class="flex items-start gap-3">
+                                 <span class="w-6 h-6 rounded bg-green-400 border border-gray-300 shrink-0"></span>
+                                 <span><strong>ທາສີຂຽວ:</strong> ເພື່ອໃສ່ຜົນລວມ ຫຼື ຄ່າສະເລ່ຍ (Result)</span>
+                             </div>
+                             <p class="text-xs text-gray-500 dark:text-gray-400 italic mt-1 pl-9">
+                                 * ໃຊ້ໄດ້ທັງຟັງຊັນບວກ (Sum) ແລະ ຟັງຊັນຫາຄ່າສະເລ່ຍ (Average) ດ້ວຍຫຼັກການສີດຽວກັນ.
+                             </p>
+                        </div>
+                    </div>
+
+                    <!-- Other Features Grid -->
+                    <div class="grid grid-cols-2 gap-3">
+                         <div class="glass-section p-3 rounded-xl">
+                            <h4 class="font-bold text-indigo-700 dark:text-indigo-400 mb-1.5 text-xs"><i class="fas fa-text-height mr-1"></i> ຈັດໜ້າອໍໂຕ້</h4>
+                            <ul class="text-[11px] text-gray-600 dark:text-gray-300 list-disc list-inside">
+                            <li>ກຳນົດຂອບໜ້າເຈ້ຍມາດຕະຖານ</li>
+                            <li>ຈັດ Font Phetsarath OT/Times New Roman</li>
+                            <li>ຈັດໄລຍະຫ່າງແຖວແບບທາງການ</li>
+                            </ul>
+                        </div>
+                         <div class="glass-section p-3 rounded-xl">
+                            <h4 class="font-bold text-green-700 dark:text-green-400 mb-1.5 text-xs"><i class="fas fa-spell-check mr-1"></i> ແປງເລກເປັນຕົວນັງສື</h4>
+							
+							<ul class="text-[11px] text-gray-600 dark:text-gray-300 list-disc list-inside">
+                               <li>ແປງຕົວເລກເປັນຕົວໜັງສືໄດ້ທັນທີແບບອັດຕະໂນມັດ. ຮອງຮັບເຖິງ 5 ພາສາ</li>
+                            </ul>
+							
+                            <div class="text-[10px] text-gray-600 dark:text-gray-300 font-mono bg-gray-100 dark:bg-gray-800 p-1 rounded">
+                                 <div class="whitespace-nowrap"><span class="text-sky-400">=it_SpellNumber</span>(<span class="text-orange-400">A1</span>, <span class="text-green-400">"la"</span>) <span class="text-gray-500">// ລາວ</span></div>
+                                <div class="whitespace-nowrap"><span class="text-sky-400">=it_SpellNumber</span>(<span class="text-orange-400">A1</span>, <span class="text-green-400">"us"</span>) <span class="text-gray-500">// ອັງກິດ</span></div>
+                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. SERVICES COMBINED CARD (Teaching, Installation, Custom Functions) -->
+            <div class="glass-card rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 lg:col-span-2">
+                 <!-- Header -->
+                 <div class="flex items-center gap-4 mb-4 pb-3 border-b border-gray-100 dark:border-gray-700/50">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-pink-100 dark:from-orange-900/40 dark:to-pink-900/40 flex items-center justify-center text-orange-600 dark:text-orange-400 text-2xl shrink-0 shadow-sm">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">ບໍລິການອື່ນໆ & ຮັບພັດທະນາລະບົບ</h3>
+                        <p class="text-xs text-gray-500 mt-1">ສອນ, ລົງໂປຣແກຣມ ແລະ ຮັບຂຽນຟັງຊັນຕາມສັ່ງ</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 divide-y md:divide-y-0 md:divide-x divide-gray-100 dark:divide-gray-700/50">
+                    
+                    <!-- Section 1: Teaching -->
+                    <div class="pt-2 md:pt-0 md:pr-2">
+                        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i class="fas fa-chalkboard-teacher text-orange-500"></i> ສອນ Word/Excel
+                        </h4>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg border border-blue-100 dark:border-blue-800/30">
+                                <p class="font-bold text-blue-600 mb-1 text-xs">Word</p>
+                                <ul class="text-[10px] text-gray-600 dark:text-gray-300 list-disc list-inside leading-tight">
+                                     <li>ຈັດໜ້າ, ຂອບເຈ້ຍ</li>
+                                     <li>ສາລະບານອໍໂຕ້</li>
+                                     <li>ຈັດບົດລາຍງານ</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 dark:bg-green-900/20 p-2 rounded-lg border border-green-100 dark:border-green-800/30">
+                                <p class="font-bold text-green-600 mb-1 text-xs">Excel</p>
+                                 <ul class="text-[10px] text-gray-600 dark:text-gray-300 list-disc list-inside leading-tight">
+                                     <li>ສູດ (SUM, IF...)</li>
+                                     <li>ກຣາຟ, ຕາຕະລາງ</li>
+                                     <li>ກັ່ນຕອງຂໍ້ມູນ</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Installation -->
+                    <div class="pt-4 md:pt-0 md:px-4">
+                        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i class="fas fa-download text-cyan-500"></i> ລົງໂປຣແກຣມ
+                        </h4>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="software-item"><i class="fab fa-windows text-blue-500 text-lg mb-1"></i> <span class="text-[10px]">Win</span></div>
+                            <div class="software-item"><i class="fas fa-file-word text-blue-700 text-lg mb-1"></i> <span class="text-[10px]">Office</span></div>
+                            <div class="software-item"><i class="fas fa-image text-sky-500 text-lg mb-1"></i> <span class="text-[10px]">Ps</span></div>
+                            <div class="software-item"><i class="fas fa-file-pdf text-red-500 text-lg mb-1"></i> <span class="text-[10px]">PDF</span></div>
+                            <div class="software-item"><i class="fab fa-chrome text-yellow-500 text-lg mb-1"></i> <span class="text-[10px]">Web</span></div>
+                            <div class="software-item"><i class="fas fa-tools text-purple-500 text-lg mb-1"></i> <span class="text-[10px]">Tools</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Custom Functions -->
+                    <div class="pt-4 md:pt-0 md:pl-2">
+                         <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i class="fas fa-cogs text-pink-500"></i> ຮັບຂຽນຟັງຊັນ Word/Excel
+                       
+                        </h4>
+                         <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="func-item"><i class="fas fa-money-bill-wave text-green-500 mb-1 text-lg"></i><span class="text-[9px]">ຄຳນວນເງິນເດືອນ</span></div>
+                            <div class="func-item"><i class="fas fa-bolt text-yellow-500 mb-1 text-lg"></i><span class="text-[9px]">ຄຳນວນໄຟຟ້າ</span></div>
+                            <div class="func-item"><i class="fas fa-boxes text-purple-500 mb-1 text-lg"></i><span class="text-[9px]">ຄຳນວນສະຕັອກ</span></div>
+                            <div class="func-item"><i class="fas fa-file-invoice-dollar text-red-500 mb-1 text-lg"></i><span class="text-[9px]">ຄຳນວນອາກອນ</span></div>
+                            <div class="func-item"><i class="fas fa-chart-line text-indigo-500 mb-1 text-lg"></i><span class="text-[9px]">ສ້າງລາຍງານ</span></div>
+                            <div class="func-item"><i class="fas fa-tasks text-emerald-500 mb-1 text-lg"></i><span class="text-[9px]">ສ້າງລະບົບອື່ນໆ</span></div>
+                         </div>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- CTA Footer -->
+        <div class="mt-10 text-center">
+             <a href="#" onclick="showPage('contact')" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold rounded-full shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transform hover:-translate-y-0.5 transition-all duration-300 active:scale-95 text-sm">
+                <i class="fab fa-whatsapp text-xl"></i>
+                <span>ຕິດຕໍ່ພວກເຮົາເລີຍ</span>
+            </a>
         </div>
       </section>
-
     </div>
 
     <!-- ***************** CONTACT PAGE ***************** -->
-    <div id="contact-page" class="page w-full pb-24">
-      <section class="px-2 py-8 max-w-3xl mx-auto">
+    <div id="contact-page" class="page w-full pb-24 pt-4">
+      <section class="px-3 md:px-4 max-w-2xl mx-auto">
         
-        <div class="text-center mb-6 animate-fadeIn">
-            <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-2">ຕິດຕໍ່ & ສະໜັບສະໜູນ</h2>
-            <p class="text-gray-500 dark:text-gray-400">ຂອບໃຈທີ່ທ່ານເຂົ້າມາຢ້ຽມຊົມ ແລະ ນຳໃຊ້ບໍລິການຂອງພວກເຮົາ</p>
+        <div class="text-center mb-8 animate-fadeIn">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 mb-2">ຕິດຕໍ່ & ສະໜັບສະໜູນ</h2>
+            <p class="text-gray-500 dark:text-gray-400 text-xs md:text-sm">ຂອບໃຈທີ່ທ່ານເຂົ້າມາຢ້ຽມຊົມ ແລະ ນຳໃຊ້ບໍລິການຂອງພວກເຮົາ</p>
         </div>
 
-        <!-- QR Code Section -->
-        <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-4 md:p-8 mb-8 border border-emerald-100 dark:border-gray-700 text-center relative overflow-hidden transform hover:scale-[1.02] transition duration-300">
-            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
-            
-            <h3 class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mb-6 flex items-center justify-center gap-2">
-                <i class="fas fa-heart text-rose-500 animate-pulse"></i> ຮ່ວມສະໜັບສະໜູນນັກພັດທະນາ
-            </h3>
-            
-            <div class="relative group inline-block">
-                 <div class="absolute -inset-1 bg-gradient-to-tr from-emerald-500 to-cyan-500 rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
-                 <img src="https://i.ibb.co/d30cRC1/Qr.jpg" alt="QR Code" class="relative w-full max-w-[280px] h-auto object-cover rounded-xl border-4 border-white dark:border-gray-700 shadow-xl mx-auto">
+        <div class="space-y-4">
+            <!-- QR Code Section -->
+            <div class="glass-card rounded-2xl p-6 text-center relative overflow-hidden group">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                
+                <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center justify-center gap-2">
+                    <i class="fas fa-coffee text-amber-700 dark:text-amber-500"></i> ລ້ຽງກາເຟນັກພັດທະນາ
+                </h3>
+                
+                <div class="relative inline-block p-1.5 bg-white rounded-xl shadow-sm">
+                     <img src="https://i.ibb.co/d30cRC1/Qr.jpg" alt="QR Code" class="relative w-full max-w-[200px] h-auto object-cover rounded-lg">
+                </div>
+
+                <p class="mt-4 text-xs text-gray-500 dark:text-gray-400">
+                    One Heart <i class="fas fa-heart text-rose-500 text-[10px] animate-pulse"></i>, One Coffee
+                </p>
             </div>
 
-            <p class="mt-6 text-gray-600 dark:text-gray-300 font-medium text-base">
-                ສະແກນ QR Code ເພື່ອສະໜັບສະໜູນຄ່າກາເຟ ☕<br>
-                <span class="text-xs text-gray-400">ທຸກການສະໜັບສະໜູນຄືກຳລັງໃຈໃນການພັດທະນາຕໍ່ໄປ</span>
-            </p>
+            <!-- Contact Buttons -->
+            <div class="grid grid-cols-1 gap-3">
+                <a href="https://wa.me/8562091270509" target="_blank" class="flex items-center gap-4 p-4 glass-card rounded-2xl hover:border-emerald-400 transition-all duration-300 group active:scale-95">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-500 to-green-400 flex items-center justify-center text-white text-2xl shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">WhatsApp</p>
+                        <p class="text-lg font-bold text-gray-800 dark:text-gray-100">020 9127 0509</p>
+                    </div>
+                </a>
+
+                <a href="https://www.facebook.com/Phetsaiyaphoom" target="_blank" class="flex items-center gap-4 p-4 glass-card rounded-2xl hover:border-blue-400 transition-all duration-300 group active:scale-95">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-600 to-blue-400 flex items-center justify-center text-white text-xl shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider">Facebook</p>
+                        <p class="text-lg font-bold text-gray-800 dark:text-gray-100">It-banban</p>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="p-4 text-center">
+                <p class="text-gray-400 dark:text-gray-500 italic text-xs">
+                    "ຄວາມພໍໃຈຂອງທ່ານ ຄືມາດຕະຖານຂອງພວກເຮົາ"
+                </p>
+            </div>
         </div>
-
-        <!-- Contact Info Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-6">
-            <a href="https://wa.me/8562091270509" target="_blank" class="flex items-center gap-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition border border-emerald-100 dark:border-emerald-800/30">
-                <div class="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center text-white text-2xl shadow-lg shrink-0">
-                    <i class="fab fa-whatsapp"></i>
-                </div>
-                <div>
-                    <p class="text-xs text-emerald-600 dark:text-emerald-400 font-bold uppercase">WhatsApp</p>
-                    <p class="text-lg font-bold text-gray-800 dark:text-gray-100">020 9127 0509</p>
-                </div>
-            </a>
-
-            <a href="https://www.facebook.com/Phetsaiyaphoom" target="_blank" class="flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/40 transition border border-blue-100 dark:border-blue-800/30">
-                <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl shadow-lg shrink-0">
-                    <i class="fab fa-facebook-f"></i>
-                </div>
-                <div>
-                    <p class="text-xs text-blue-600 dark:text-blue-400 font-bold uppercase">Facebook</p>
-                    <p class="text-lg font-bold text-gray-800 dark:text-gray-100">It-banban</p>
-                </div>
-            </a>
-        </div>
-
-        <button onclick="showPage('home')"
-          class="fixed bottom-5 right-4 z-50
-                 w-11 h-11
-                 bg-emerald-500 hover:bg-emerald-400
-                 text-white
-                 rounded-full shadow-lg
-                 flex items-center justify-center
-                 transition-all duration-300
-                 hover:-translate-y-1">
-          <i class="fas fa-home text-sm"></i>
-        </button>
 
       </section>
     </div>
@@ -491,12 +560,44 @@
   </main>
 
   <!-- =============================== Footer =============================== -->
-  <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-6 mt-auto">
-    <div class="text-center text-gray-500 dark:text-gray-400 text-sm">
-      <p>© <span id="footer-year">2025</span> IT-banban. All rights reserved.</p>
-      <p class="text-xs mt-1">ພັດທະນາໂດຍ ທ.ບຸນເຜີ້ງ ເພັດໄຊຍະພູມ</p>
+  <footer class="py-6 mt-4 border-t border-gray-200 dark:border-gray-800/50 glass">
+    <div class="text-center text-gray-500 dark:text-gray-400 text-xs space-y-1">
+      <p class="font-medium">© <span id="footer-year">2026</span> IT-banban. Designed for the Future.</p>
+      <p class="opacity-70">ພັດທະນາໂດຍ ທ.ບຸນເຜີ້ງ ເພັດໄຊຍະພູມ</p>
     </div>
   </footer>
+
+  <!-- Floating Home Button -->
+  <button onclick="showPage('home')"
+          class="fixed bottom-5 right-5 z-40
+                 w-12 h-12
+                 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md
+                 text-emerald-600 dark:text-emerald-400
+                 rounded-full shadow-xl border border-white/50 dark:border-gray-700
+                 flex items-center justify-center
+                 transition-all duration-300
+                 hover:-translate-y-1 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 active:scale-90">
+    <i class="fas fa-home text-base"></i>
+  </button>
+
+  <!-- =============================== Styles for Badges & Custom Items =============================== -->
+  <style>
+      .badge-func {
+          @apply px-1.5 py-0.5 rounded bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300 font-mono font-bold border border-sky-200 dark:border-sky-800;
+      }
+      .badge-func-rose {
+          @apply px-1.5 py-0.5 rounded bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 font-mono font-bold border border-rose-200 dark:border-rose-800;
+      }
+      .flag-badge {
+          @apply px-1.5 py-0.5 font-bold rounded border border-gray-100 dark:border-gray-700/50;
+      }
+      .software-item {
+          @apply p-2 bg-gray-50 dark:bg-gray-800/60 rounded-lg border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center text-center h-full;
+      }
+      .func-item {
+          @apply p-2 bg-gray-50 dark:bg-gray-800/60 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-700 transition cursor-default flex flex-col items-center justify-center h-full;
+      }
+  </style>
 
   <!-- =============================== Scripts =============================== -->
   <script>
@@ -517,14 +618,23 @@
       showPage('home');
       
       // 6. Welcome Alert
-      Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: 'ຍິນດີຕ້ອນຮັບສູ່ IT-banban',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        },
+        background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#fff',
+        color: document.documentElement.classList.contains('dark') ? '#fff' : '#1f2937'
+      });
+
+      Toast.fire({
+        icon: 'success',
+        title: 'ຍິນດີຕ້ອນຮັບສູ່ IT-banban'
       });
     });
 
@@ -537,25 +647,23 @@
       const targetPage = document.getElementById(pageId + '-page');
       if (targetPage) {
         targetPage.classList.add('active');
+        window.scrollTo(0, 0);
       }
 
       // Update Nav Active State
       document.querySelectorAll('.nav-link').forEach(link => {
          // Reset styles
-         link.classList.remove('text-emerald-600', 'dark:text-emerald-400');
-         link.querySelector('span').classList.remove('w-full');
-         link.querySelector('span').classList.add('w-0');
+         link.classList.remove('text-emerald-500'); 
+         link.classList.add('text-gray-600', 'dark:text-gray-300'); // Default
 
          if (link.getAttribute('data-page') === pageId) {
-            link.classList.add('text-emerald-600', 'dark:text-emerald-400');
-            link.querySelector('span').classList.remove('w-0');
-            link.querySelector('span').classList.add('w-full');
+            link.classList.remove('text-gray-600', 'dark:text-gray-300');
+            link.classList.add('text-emerald-500'); // Active color only, no bg
          }
       });
 
-      // Close mobile menu if open
+      // Close mobile menu
       document.getElementById('mobile-menu').classList.add('hidden');
-      window.scrollTo(0, 0);
     }
 
     // --- Date Function ---
@@ -591,8 +699,8 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js')
-          .then(() => console.log('Service Worker ຖືກຕິດຕັ້ງແລ້ວ!'))
-          .catch((err) => console.error('ເກີດຂໍ້ຜິດພາດ:', err));
+          .then(() => console.log('Service Worker Active'))
+          .catch((err) => console.log('Service Worker Failed'));
       });
     }
   </script>
