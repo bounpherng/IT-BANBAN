@@ -1,4 +1,4 @@
-const CACHE_NAME = 'it-banban-v1.3';
+const CACHE_NAME = 'it-banban-v1.4';
 const urlsToCache = [
   './',
   './index.html',
@@ -23,5 +23,6 @@ self.addEventListener('fetch', event => {
   );
 
 });
+
 
 
