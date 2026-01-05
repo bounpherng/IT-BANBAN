@@ -35,6 +35,8 @@
     .modern-input { transition: all 0.3s ease; border: 1px solid #e5e7eb; }
     .modern-input:focus { border-color: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); transform: translateY(-1px); }
     .view-section { display: block; animation: slideUp 0.4s ease-out; }
+    #positionDropdown { position: relative; }
+    #positionDropdown button:hover { background: rgba(16, 185, 129, 0.1); }
   </style>
 </head>
 
@@ -85,7 +87,50 @@
 
           <div>
             <label class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">ເງິນຕຳແໜ່ງ</label>
-            <input type="text" id="position" oninput="formatAndRestrictNumber(this)" class="modern-input w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="200,000">
+            <div class="relative">
+              <input type="text" id="positionInput" oninput="formatAndRestrictNumber(this)" onfocus="showPositionDropdown()" class="modern-input w-full p-3 pr-10 bg-gray-50 dark:bg-gray-700 rounded-xl outline-none" placeholder="ເລືອກ ຫຼື ພິມເອງ">
+              <button type="button" onclick="togglePositionDropdown()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <i class="fas fa-chevron-down transition-transform" id="dropdownIcon"></i>
+              </button>
+            </div>
+            <div id="positionDropdown" class="hidden absolute z-10 mt-1 w-full max-w-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+              <button type="button" onclick="selectPosition(2500000, 'ຕຳແໜ່ງບໍລິຫານປະເພດ 1')" class="w-full text-left px-4 py-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border-b border-gray-100 dark:border-gray-700 transition-colors">
+                <div class="font-medium text-gray-700 dark:text-gray-300">ຕຳແໜ່ງບໍລິຫານປະເພດ 1</div>
+                <div class="text-sm text-emerald-600 dark:text-emerald-400">2,500,000 ກີບ</div>
+              </button>
+              <button type="button" onclick="selectPosition(2300000, 'ຕຳແໜ່ງບໍລິຫານປະເພດ 2')" class="w-full text-left px-4 py-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border-b border-gray-100 dark:border-gray-700 transition-colors">
+                <div class="font-medium text-gray-700 dark:text-gray-300">ຕຳແໜ່ງບໍລິຫານປະເພດ 2</div>
+                <div class="text-sm text-emerald-600 dark:text-emerald-400">2,300,000 ກີບ</div>
+              </button>
+              <button type="button" onclick="selectPosition(2100000, 'ຕຳແໜ່ງບໍລິຫານປະເພດ 3')" class="w-full text-left px-4 py-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border-b border-gray-100 dark:border-gray-700 transition-colors">
+                <div class="font-medium text-gray-700 dark:text-gray-300">ຕຳແໜ່ງບໍລິຫານປະເພດ 3</div>
+                <div class="text-sm text-emerald-600 dark:text-emerald-400">2,100,000 ກີບ</div>
+              </button>
+              <button type="button" onclick="selectPosition(1900000, 'ຕຳແໜ່ງບໍລິຫານປະເພດ 4')" class="w-full text-left px-4 py-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border-b border-gray-100 dark:border-gray-700 transition-colors">
+                <div class="font-medium text-gray-700 dark:text-gray-300">ຕຳແໜ່ງບໍລິຫານປະເພດ 4</div>
+                <div class="text-sm text-emerald-600 dark:text-emerald-400">1,900,000 ກີບ</div>
+              </button>
+              <button type="button" onclick="selectPosition(1700000, 'ຕຳແໜ່ງບໍລິຫານປະເພດ 5')" class="w-full text-left px-4 py-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border-b border-gray-100 dark:border-gray-700 transition-colors">
+                <div class="font-medium text-gray-700 dark:text-gray-300">ຕຳແໜ່ງບໍລິຫານປະເພດ 5</div>
+                <div class="text-sm text-emerald-600 dark:text-emerald-400">1,700,000 ກີບ</div>
+              </button>
+              <button type="button" onclick="selectPosition(1500000, 'ຕຳແໜ່ງບໍລິຫານປະເພດ 6')" class="w-full text-left px-4 py-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border-b border-gray-100 dark:border-gray-700 transition-colors">
+                <div class="font-medium text-gray-700 dark:text-gray-300">ຕຳແໜ່ງບໍລິຫານປະເພດ 6</div>
+                <div class="text-sm text-emerald-600 dark:text-emerald-400">1,500,000 ກີບ</div>
+              </button>
+              <button type="button" onclick="selectPosition(1300000, 'ຕຳແໜ່ງບໍລິຫານປະເພດ 7')" class="w-full text-left px-4 py-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border-b border-gray-100 dark:border-gray-700 transition-colors">
+                <div class="font-medium text-gray-700 dark:text-gray-300">ຕຳແໜ່ງບໍລິຫານປະເພດ 7</div>
+                <div class="text-sm text-emerald-600 dark:text-emerald-400">1,300,000 ກີບ</div>
+              </button>
+              <button type="button" onclick="selectPosition(1100000, 'ຕຳແໜ່ງບໍລິຫານປະເພດ 8')" class="w-full text-left px-4 py-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border-b border-gray-100 dark:border-gray-700 transition-colors">
+                <div class="font-medium text-gray-700 dark:text-gray-300">ຕຳແໜ່ງບໍລິຫານປະເພດ 8</div>
+                <div class="text-sm text-emerald-600 dark:text-emerald-400">1,100,000 ກີບ</div>
+              </button>
+              <button type="button" onclick="selectPosition(900000, 'ວິຊາການ')" class="w-full text-left px-4 py-3 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors">
+                <div class="font-medium text-gray-700 dark:text-gray-300">ວິຊາການ</div>
+                <div class="text-sm text-emerald-600 dark:text-emerald-400">900,000 ກີບ</div>
+              </button>
+            </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
@@ -163,10 +208,59 @@
   <script>
     let APP_CONFIG = null;
 
+    function setupThemeToggle() {
+      const btn = document.getElementById('theme-toggle');
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+      btn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      });
+    }
+
+    function showPositionDropdown() {
+        const dropdown = document.getElementById('positionDropdown');
+        const icon = document.getElementById('dropdownIcon');
+        if (dropdown) dropdown.classList.remove('hidden');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    }
+
+    function togglePositionDropdown() {
+        const dropdown = document.getElementById('positionDropdown');
+        const icon = document.getElementById('dropdownIcon');
+        if (dropdown) dropdown.classList.toggle('hidden');
+        if (icon) icon.style.transform = dropdown.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+
+    function selectPosition(amount, name) {
+        const input = document.getElementById('positionInput');
+        if (input) input.value = amount.toLocaleString('en-US');
+        const dropdown = document.getElementById('positionDropdown');
+        const icon = document.getElementById('dropdownIcon');
+        if (dropdown) dropdown.classList.add('hidden');
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+
+    function setupDropdownClickOutside() {
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('positionDropdown');
+            const input = document.getElementById('positionInput');
+            const icon = document.getElementById('dropdownIcon');
+            const toggleBtn = event.target.closest('button[onclick*="togglePositionDropdown"]');
+            
+            if (dropdown && input && !dropdown.contains(event.target) && event.target !== input && !toggleBtn) {
+                dropdown.classList.add('hidden');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('footer-year').textContent = new Date().getFullYear();
         setupThemeToggle();
         loadAndInitializeApp();
+        setupDropdownClickOutside();
     });
 
     function setupThemeToggle() {
@@ -250,20 +344,62 @@
         document.getElementById('deductionLabel').innerHTML = `<span>- ${isPension ? 'ຫັກປະກັນ:' : 'ຫັກ 8%:'}</span> <span id="deduction8">0</span>`;
     }
 
+    function showPositionDropdown() {
+        document.getElementById('positionDropdown').classList.remove('hidden');
+        document.getElementById('dropdownIcon').style.transform = 'rotate(180deg)';
+    }
+
+    function togglePositionDropdown() {
+        const dropdown = document.getElementById('positionDropdown');
+        const icon = document.getElementById('dropdownIcon');
+        dropdown.classList.toggle('hidden');
+        icon.style.transform = dropdown.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+
+    function selectPosition(amount, name) {
+        const input = document.getElementById('positionInput');
+        input.value = amount.toLocaleString('en-US');
+        document.getElementById('positionDropdown').classList.add('hidden');
+        document.getElementById('dropdownIcon').style.transform = 'rotate(0deg)';
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('positionDropdown');
+        const input = document.getElementById('positionInput');
+        const icon = document.getElementById('dropdownIcon');
+        if (dropdown && input && !dropdown.contains(event.target) && event.target !== input && event.target !== icon && !event.target.closest('button[onclick*="togglePositionDropdown"]')) {
+            dropdown.classList.add('hidden');
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        }
+    });
+
     function resetSalaryForm() {
         document.getElementById('salaryForm').reset();
+        const dropdown = document.getElementById('positionDropdown');
+        const icon = document.getElementById('dropdownIcon');
+        if (dropdown) dropdown.classList.add('hidden');
+        if (icon) icon.style.transform = 'rotate(0deg)';
         document.getElementById('salaryResult').classList.add('hidden');
         toggleFields();
     }
+
+    window.showPositionDropdown = showPositionDropdown;
+    window.togglePositionDropdown = togglePositionDropdown;
+    window.selectPosition = selectPosition;
+    window.calculateSalary = calculateSalary;
+    window.resetSalaryForm = resetSalaryForm;
 
     async function calculateSalary() {
         if (!APP_CONFIG) return;
         const cat = document.getElementById('category').value;
         const index = parseFloat(document.getElementById('index').value) || 0;
         const year = parseFloat(document.getElementById('year').value) || 0;
-        const pos = parseFloat(document.getElementById('position').value.replace(/,/g, '')) || 0;
+        
+        // Get position value from input
+        const pos = parseFloat(document.getElementById('positionInput').value.replace(/,/g, '')) || 0;
 
-        if (!cat || !index || !year) {
+        if (!cat || !index || !year || !pos) {
             Swal.fire({ icon: 'warning', text: 'ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບ', confirmButtonColor: '#10b981' });
             return;
         }
