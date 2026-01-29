@@ -1,5 +1,5 @@
 // 1. ປ່ຽນຊື່ເວີຊັ້ນທຸກຄັ້ງທີ່ມີການອັບເດດ (ສຳຄັນຫຼາຍ)
-const CACHE_NAME = 'it-banban-v2.7'; 
+const CACHE_NAME = 'it-banban-v2.8'; 
 
 const urlsToCache = [
   './',
@@ -62,3 +62,4 @@ self.addEventListener('fetch', event => {
       })
   );
 });
+
