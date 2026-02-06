@@ -1,219 +1,1235 @@
 <!DOCTYPE html>
-<html lang="lo" class="scroll-smooth">
+<html lang="lo">
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>IT-banban Calculator - ປິດປັບປຸງຊົ່ວຄາວ</title>
-  <meta name="description" content="ແອັບຄຳນວນເງິນເດືອນ ແລະ ເງິນອຸດໜຸນຕ່າງໆ" />
-  <meta name="theme-color" content="#10b981" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Noto Sans Lao', 'sans-serif'],
-          },
-          colors: {
-            emerald: {
-              50: '#ecfdf5',
-              100: '#d1fae5',
-              500: '#10b981',
-              600: '#059669',
-              900: '#064e3b',
-            }
-          },
-          animation: {
-            'fade-in': 'fadeIn 0.3s ease-out',
-            'slide-up': 'slideUp 0.4s ease-out',
-            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0' },
-              '100%': { opacity: '1' },
-            },
-            slideUp: {
-              '0%': { transform: 'translateY(20px)', opacity: '0' },
-              '100%': { transform: 'translateY(0)', opacity: '1' },
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <style>
-    body { font-family: 'Noto Sans Lao', sans-serif; -webkit-tap-highlight-color: transparent; }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #059669; }
-    .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-    .dark .glass-effect { background: rgba(17, 24, 39, 0.95); }
-    .view-section { display: block; animation: slideUp 0.4s ease-out; }
-  </style>
-</head>
-
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex flex-col transition-colors duration-300">
-
-<header class="sticky top-0 z-50 glass-effect border-b border-gray-200 dark:border-gray-800 shadow-sm">
-  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-    <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='../index.html'">
-      <img src="https://i.ibb.co/Fk9XKZSH/icon200.png" alt="Logo" class="w-10 h-10 object-contain">
-      <h1 class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">IT-banban</h1>
-    </div>
-    <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-      <i class="fas fa-moon text-lg dark:hidden"></i>
-      <i class="fas fa-sun text-lg hidden dark:block text-yellow-400"></i>
-    </button>
-  </div>
-</header>
-
-<main class="flex-grow w-full mx-auto px-4 py-6 relative flex items-center justify-center">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ລະບົບຄຳນວນເງິນເດືອນລັດຖະກອນ 2026 (ລວມ)</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/bounpherng/IT-BANBAN/main/icon-512.png">
     
-    <div id="maintenance-view" class="view-section space-y-6 max-w-lg mx-auto w-full">
-      
-      <!-- Maintenance Icon -->
-      <div class="text-center">
-        <div class="inline-flex items-center justify-center w-24 h-24 bg-orange-100 dark:bg-orange-900/30 rounded-full mb-6 animate-pulse-slow">
-          <i class="fas fa-tools text-5xl text-orange-500"></i>
-        </div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">ປິດປັບປຸງຊົ່ວຄາວ</h2>
-        <p class="text-gray-600 dark:text-gray-400">ກຳລັງປັບປຸງລະບົບເພື່ອໃຫ້ບໍລິການທີ່ດີຂຶ້ນ</p>
-      </div>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@100..900&family=Phetsarath&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-      <!-- Main Notice Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-8 space-y-6">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            --secondary-gradient: linear-gradient(135deg, #16a085 0%, #2ecc71 100%);
+            --accent-color: #27ae60;
+            --text-color: #2c3e50;
+            --bg-color: #e8f5e9;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --border-radius: 16px;
+        }
+
+        /* ປ່ຽນສີຫົວຂໍ້ຕາມປະເພດ (Optional JS will handle this, but defaults here) */
+        body.type-general {
+            --primary-gradient: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            --secondary-gradient: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+            --accent-color: #2980b9;
+            --bg-color: #eef2f3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Phetsarath', 'Noto Sans Lao', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            transition: background-color 0.5s ease;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            transition: background 0.5s ease;
+        }
+
+        .header img {
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+            padding: 5px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            object-fit: contain;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 1rem;
+        }
+
+        /* Type Selector */
+        .type-selector-container {
+            padding: 20px 30px 0 30px;
+            text-align: center;
+        }
         
-        <!-- Status Message -->
-        <div class="text-center space-y-3">
-          <div class="inline-block px-4 py-2 bg-orange-50 dark:bg-orange-900/20 rounded-full">
-            <span class="text-orange-600 dark:text-orange-400 font-semibold text-sm">
-              <i class="fas fa-exclamation-circle mr-2"></i>ບໍລິການຢຸດຊົ່ວຄາວ
-            </span>
-          </div>
-          <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-            ເວັບຄຳນວນເງິນເດືອນໄດ້ຢຸດໃຫ້ບໍລິການຊົ່ວຄາວ<br/>
-            ເພື່ອປັບປຸງ ແລະ ພັດທະນາລະບົບໃຫ້ດີຂຶ້ນ
-          </p>
+        .type-toggle {
+            display: inline-flex;
+            background: #f1f2f6;
+            padding: 5px;
+            border-radius: 30px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .type-btn {
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #7f8c8d;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .type-btn.active {
+            background: white;
+            color: var(--accent-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Form Layout */
+        .form-content {
+            padding: 30px;
+        }
+
+        .section-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            padding: 25px 20px 20px 20px;
+            margin-bottom: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .section-box:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-color: #a5d6a7;
+        }
+
+        .section-box.auto-calc {
+            background: #f1f8e9;
+            border: 1px dashed #27ae60;
+        }
+
+        .section-title {
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 18px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .section-box.auto-calc .section-title {
+            background: #f39c12;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .row-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        label i {
+            color: var(--accent-color);
+            margin-right: 5px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+            color: #34495e;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.15);
+        }
+
+        input[readonly] {
+            background-color: #f8f9fa;
+            color: var(--accent-color);
+            font-weight: 700;
+            cursor: default;
+            border-color: #eee;
+        }
+
+        /* Hide teacher fields by default, shown via JS */
+        .teacher-only {
+            display: block; 
+            transition: all 0.3s ease;
+        }
+        
+        .teacher-only.hidden {
+            display: none;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        button {
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-reset {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-calc {
+            background: var(--secondary-gradient);
+            color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-reset:hover { background: #7f8c8d; }
+        .btn-calc:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+
+        /* Slip Area */
+        #resultArea {
+            display: none;
+            padding: 20px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            overflow-y: auto;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .modal-wrapper {
+            margin: 40px auto;
+            width: 100%;
+            max-width: 550px;
+            animation: slideDown 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .slip-container {
+            background: white;
+            width: 100%;
+            padding: 30px;
+            border-radius: 0; /* For printer look */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            font-family: 'Phetsarath', sans-serif;
+            margin-bottom: 20px;
+        }
+
+        /* Slip Design */
+        .slip-header {
+            text-align: center;
+            border-bottom: 3px double var(--accent-color);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .slip-header h2 {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            margin: 10px 0 5px 0;
+            text-transform: uppercase;
+        }
+
+        .slip-content {
+            font-size: 1rem;
+        }
+
+        .slip-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            align-items: flex-start;
+            border-bottom: 1px dotted #eee;
+            padding-bottom: 4px;
+        }
+        
+        .slip-row.hidden {
+            display: none;
+        }
+        
+        .slip-row .label {
+            color: #555;
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        .slip-row .val {
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .slip-row.highlight {
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 4px;
+            border-bottom: none;
+        }
+
+        .slip-row.highlight .label { color: var(--accent-color); font-weight: bold; }
+        .slip-row.highlight .val { color: var(--accent-color); font-size: 1.05rem; }
+
+        .slip-row.deduct .val { color: #e74c3c; }
+        
+        .slip-section-head {
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .slip-section-head.hidden {
+            display: none;
+        }
+
+        .slip-total {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa; /* Neutral background by default */
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slip-total::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: repeating-linear-gradient(45deg, var(--accent-color), var(--accent-color) 10px, #fff 10px, #fff 20px);
+            opacity: 0.5;
+        }
+
+        .slip-total .label {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .slip-total .amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+
+        /* Action Buttons Area */
+        .slip-actions-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-close {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-download {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-close:hover { background: #c0392b; }
+        .btn-download:hover { background: #2980b9; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5rem; }
+            .btn-group { grid-template-columns: 1fr; }
+            .row, .row-3 { grid-template-columns: 1fr; }
+            .slip-container { padding: 20px; }
+            .slip-total .amount { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body class="type-teacher"> <!-- Default class -->
+
+    <div class="container">
+        <div class="header">
+            <img src="https://raw.githubusercontent.com/bounpherng/IT-BANBAN/main/icon-512.png" alt="Logo">
+            <h1 id="headerTitle">ລະບົບຄຳນວນເງິນເດືອນລັດຖະກອນຄູ</h1>
+            <p>ປີ 2026 | ສະບັບປັບປຸງລ່າສຸດ (All-in-One)</p>
+            <p style="font-size: 0.9rem; margin-top: 5px; opacity: 0.8;">ພັດທະນາໂດຍ: ທ.ບຸນເຜີ້ງ ເພັດໄຊຍະພູມ</p>
         </div>
 
-        <div class="border-t border-gray-200 dark:border-gray-700"></div>
-
-        <!-- Contact Information -->
-        <div class="space-y-4">
-          <p class="text-center text-gray-700 dark:text-gray-300 font-medium">
-            <i class="fas fa-phone-alt text-emerald-500 mr-2"></i>ຕິດຕໍ່ສອບຖາມໄດ້ທີ່:
-          </p>
-          
-          <a href="tel:02091270509" class="block w-full">
-            <div class="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white font-bold py-4 px-6 rounded-xl text-center text-xl transition-all transform hover:scale-105 shadow-md hover:shadow-lg">
-              <i class="fab fa-whatsapp mr-3"></i>020 9127 0509
+        <!-- TYPE SELECTOR -->
+        <div class="type-selector-container">
+            <div class="type-toggle">
+                <button type="button" class="type-btn active" id="btnTeacher" onclick="setCalcType('teacher')">
+                    <i class="fas fa-chalkboard-teacher"></i> ລັດຖະກອນຄູ
+                </button>
+                <button type="button" class="type-btn" id="btnGeneral" onclick="setCalcType('general')">
+                    <i class="fas fa-user-tie"></i> ລັດຖະກອນທົ່ວໄປ
+                </button>
             </div>
-          </a>
-
-          <div class="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-            <i class="fab fa-whatsapp text-emerald-500"></i>
-            <span>WhatsApp, ໂທສາຍ ຫຼື SMS</span>
-          </div>
         </div>
 
-        <div class="border-t border-gray-200 dark:border-gray-700"></div>
+        <div class="form-content">
+            <form id="salaryForm" onsubmit="handleCalculate(event)">
+                
+                <!-- Section 1: Personal Info -->
+                <div class="section-box">
+                    <div class="section-title"><i class="fas fa-user"></i> ຂໍ້ມູນສ່ວນຕົວ</div>
+                    <div class="form-group">
+                        <label for="fullName" class="required">ຊື່ ແລະ ນາມສະກຸນ</label>
+                        <input type="text" id="fullName" placeholder="ປ້ອນຊື່ ແລະ ນາມສະກຸນ..." required>
+                    </div>
+                </div>
 
-        <!-- Additional Info -->
-        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800/50">
-          <div class="flex items-start gap-3">
-            <i class="fas fa-info-circle text-blue-500 mt-1 flex-shrink-0"></i>
-            <div class="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-              <p class="font-semibold">ຂໍອະໄພໃນຄວາມບໍ່ສະດວກ</p>
-              <p>ທ່ານສາມາດຕິດຕໍ່ສອບຖາມຂໍ້ມູນ ຫຼື ການຄຳນວນໄດ້ທາງເບີຂ້າງເທິງ</p>
-            </div>
-          </div>
+                <!-- Section 2: Position Info -->
+                <div class="section-box">
+                    <div class="section-title"><i class="fas fa-briefcase"></i> ຂໍ້ມູນຕຳແໜ່ງ ແລະ ຊັ້ນຂັ້ນ</div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="positionMoney"><i class="fas fa-money-check-alt"></i> ເງິນຕຳແໜ່ງ</label>
+                            <select id="positionMoney">
+                                <option value="9000000">ຕຳແໜ່ງການນຳ 6/7 - 9,000,000</option>
+                                <option value="8000000">ຕຳແໜ່ງການນຳ 6/6 - 8,000,000</option>
+                                <option value="7000000">ຕຳແໜ່ງການນຳ 6/5 - 7,000,000</option>
+                                <option value="6000000">ຕຳແໜ່ງການນຳ 6/4 - 6,000,000</option>
+                                <option value="5000000">ຕຳແໜ່ງການນຳ 6/3 - 5,000,000</option>
+                                <option value="4000000">ຕຳແໜ່ງການນຳ 6/2 - 4,000,000</option>
+                                <option value="3000000">ຕຳແໜ່ງການນຳ 6/1 - 3,000,000</option>
+                                <option value="2500000">ຕຳແໜ່ງບໍລິຫານ 1 - 2,500,000</option>
+                                <option value="2300000">ຕຳແໜ່ງບໍລິຫານ 2 - 2,300,000</option>
+                                <option value="2100000">ຕຳແໜ່ງບໍລິຫານ 3 - 2,100,000</option>
+                                <option value="1900000">ຕຳແໜ່ງບໍລິຫານ 4 - 1,900,000</option>
+                                <option value="1700000">ຕຳແໜ່ງບໍລິຫານ 5 - 1,700,000</option>
+                                <option value="1500000">ຕຳແໜ່ງບໍລິຫານ 6 - 1,500,000</option>
+                                <option value="1300000">ຕຳແໜ່ງບໍລິຫານ 7 - 1,300,000</option>
+                                <option value="1100000">ຕຳແໜ່ງບໍລິຫານ 8 - 1,100,000</option>
+                                <option value="900000">ວິຊາການ - 900,000</option>
+                                <option value="0" selected>ພະນັກງານ 95 - 0</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="percentage" class="required"><i class="fas fa-percentage"></i> ເປີເຊັນໄດ້ຮັບ (%)</label>
+                            <input type="number" id="percentage" value="100" min="0" max="100" placeholder="ເຊັ່ນ: 100 ຫຼື 95" required>
+                        </div>
+                    </div>
+                    <div class="row-3">
+                        <div class="form-group">
+                            <label for="classSelect" class="required">ຊັ້ນ</label>
+                            <select id="classSelect" onchange="updateLevels()" required>
+                                <option value="">ເລືອກຊັ້ນ...</option>
+                                <option value="1">ຊັ້ນ 1</option>
+                                <option value="2">ຊັ້ນ 2</option>
+                                <option value="3">ຊັ້ນ 3</option>
+                                <option value="4">ຊັ້ນ 4</option>
+                                <option value="5">ຊັ້ນ 5</option>
+                                <option value="6">ຊັ້ນ 6</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="levelSelect" class="required">ຂັ້ນ</label>
+                            <select id="levelSelect" onchange="updateIndex()" required disabled>
+                                <option value="">ເລືອກຊັ້ນກ່ອນ...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="yearsService" class="required">ປີການ (ປີ)</label>
+                            <input type="number" id="yearsService" value="0" min="0" max="50" oninput="calculatePreview()" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Teacher Allowance (TEACHER ONLY) -->
+                <div class="section-box teacher-only" id="teacherSection">
+                    <div class="section-title"><i class="fas fa-chalkboard-teacher"></i> ອຸດໜູນອາຊີບຄູ</div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="teacherPercent">ເປີເຊັນອຸດໜູນ (%)</label>
+                            <select id="teacherPercent" onchange="calculatePreview()">
+                                <option value="0">0% (ບໍ່ໄດ້ຮັບ)</option>
+                                <option value="10">10%</option>
+                                <option value="15">15%</option>
+                                <option value="20">20%</option>
+                                <option value="25">25%</option>
+                                <option value="30">30%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>ເປັນເງິນ (ກີບ)</label>
+                            <input type="text" id="teacherAllowanceDisplay" readonly placeholder="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Auto Calculated Preview -->
+                <div class="section-box auto-calc">
+                    <div class="section-title"><i class="fas fa-calculator"></i> ຜົນຄຳນວນເບື້ອງຕົ້ນ (ອັດຕະໂນມັດ)</div>
+                    <div class="row-3">
+                        <div class="form-group">
+                            <label>ດັດສະນີ</label>
+                            <input type="text" id="indexDisplay" readonly placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>ເງິນພື້ນຖານ</label>
+                            <input type="text" id="baseSalaryDisplay" readonly placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>ເງິນປີການ</label>
+                            <input type="text" id="yearSalaryDisplay" readonly placeholder="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Additional Allowances -->
+                <div class="section-box">
+                    <div class="section-title"><i class="fas fa-coins"></i> ເງິນອຸດໜູນ ແລະ ນະໂຍບາຍຕ່າງໆ</div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>ອຸດໜຸນຫ່າງໄກສອກຫຼີກ (ພູດອຍ)</label>
+                            <input type="text" id="remoteAllowance" placeholder="0" oninput="formatCurrencyInput(this)">
+                        </div>
+                        
+                        <!-- Teacher Only Field -->
+                        <div class="form-group teacher-only">
+                            <label>ສອນຫ້ອງຄວບ</label>
+                            <input type="text" id="combinedClass" placeholder="0" oninput="formatCurrencyInput(this)">
+                        </div>
+                    </div>
+
+                    <!-- Teacher Only Row -->
+                    <div class="row teacher-only">
+                        <div class="form-group">
+                            <label>ຕຳແໜ່ງວິຊາການຄູ</label>
+                            <input type="text" id="technicalTeacher" placeholder="0" oninput="formatCurrencyInput(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>ຕາມຜົນປະເມີນ</label>
+                            <input type="text" id="performance" placeholder="0" oninput="formatCurrencyInput(this)">
+                        </div>
+                    </div>
+
+                    <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #ccc;">
+                    <div class="row">
+                        <div class="form-group">
+                            <label>ເງິນທາດເບື່ອ</label>
+                            <input type="text" id="toxicAllowance" placeholder="0" oninput="formatCurrencyInput(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>ນະໂຍບາຍຊ່ວຍໜູນ</label>
+                            <input type="text" id="policySupport" placeholder="0" oninput="formatCurrencyInput(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>ອໜ ສະມາຊິກສະພາ</label>
+                            <input type="text" id="assemblyAllowance" placeholder="0" oninput="formatCurrencyInput(this)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Family -->
+                <div class="section-box">
+                    <div class="section-title"><i class="fas fa-home"></i> ຂໍ້ມູນຄອບຄົວ</div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>ຈຳນວນລູກ (ອາຍຸ ≤ 18 ປີ)</label>
+                            <input type="number" id="childCount" value="0" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>ຄູ່ສົມລົດ (ຜົວ/ເມຍ)</label>
+                            <select id="spouse">
+                                <option value="0">ບໍ່ມີ / ບໍ່ໄດ້ຮັບ</option>
+                                <option value="200000">ມີ (200,000 ກີບ)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="btn-group">
+                    <button type="button" class="btn-reset" onclick="resetForm()"><i class="fas fa-redo-alt"></i> ລ້າງຂໍ້ມູນ</button>
+                    <button type="submit" class="btn-calc"><i class="fas fa-calculator"></i> ຄຳນວນເງິນເດືອນ</button>
+                </div>
+
+            </form>
         </div>
-
-        <!-- Disabled Calculator Cards (Greyed Out) -->
-        <div class="grid grid-cols-2 gap-3 opacity-50 pointer-events-none">
-          <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 flex flex-col items-center gap-2">
-            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-              <i class="fas fa-money-bill-wave text-xl text-blue-400"></i>
-            </div>
-            <span class="text-xs text-gray-600 dark:text-gray-400 font-medium">ເງິນເດືອນລັດຖະກອນ</span>
-          </div>
-
-          <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 flex flex-col items-center gap-2">
-            <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center">
-              <i class="fas fa-landmark text-xl text-emerald-400"></i>
-            </div>
-            <span class="text-xs text-gray-600 dark:text-gray-400 font-medium">ອຸດໜຸນພາກລັດ</span>
-          </div>
-
-          <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 flex flex-col items-center gap-2">
-            <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-              <i class="fas fa-building text-xl text-purple-400"></i>
-            </div>
-            <span class="text-xs text-gray-600 dark:text-gray-400 font-medium">ອຸດໜຸນວິສາຫະກິດ</span>
-          </div>
-
-          <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 flex flex-col items-center gap-2">
-            <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
-              <i class="fas fa-search text-xl text-orange-400"></i>
-            </div>
-            <span class="text-xs text-gray-600 dark:text-gray-400 font-medium">ຄົ້ນຫາຂໍ້ມູນ</span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Date Display -->
-      <p id="date-lao-calc" class="text-center text-emerald-600 dark:text-emerald-400 text-sm font-medium bg-emerald-50 dark:bg-emerald-900/20 py-2 px-4 rounded-full inline-block mx-auto"></p>
     </div>
 
-</main>
+<div class="flex justify-center">
+  <a href="../index.html" class="inline-flex items-center text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+    <i class="fas fa-arrow-left fa-fw mr-2"></i> ກັບຄືນໜ້າຫຼັກ
+  </a>
+</div>
 
-  <div class="max-w-lg mx-auto mb-6 px-4">
-    <a href="../index.html" class="inline-flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors">
-      <i class="fas fa-arrow-left fa-fw mr-2"></i> ກັບຄືນໜ້າຫຼັກ
-    </a>
-  </div>
+
+
+
+    <!-- SLIP MODAL -->
+    <div id="resultArea">
+        <div class="modal-wrapper">
+            <!-- Slip Content -->
+            <div class="slip-container" id="salarySlip">
+                <div class="slip-header">
+                    <img src="https://raw.githubusercontent.com/bounpherng/IT-BANBAN/main/icon-512.png" alt="Logo" width="60">
+                    <h2 id="slipTitle">ໃບບິນເງິນເດືອນ</h2>
+                    <p style="color: #7f8c8d;">ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</p>
+                    <p style="font-size: 0.8rem; margin-top:5px; color: #95a5a6;">ວັນທີ: <span id="slipDate"></span></p>
+                </div>
+                
+                <div class="slip-content">
+                    <div class="slip-row" style="margin-bottom: 20px;">
+                        <span class="label">ຊື່ ແລະ ນາມສະກຸນ:</span>
+                        <span class="val" id="resName" style="font-size: 1.1rem; color: var(--accent-color);">...</span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="label">ຊັ້ນ-ຂັ້ນ (ດັດສະນີ):</span>
+                        <span class="val"><span id="resClassLevel">...</span> (<span id="resIndex">...</span>)</span>
+                    </div>
+                    
+                    <div class="slip-section-head">ລາຍຮັບພື້ນຖານ</div>
+                    <div class="slip-row">
+                        <span class="label">1. ເງິນພື້ນຖານ:</span>
+                        <span class="val" id="resBase">0</span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="label">2. ເງິນປີການ:</span>
+                        <span class="val" id="resYear">0</span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="label">3. ເງິນຕຳແໜ່ງ:</span>
+                        <span class="val" id="resPosition">0</span>
+                    </div>
+                    <div class="slip-row teacher-only-slip">
+                        <span class="label">4. ອຸດໜູນອາຊີບຄູ (<span id="resTeacherPct">0</span>%):</span>
+                        <span class="val" id="resTeacherMoney">0</span>
+                    </div>
+
+                    <div class="slip-row highlight" style="margin-top: 10px;">
+                        <span class="label">ລວມເງິນກ່ອນຫັກ:</span>
+                        <span class="val" id="resTotalGross">0</span>
+                    </div>
+
+                    <div class="slip-section-head">ການຫັກພັນທະ</div>
+                    <div class="slip-row deduct">
+                        <span class="label">ຫັກປະກັນສັງຄົມ (8%):</span>
+                        <span class="val">- <span id="resSocial">0</span></span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="label">ເງິນຫຼັງຫັກປະກັນສັງຄົມ:</span>
+                        <span class="val" id="resAfterSocial">0</span>
+                    </div>
+
+                    <div class="slip-section-head">ອຸດໜູນເພີ່ມເຕີມ</div>
+                    <div class="slip-row">
+                        <span class="label">ອຸດໜຸນຫ່າງໄກສອກຫຼີກ:</span>
+                        <span class="val" id="resRemote">0</span>
+                    </div>
+                    <div class="slip-row teacher-only-slip">
+                        <span class="label">ສອນຫ້ອງຄວບ:</span>
+                        <span class="val" id="resCombined">0</span>
+                    </div>
+                    <div class="slip-row teacher-only-slip">
+                        <span class="label">ຕຳແໜ່ງວິຊາການຄູ:</span>
+                        <span class="val" id="resTechnical">0</span>
+                    </div>
+                    <div class="slip-row teacher-only-slip">
+                        <span class="label">ຕາມຜົນປະເມີນ:</span>
+                        <span class="val" id="resPerformance">0</span>
+                    </div>
+
+                    <div class="slip-row highlight" style="margin-top: 10px;">
+                        <span class="label">ຖານຄິດໄລ່ອາກອນ:</span>
+                        <span class="val" id="resTaxBase">0</span>
+                    </div>
+                    <div class="slip-row deduct">
+                        <span class="label">ຫັກອາກອນເງິນເດືອນ:</span>
+                        <span class="val">- <span id="resTax">0</span></span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="label">ເງິນຫຼັງຫັກອາກອນ:</span>
+                        <span class="val" id="resAfterTax">0</span>
+                    </div>
+
+                    <div class="slip-section-head">ນະໂຍບາຍອື່ນໆ (ພາກ 60)</div>
+                    <div class="slip-row">
+                        <span class="label">ເງິນທາດເບື່ອ:</span>
+                        <span class="val" id="resToxic">0</span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="label">ນະໂຍບາຍຊ່ວຍໜູນ:</span>
+                        <span class="val" id="resPolicy">0</span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="label">ອໜ ສະມາຊິກສະພາ:</span>
+                        <span class="val" id="resAssembly">0</span>
+                    </div>
+                    
+                    <div class="slip-row highlight" style="background: #f1f8e9;">
+                        <span class="label">ລວມ (ພາກ 60):</span>
+                        <span class="val" id="resSection60">0</span>
+                    </div>
+
+                    <div class="slip-section-head">ຄອບຄົວ</div>
+                    <div class="slip-row">
+                        <span class="label">ອຸດໜຸນລູກ (<span id="resChildCountText">0</span> ຄົນ):</span>
+                        <span class="val" id="resChildMoney">0</span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="label">ເງິນຄູ່ສົມລົດ:</span>
+                        <span class="val" id="resSpouse">0</span>
+                    </div>
+
+                    <div class="slip-total">
+                        <div class="label">ລວມເງິນເດືອນຮັບສຸດທິ</div>
+                        <div class="amount" id="resNetSalary">0 ກີບ</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px; font-size: 0.8rem; color: #ccc;">
+                    IT BANBAN © 2026
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="slip-actions-container">
+                <button class="btn-close" onclick="closeModal()"><i class="fas fa-times"></i> ປິດ</button>
+                <button class="btn-download" onclick="downloadImage()"><i class="fas fa-download"></i> ບັນທຶກຮູບພາບ</button>
+            </div>
+        </div>
+    </div>
 	
-  <footer class="mt-auto py-6 text-center text-xs text-gray-400">
-    <p>© <span id="footer-year"></span> MR.BOUNPHEUNG PHETXAINYAPHOUM</p>
-  </footer>
+	
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('footer-year').textContent = new Date().getFullYear();
-        setupThemeToggle();
-        displayLaoDateForCalc();
-    });
 
-    function setupThemeToggle() {
-      const btn = document.getElementById('theme-toggle');
-      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      }
-      btn.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-      });
-    }
 
-    function displayLaoDateForCalc() {
-      const el = document.getElementById('date-lao-calc');
-      if (!el) return;
-      const laoDays = ["ວັນອາທິດ", "ວັນຈັນ", "ວັນອັງຄານ", "ວັນພຸດ", "ວັນພະຫັດ", "ວັນສຸກ", "ວັນເສົາ"];
-      const laoMonths = ["ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ", "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ", "ຕຸລາ", "ພະຈິກ", "ທັນວາ"];
-      const now = new Date();
-      el.textContent = `${laoDays[now.getDay()]}, ວັນທີ ${now.getDate()} ${laoMonths[now.getMonth()]} ${now.getFullYear()}`;
-    }
-  </script>
+    <!-- Libraries -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Data Structure
+        const indexTable = {
+            '1': [260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274],
+            '2': [268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282],
+            '3': [276, 277, 278, 279, 280, 281, 282, 284, 286, 288, 290, 292, 294, 296, 298],
+            '4': [286, 288, 290, 292, 294, 296, 298, 303, 308, 313, 318, 323, 328, 333, 338],
+            '5': [308, 313, 318, 323, 328, 333, 338, 348, 358, 368, 378, 388, 398, 408, 418],
+            '6': [600, 700, 800, 900, 1000, 1100, 1200]
+        };
+
+        // --- Global State ---
+        let currentType = 'teacher'; // 'teacher' or 'general'
+
+        // --- Switch Type Logic ---
+        function setCalcType(type) {
+            currentType = type;
+            
+            const btnTeacher = document.getElementById('btnTeacher');
+            const btnGeneral = document.getElementById('btnGeneral');
+            const teacherElements = document.querySelectorAll('.teacher-only');
+            const headerTitle = document.getElementById('headerTitle');
+            const body = document.body;
+
+            if (type === 'teacher') {
+                btnTeacher.classList.add('active');
+                btnGeneral.classList.remove('active');
+                headerTitle.textContent = "ລະບົບຄຳນວນເງິນເດືອນລັດຖະກອນຄູ";
+                body.classList.remove('type-general');
+                body.classList.add('type-teacher');
+                
+                // Show teacher fields
+                teacherElements.forEach(el => el.classList.remove('hidden'));
+                
+                // Set CSS variables for green theme (just in case)
+                document.documentElement.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)');
+                document.documentElement.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #16a085 0%, #2ecc71 100%)');
+                document.documentElement.style.setProperty('--accent-color', '#27ae60');
+                document.documentElement.style.setProperty('--bg-color', '#e8f5e9');
+
+            } else {
+                btnTeacher.classList.remove('active');
+                btnGeneral.classList.add('active');
+                headerTitle.textContent = "ລະບົບຄຳນວນເງິນເດືອນລັດຖະກອນທົ່ວໄປ";
+                body.classList.add('type-general');
+                body.classList.remove('type-teacher');
+
+                // Hide teacher fields
+                teacherElements.forEach(el => el.classList.add('hidden'));
+
+                // Set CSS variables for blue/neutral theme
+                document.documentElement.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)');
+                document.documentElement.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #2980b9 0%, #3498db 100%)');
+                document.documentElement.style.setProperty('--accent-color', '#2980b9');
+                document.documentElement.style.setProperty('--bg-color', '#eef2f3');
+            }
+
+            calculatePreview();
+        }
+
+
+        // --- Core Functions ---
+        function updateLevels() {
+            const cls = document.getElementById('classSelect').value;
+            const levelSelect = document.getElementById('levelSelect');
+            levelSelect.innerHTML = '<option value="">ເລືອກຂັ້ນ...</option>';
+            
+            if (cls) {
+                const levels = indexTable[cls].length;
+                for(let i=1; i<=levels; i++) {
+                    const opt = document.createElement('option');
+                    opt.value = i;
+                    opt.textContent = `ຂັ້ນ ${i}`;
+                    levelSelect.appendChild(opt);
+                }
+                levelSelect.disabled = false;
+            } else {
+                levelSelect.disabled = true;
+                clearPreview();
+            }
+        }
+
+        function updateIndex() {
+            const cls = document.getElementById('classSelect').value;
+            const lvl = document.getElementById('levelSelect').value;
+            
+            if (cls && lvl) {
+                const index = indexTable[cls][lvl-1];
+                document.getElementById('indexDisplay').value = index;
+                calculatePreview();
+            }
+        }
+
+        function calculatePreview() {
+            const index = parseFloat(document.getElementById('indexDisplay').value) || 0;
+            const pct = parseFloat(document.getElementById('percentage').value) || 100;
+            const years = parseFloat(document.getElementById('yearsService').value) || 0;
+            
+            // Only calc teacher allowance if type is teacher
+            let teacherAllowance = 0;
+            if (currentType === 'teacher') {
+                const teacherPct = parseFloat(document.getElementById('teacherPercent').value) || 0;
+                // Base Salary for calculation
+                const baseForCalc = (index * 9500) * (pct / 100);
+                teacherAllowance = baseForCalc * (teacherPct / 100);
+            } else {
+                // If general, teacher allowance is 0
+                teacherAllowance = 0;
+            }
+
+            // Base Salary
+            const base = (index * 9500) * (pct / 100);
+            
+            // Year Salary Logic (Step)
+            let yearSalary = 0;
+            if (years <= 5) {
+                yearSalary = years * 10000;
+            } else if (years <= 15) {
+                yearSalary = (5 * 10000) + ((years - 5) * 20000);
+            } else if (years <= 25) {
+                yearSalary = (5 * 10000) + (10 * 20000) + ((years - 15) * 30000);
+            } else {
+                yearSalary = (5 * 10000) + (10 * 20000) + (10 * 30000) + ((years - 25) * 40000);
+            }
+
+            document.getElementById('baseSalaryDisplay').value = fmt(base);
+            document.getElementById('yearSalaryDisplay').value = fmt(yearSalary);
+            
+            // Display Teacher Allowance (or 0 if general)
+            document.getElementById('teacherAllowanceDisplay').value = fmt(teacherAllowance);
+        }
+
+        // --- Helper Functions for Currency Input ---
+        function formatCurrencyInput(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value) {
+                value = parseInt(value).toLocaleString('en-US');
+                input.value = value;
+            } else {
+                input.value = '';
+            }
+        }
+
+        function parseFormatted(val) {
+            if (!val) return 0;
+            return parseFloat(val.replace(/,/g, '')) || 0;
+        }
+
+        // --- MAIN CALCULATION ---
+        function handleCalculate(e) {
+            e.preventDefault();
+            
+            // Validation
+            const fullName = document.getElementById('fullName').value;
+            const cls = document.getElementById('classSelect').value;
+            const lvl = document.getElementById('levelSelect').value;
+            
+            if (!fullName || !cls || !lvl) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'ຂໍ້ມູນບໍ່ຄົບຖ້ວນ',
+                    text: 'ກະລຸນາປ້ອນຊື່ ແລະ ເລືອກຊັ້ນ/ຂັ້ນ ໃຫ້ຄົບຖ້ວນ!',
+                    confirmButtonText: 'ຕົກລົງ',
+                    confirmButtonColor: currentType === 'teacher' ? '#27ae60' : '#2980b9'
+                });
+                return;
+            }
+
+            // Loading state
+            Swal.fire({
+                title: 'ກຳລັງຄຳນວນ...',
+                timer: 500,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            }).then(() => {
+                performCalculation(fullName, cls, lvl);
+            });
+        }
+
+        function performCalculation(fullName, cls, lvl) {
+            // 1. Inputs
+            const index = parseFloat(document.getElementById('indexDisplay').value);
+            const pct = parseFloat(document.getElementById('percentage').value) || 100;
+            const years = parseFloat(document.getElementById('yearsService').value) || 0;
+            const posMoney = parseFloat(document.getElementById('positionMoney').value) || 0;
+            
+            // Teacher specific inputs (default to 0 if general)
+            let teacherPct = 0;
+            let teacherAllowance = 0;
+            let combined = 0;
+            let technical = 0;
+            let performance = 0;
+
+            if (currentType === 'teacher') {
+                teacherPct = parseFloat(document.getElementById('teacherPercent').value) || 0;
+                combined = parseFormatted(document.getElementById('combinedClass').value);
+                technical = parseFormatted(document.getElementById('technicalTeacher').value);
+                performance = parseFormatted(document.getElementById('performance').value);
+            }
+
+            const remote = parseFormatted(document.getElementById('remoteAllowance').value);
+            const toxic = parseFormatted(document.getElementById('toxicAllowance').value);
+            const policy = parseFormatted(document.getElementById('policySupport').value);
+            const assembly = parseFormatted(document.getElementById('assemblyAllowance').value);
+            
+            const childCount = parseFloat(document.getElementById('childCount').value) || 0;
+            const spouse = parseFloat(document.getElementById('spouse').value) || 0;
+
+            // 2. Calculations
+            // Base
+            const baseSalary = (index * 9500) * (pct / 100);
+            
+            // Teacher Allowance Calculation
+            if (currentType === 'teacher') {
+                teacherAllowance = baseSalary * (teacherPct / 100);
+            }
+
+            // Year Salary
+            let yearSalary = 0;
+            if (years <= 5) yearSalary = years * 10000;
+            else if (years <= 15) yearSalary = 50000 + ((years - 5) * 20000);
+            else if (years <= 25) yearSalary = 50000 + 200000 + ((years - 15) * 30000);
+            else yearSalary = 50000 + 200000 + 300000 + ((years - 25) * 40000);
+
+            // Total Gross (12)
+            // Note: If general, teacherAllowance is 0
+            const totalGross = baseSalary + yearSalary + posMoney + teacherAllowance;
+
+            // Social Security (13)
+            const socialSecurity = totalGross * 0.08;
+
+            // After Social (14)
+            const afterSocial = totalGross - socialSecurity;
+
+            // Tax Base (19)
+            // Combined, technical, performance are 0 if general
+            const taxBase = afterSocial + remote + combined + technical + performance;
+
+            // Tax Calculation (15 - Progressive)
+            let tax = 0;
+            if (taxBase <= 1300000) {
+                tax = 0;
+            } else if (taxBase <= 5000000) {
+                tax = (taxBase - 1300000) * 0.05;
+            } else if (taxBase <= 15000000) {
+                tax = 185000 + ((taxBase - 5000000) * 0.10);
+            } else if (taxBase <= 25000000) {
+                tax = 1185000 + ((taxBase - 15000000) * 0.15);
+            } else if (taxBase <= 65000000) {
+                tax = 2685000 + ((taxBase - 25000000) * 0.20);
+            } else {
+                tax = 10685000 + ((taxBase - 65000000) * 0.25);
+            }
+
+            // After Tax (20)
+            const afterTax = taxBase - tax;
+
+            // Section 60 (24)
+            const section60 = afterTax + toxic + policy + assembly;
+
+            // Child Money (26)
+            const childMoney = childCount * 200000;
+
+            // Net Salary (28)
+            const netSalary = section60 + childMoney + spouse;
+
+            // --- FILL SLIP ---
+            const d = new Date();
+            document.getElementById('slipDate').textContent = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+            document.getElementById('resName').textContent = fullName;
+            document.getElementById('resClassLevel').textContent = `ຊັ້ນ ${cls} ຂັ້ນ ${lvl}`;
+            document.getElementById('resIndex').textContent = index;
+
+            document.getElementById('resBase').textContent = fmt(baseSalary);
+            document.getElementById('resYear').textContent = fmt(yearSalary);
+            document.getElementById('resPosition').textContent = fmt(posMoney);
+            
+            // Teacher Pct
+            document.getElementById('resTeacherPct').textContent = teacherPct;
+            document.getElementById('resTeacherMoney').textContent = fmt(teacherAllowance);
+
+            document.getElementById('resTotalGross').textContent = fmt(totalGross);
+            document.getElementById('resSocial').textContent = fmt(socialSecurity);
+            document.getElementById('resAfterSocial').textContent = fmt(afterSocial);
+
+            document.getElementById('resRemote').textContent = fmt(remote);
+            
+            // Teacher Extra
+            document.getElementById('resCombined').textContent = fmt(combined);
+            document.getElementById('resTechnical').textContent = fmt(technical);
+            document.getElementById('resPerformance').textContent = fmt(performance);
+
+            document.getElementById('resTaxBase').textContent = fmt(taxBase);
+            document.getElementById('resTax').textContent = fmt(tax);
+            document.getElementById('resAfterTax').textContent = fmt(afterTax);
+
+            document.getElementById('resToxic').textContent = fmt(toxic);
+            document.getElementById('resPolicy').textContent = fmt(policy);
+            document.getElementById('resAssembly').textContent = fmt(assembly);
+            document.getElementById('resSection60').textContent = fmt(section60);
+
+            document.getElementById('resChildCountText').textContent = childCount;
+            document.getElementById('resChildMoney').textContent = fmt(childMoney);
+            document.getElementById('resSpouse').textContent = fmt(spouse);
+
+            document.getElementById('resNetSalary').textContent = fmt(netSalary) + " ກີບ";
+
+            // Toggle Slip Rows based on type
+            const slipTeacherRows = document.querySelectorAll('.teacher-only-slip');
+            if (currentType === 'teacher') {
+                slipTeacherRows.forEach(row => row.classList.remove('hidden'));
+                document.getElementById('slipTitle').textContent = "ໃບບິນເງິນເດືອນ (ຄູ)";
+                document.getElementById('slipTitle').style.color = '#27ae60';
+                document.querySelector('.slip-header').style.borderBottomColor = '#27ae60';
+                document.querySelector('.slip-total').style.borderColor = '#27ae60';
+                document.querySelector('.slip-total .amount').style.color = '#27ae60';
+            } else {
+                slipTeacherRows.forEach(row => row.classList.add('hidden'));
+                document.getElementById('slipTitle').textContent = "ໃບບິນເງິນເດືອນ (ທົ່ວໄປ)";
+                document.getElementById('slipTitle').style.color = '#2980b9';
+                document.querySelector('.slip-header').style.borderBottomColor = '#2980b9';
+                document.querySelector('.slip-total').style.borderColor = '#2980b9';
+                document.querySelector('.slip-total .amount').style.color = '#2980b9';
+            }
+
+            // Show Modal
+            document.getElementById('resultArea').style.display = "flex";
+        }
+
+        function resetForm() {
+            Swal.fire({
+                title: 'ຢືນຢັນການລ້າງຂໍ້ມູນ?',
+                text: "ທ່ານຕ້ອງການລ້າງຂໍ້ມູນ ແລະ ເລີ່ມຄຳນວນໃໝ່?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'ລ້າງຂໍ້ມູນ',
+                cancelButtonText: 'ຍົກເລີກ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('salaryForm').reset();
+                    document.getElementById('levelSelect').innerHTML = '<option value="">ເລືອກຊັ້ນ...</option>';
+                    document.getElementById('levelSelect').disabled = true;
+                    // Clear displays
+                    document.getElementById('indexDisplay').value = '';
+                    document.getElementById('baseSalaryDisplay').value = '';
+                    document.getElementById('yearSalaryDisplay').value = '';
+                    document.getElementById('teacherAllowanceDisplay').value = '';
+                    closeModal();
+                    
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'ລ້າງຂໍ້ມູນສຳເລັດ'
+                    });
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('resultArea').style.display = "none";
+        }
+
+        function downloadImage() {
+            const element = document.getElementById("salarySlip");
+            
+            // Show loading
+            Swal.fire({
+                title: 'ກຳລັງບັນທຶກ...',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            html2canvas(element, {
+                scale: 2, 
+                backgroundColor: "#ffffff",
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Slip_${new Date().getTime()}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                Swal.close();
+            }).catch(err => {
+                Swal.fire('Error', 'ເກີດຂໍ້ຜິດພາດໃນການບັນທຶກ', 'error');
+            });
+        }
+
+        function fmt(num) {
+            return Math.round(num).toLocaleString('en-US');
+        }
+
+        function clearPreview() {
+            document.getElementById('indexDisplay').value = '';
+            document.getElementById('baseSalaryDisplay').value = '';
+            document.getElementById('yearSalaryDisplay').value = '';
+            document.getElementById('teacherAllowanceDisplay').value = '';
+        }
+
+        // Initialize default view
+        window.onload = function() {
+            setCalcType('teacher'); // Default
+        }
+    </script>
 </body>
 </html>
