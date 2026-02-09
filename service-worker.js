@@ -1,4 +1,9 @@
-const CACHE_NAME = 'ຄຳນວນເງີນເດືອນ';
+// 🔹 ປ່ຽນຄ່ານີ້ທຸກເທື່ອທີ່ອັບເດດລະບົບ
+const APP_VERSION = 'v2026.02.09';
+
+// 🔹 cache name = app name + version
+const CACHE_NAME = `ຄຳນວນເງີນເດືອນ-${APP_VERSION}`;
+
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -11,33 +16,32 @@ const ASSETS_TO_CACHE = [
     'https://cdn.jsdelivr.net/npm/sweetalert2@11'
 ];
 
-// Install Service Worker
+// ================= INSTALL =================
 self.addEventListener('install', (event) => {
+    self.skipWaiting(); // ໃຫ້ version ໃໝ່ເຮັດວຽກທັນທີ
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => {
-                return cache.addAll(ASSETS_TO_CACHE);
-            })
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll(ASSETS_TO_CACHE);
+        })
     );
 });
 
-// Fetch Assets (Cache First Strategy)
+// ================= FETCH (Cache First) =================
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                // Return cache if found, otherwise fetch from network
-                return response || fetch(event.request);
-            })
+        caches.match(event.request).then((response) => {
+            return response || fetch(event.request);
+        })
     );
 });
 
-// Activate & Cleanup Old Caches
+// ================= ACTIVATE =================
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cache) => {
+                    // 🔥 ລົບ cache ເກົ່າທີ່ບໍ່ກົງ version
                     if (cache !== CACHE_NAME) {
                         return caches.delete(cache);
                     }
@@ -45,4 +49,5 @@ self.addEventListener('activate', (event) => {
             );
         })
     );
+    self.clients.claim();
 });
