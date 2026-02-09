@@ -1,870 +1,1641 @@
 <!DOCTYPE html>
-<html lang="lo" class="scroll-smooth">
-
+<html lang="lo">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>IT-banban - Professional Solutions</title>
-
-    <meta name="description" content="Add-in Excel/Word ແລະ ບໍລິການດ້ານ IT ຄົບວົງຈອນ" />
-    <meta name="theme-color" content="#059669" />
-
-    <!-- Web Icon / Favicon -->
-    <link rel="icon" href="./icon-512.png" type="image/png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Salary Calculator 2026</title>
     
-    <!-- Fonts: Noto Sans Lao -->
+    <!-- PWA Settings -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#009688">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&family=Phetsarath&display=swap" rel="stylesheet">
     
-    <!-- Icons: FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- CSS Framework: Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Noto Sans Lao', 'sans-serif'],
-                        mono: ['Consolas', 'Monaco', 'Courier New', 'monospace'],
-                    },
-                    colors: {
-                        primary: '#059669', 
-                        secondary: '#0891b2',
-                    },
-                    animation: {
-                        'float': 'float 3s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'blob': 'blob 7s infinite',
-                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards', // Added missing animation
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        },
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Popup Library: SweetAlert2 -->
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Libraries -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        body {
-            font-family: 'Noto Sans Lao', sans-serif !important;
+        /* --- App Styles (Native Feel) --- */
+        :root {
+            --primary: #009688;
+            --primary-dark: #00796b;
+            --pension: #795548; /* Brown for Pension */
+            --accent: #ffab00;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #263238;
+            --text-light: #78909c;
+            --border-radius: 16px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.05);
+            --safe-area-bottom: env(safe-area-inset-bottom);
+            --nav-height: 70px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             -webkit-tap-highlight-color: transparent;
         }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; border: 2px solid #f1f5f9; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; border-color: #0f172a; }
 
-        /* Card Hover Effects */
-        .hover-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .hover-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+        body {
+            font-family: 'Noto Sans Lao', 'Phetsarath', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: calc(var(--nav-height) + var(--safe-area-bottom)); /* Space for nav bar */
+            overscroll-behavior-y: none;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Glassmorphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        .dark .glass {
-            background: rgba(17, 24, 39, 0.85);
+        /* App Header */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px 20px 25px 20px;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,150,136,0.2);
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+            transition: background 0.3s;
         }
         
-        /* Function Badge */
-        .func-badge {
-            display: inline-flex;
+        /* Pension Theme */
+        body.pension-mode .app-header {
+            background: linear-gradient(135deg, var(--pension), #5d4037);
+        }
+        body.pension-mode .btn-calc {
+            background: var(--pension);
+        }
+
+        .header-content {
+            display: flex;
             align-items: center;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
+            gap: 15px;
+        }
+
+        .app-logo {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            padding: 2px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            object-fit: contain;
+        }
+
+        .app-title h1 {
+            font-size: 1.1rem;
             font-weight: 700;
-            font-size: 0.85em;
+            line-height: 1.2;
+        }
+
+        .app-title p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        /* Scrollable Content Area */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 15px;
+            margin-top: -15px;
+            padding-top: 25px;
+            position: relative;
+            z-index: 5;
+            scroll-behavior: smooth;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #eceff1;
+        }
+
+        .card-header i {
+            color: var(--primary);
+            font-size: 1.1rem;
+            background: #e0f2f1;
+            padding: 8px;
+            border-radius: 10px;
+        }
+        
+        body.pension-mode .card-header i {
+            color: var(--pension);
+            background: #efebe9;
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        /* Home Page Styles */
+        .home-banner {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .home-banner h2 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .home-info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            border-left: 4px solid #2196f3;
+            line-height: 1.5;
+        }
+        
+        .regulation-text {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #455a64;
+        }
+        
+        .regulation-text strong {
+            color: #009688;
+            display: block;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .regulation-text ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+
+        .footer-credit {
+            text-align: center; 
+            color: #78909c; 
+            font-size: 0.75rem; 
+            margin-top: 30px; 
+            padding: 20px; 
+            background: #fff; 
+            border-radius: 16px;
+            line-height: 1.6;
+            border: 1px solid #eee;
+        }
+
+        /* Form Elements */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .required::after {
+            content: "*";
+            color: #ef5350;
+            margin-left: 2px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid #cfd8dc;
+            background: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+            -webkit-appearance: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,150,136,0.1);
+        }
+
+        input[readonly] {
+            background-color: #f1f8e9;
+            border-color: #c5e1a5;
+            color: #33691e;
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: calc(var(--nav-height) + var(--safe-area-bottom));
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: var(--safe-area-bottom);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+            z-index: 100;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #90a4ae;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            height: 100%;
+            padding-top: 10px;
+        }
+
+        .nav-item i {
+            font-size: 1.4rem;
             margin-bottom: 4px;
         }
 
-        /* Gradient Text */
-        .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(to right, #059669, #0891b2);
+        .nav-item.active {
+            color: var(--primary);
         }
         
-        /* Background Grid Pattern */
-        .bg-grid-pattern {
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 24px 24px;
+        .nav-item.active i {
+            transform: translateY(-2px);
         }
-        .dark .bg-grid-pattern {
-            background-image: radial-gradient(#334155 1px, transparent 1px);
+        
+        /* Pension Active Color */
+        .nav-item#nav-pension.active {
+            color: var(--pension);
         }
+
+        /* Action Buttons inside Form */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            border: none;
+            padding: 15px;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .btn-reset {
+            background: #eceff1;
+            color: #546e7a;
+        }
+
+        .btn-calc {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,150,136,0.4);
+            flex: 1.5;
+        }
+
+        /* Slip Modal & Layout */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .modal-overlay.active { display: flex; animation: fadeInModal 0.3s; }
+
+        .modal-content {
+            background: #fff;
+            width: 100%;
+            max-width: 600px;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+
+        /* DETAILED SLIP DESIGN */
+        .slip-paper {
+            background: white;
+            padding: 40px 30px;
+            position: relative;
+            color: #333;
+            font-family: 'Noto Sans Lao', sans-serif;
+        }
+
+        .slip-header-official {
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+        .slip-header-official h4 {
+            font-size: 1rem;
+            font-weight: normal;
+            margin: 0;
+        }
+        .slip-header-official h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 5px 0 0 0;
+            text-transform: uppercase;
+        }
+        .slip-divider-line {
+            border-bottom: 2px solid #000;
+            margin: 10px auto;
+            width: 50%;
+        }
+
+        .slip-meta {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+        }
+        .slip-meta-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .slip-section-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #bbb;
+            padding-bottom: 3px;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .slip-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: #444;
+        }
+        .slip-item.sub {
+            padding-left: 15px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+        .slip-item.total-sub {
+            font-weight: 600;
+            color: #000;
+            border-top: 1px dotted #ccc;
+            padding-top: 4px;
+            margin-top: 4px;
+        }
+
+        .val { font-family: 'Courier New', monospace; font-weight: 600; }
+        .val.minus { color: #d32f2f; }
+        .val.plus { color: #2e7d32; }
+
+        .slip-grand-total {
+            margin-top: 25px;
+            border: 2px solid #000;
+            padding: 15px;
+            text-align: center;
+            background: #fafafa;
+        }
+        .slip-grand-total .label { font-size: 0.9rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .slip-grand-total .amount { font-size: 1.8rem; font-weight: 800; color: #000; }
+
+        .slip-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        .modal-actions {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-close { background: #ffebee; color: #d32f2f; }
+        .btn-save { background: #e3f2fd; color: #1976d2; }
+        
+        .hidden { display: none; }
+        
+        /* Install Button for PWA */
+        #install-prompt {
+            display: none;
+            background: #263238;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 15px 15px 15px;
+            border-radius: 12px;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+        #install-prompt button {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
     </style>
-
-    <script>
-        // Theme Logic
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
 </head>
-
-<body class="bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-200 antialiased min-h-screen flex flex-col font-sans transition-colors duration-500 overflow-x-hidden">
-
-    <!-- Background Decorative Blobs -->
-    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-emerald-300/20 dark:bg-emerald-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-        <div class="absolute top-0 right-1/4 w-96 h-96 bg-cyan-300/20 dark:bg-cyan-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-purple-300/20 dark:bg-purple-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
-    </div>
+<body>
 
     <!-- Header -->
-    <header class="sticky top-0 z-50 glass border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm transition-all duration-300">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <a href="#" onclick="showPage('home')" class="flex items-center gap-3 group relative z-10">
-                    <div class="relative w-10 h-10 overflow-hidden rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-600 p-0.5 shadow-lg group-hover:scale-105 transition-transform duration-300">
-                        <div class="w-full h-full bg-white dark:bg-gray-900 rounded-[10px] flex items-center justify-center">
-                           <!-- Logo Image -->
-                           <img src="./icon-512.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="Logo" class="w-full h-full object-cover rounded-[9px]">
-                           <!-- Fallback Icon -->
-                           <i class="fas fa-code text-emerald-600 dark:text-emerald-400 text-lg hidden"></i>
-                        </div>
-                    </div>
-                    <span class="text-xl font-bold text-gray-800 dark:text-white tracking-tight">
-                        IT<span class="text-emerald-600 dark:text-emerald-400">-banban</span>
-                    </span>
-                </a>
-
-                <!-- Desktop Nav -->
-                <nav class="hidden md:flex items-center space-x-1 relative z-10 bg-gray-100/50 dark:bg-gray-800/50 p-1 rounded-xl backdrop-blur-sm">
-                    <a href="#" onclick="showPage('home')" class="nav-link px-4 py-2 rounded-lg text-sm font-semibold text-emerald-700 bg-white dark:bg-emerald-900/30 dark:text-emerald-400 shadow-sm transition-all">
-                        <i class="fas fa-home mr-2"></i>ໜ້າຫຼັກ
-                    </a>
-                    <a href="Setup_Word-Excel.html" class="nav-link px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:text-emerald-600 hover:bg-white/80 dark:text-gray-300 dark:hover:text-emerald-400 dark:hover:bg-gray-700 transition-all">
-                        <i class="fas fa-download mr-2"></i>ການຕິດຕັ້ງ
-                    </a>
-                    <a href="./Calculator/index.html" class="nav-link px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:text-emerald-600 hover:bg-white/80 dark:text-gray-300 dark:hover:text-emerald-400 dark:hover:bg-gray-700 transition-all">
-                        <i class="fas fa-calculator mr-2"></i>ເຄື່ອງຄຳນວນ
-                    </a>
-                    <a href="#" onclick="showPage('contact')" class="nav-link px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:text-emerald-600 hover:bg-white/80 dark:text-gray-300 dark:hover:text-emerald-400 dark:hover:bg-gray-700 transition-all">
-                        <i class="fas fa-headset mr-2"></i>ຕິດຕໍ່
-                    </a>
-                </nav>
-
-                <!-- Tools -->
-                <div class="flex items-center gap-3 relative z-10">
-                    <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 transition-all focus:outline-none ring-1 ring-gray-200 dark:ring-gray-700 shadow-sm hover:shadow">
-                        <i class="fas fa-moon hidden dark:block text-yellow-300 drop-shadow-[0_0_5px_rgba(253,224,71,0.5)]"></i>
-                        <i class="fas fa-sun block dark:hidden text-orange-500 drop-shadow-[0_0_3px_rgba(249,115,22,0.3)]"></i>
-                    </button>
-                    <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 focus:outline-none ring-1 ring-gray-200 dark:ring-gray-700">
-                        <i class="fas fa-bars text-lg"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl absolute w-full left-0 shadow-2xl z-40 transition-all">
-            <div class="p-4 space-y-2">
-                <a href="#" onclick="showPage('home')" class="flex items-center px-4 py-3 rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 font-bold border border-emerald-100 dark:border-emerald-800/50">
-                    <div class="w-8 h-8 rounded-full bg-white dark:bg-emerald-800 flex items-center justify-center mr-3 shadow-sm"><i class="fas fa-home text-sm"></i></div> 
-                    ໜ້າຫຼັກ
-                </a>
-                <a href="Setup_Word-Excel.html" class="flex items-center px-4 py-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 font-medium text-gray-700 dark:text-gray-200 border border-transparent">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mr-3 text-blue-600"><i class="fas fa-download text-sm"></i></div>
-                    Addin Word-Excel
-                </a>
-                <a href="./Calculator/index.html" class="flex items-center px-4 py-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 font-medium text-gray-700 dark:text-gray-200 border border-transparent">
-                    <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/50 flex items-center justify-center mr-3 text-orange-600"><i class="fas fa-calculator text-sm"></i></div>
-                    ເຄື່ອງຄຳນວນ
-                </a>
-                <a href="#" onclick="showPage('contact')" class="flex items-center px-4 py-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 font-medium text-gray-700 dark:text-gray-200 border border-transparent">
-                    <div class="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/50 flex items-center justify-center mr-3 text-rose-600"><i class="fas fa-heart text-sm"></i></div>
-                    ຕິດຕໍ່ & ສະໜັບສະໜູນ
-                </a>
+    <header class="app-header">
+        <div class="header-content">
+            <!-- Uses icon-512.png if available, otherwise fallback to URL for display -->
+            <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/bounpherng/IT-BANBAN/main/icon-512.png'" alt="Logo" class="app-logo">
+            <div class="app-title">
+                <h1 id="headerTitle">IT-BANBAN</h1>
+                <p>ລະບົບຄຳນວນເງິນເດືອນລັດຖະກອນທົວໄປ,ລັດຖະກອນຄູ ແລະ ບຳນານ ປີ2026</p>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow w-full max-w-6xl mx-auto px-2 md:px-4 py-4 md:py-8 space-y-16 relative z-10">
+    <!-- Scrollable Content -->
+    <div class="content-area">
+        
+        <!-- PWA Install Prompt -->
+        <div id="install-prompt">
+            <span>ຕິດຕັ້ງແອັບໄວ້ໃນມືຖືເພື່ອງ່າຍຕໍ່ການໃຊ້ງານ</span>
+            <button onclick="installPWA()">ຕິດຕັ້ງ</button>
+        </div>
+        
+        <!-- PAGE 1: HOME -->
+        <div id="page-home" class="page active">
+            <div class="home-banner">
+                <i class="fas fa-calculator" style="font-size: 60px; color: var(--primary); margin-bottom: 15px;"></i>
+                <h2>ຄຳນວນເງິນເດືອນລັດຖະກອນ</h2>
+                <p>Civil Servant Salary Calculation</p>
+            </div>
 
-        <!-- ================= HOME PAGE ================= -->
-        <div id="home-page" class="page active space-y-16 animate-fade-in-up">
-            
-            <!-- Hero Section -->
-            <div class="text-center space-y-6 py-6 md:py-10">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-gray-800 border border-emerald-100 dark:border-emerald-900/50 shadow-sm mb-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Professional Add-ins</span>
+            <!-- New Regulation Info Section -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-book"></i>
+                    <span class="card-title">ອ້າງອີງຕາມເອກະສານ</span>
                 </div>
-               
-                <h1 class="text-2xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight tracking-tight">
-                    ຍົກລະດັບວຽກງານເອກະສານ <br class="hidden sm:block"/>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-500">ໃຫ້ເປັນມືອາຊີບ</span>
-                </h1>
+                <div class="regulation-text">
+                    <strong>1. ຂໍ້ມູນພື້ນຖານຂອງເອກະສານ</strong>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>- ປະເພດ: ຄຳແນະນຳ ວ່າດ້ວຍການປະຕິບັດເງິນເດືອນ, ເງິນອຸດໜູນ ແລະ ເງິນນະໂຍບາຍຕ່າງໆ.</li>
+                        <li>- ເລກທີ: 4904/ກງ, ລົງວັນທີ 26 ທັນວາ 2025.</li>
+                        <li>- ເປົ້າໝາຍ: ພະນັກງານ-ລັດຖະກອນ, ຄູ, ທະຫານ, ຕຳຫຼວດ ແລະ ພະນັກງານບຳນານ-ເສຍອົງຄະ.</li>
+                    </ul>
 
-                <p class="text-sm md:text-lg text-gray-600 dark:text-gray-400 max-w-xl mx-auto font-light leading-relaxed px-4">
-                    ເຄື່ອງມືເສີມທີ່ຖືກອອກແບບມາເພື່ອຄົນລາວໂດຍສະເພາະ ໃຊ້ງານງ່າຍ ວ່ອງໄວ ແລະ ຖືກຕ້ອງຕາມລະບຽບການ.
-                </p>
-                
-                <div class="flex flex-wrap justify-center gap-3 pt-2">
-                    <a href="Setup_Word-Excel.html" class="px-6 py-3 md:px-8 md:py-4 rounded-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-sm md:text-base shadow-lg shadow-emerald-500/30 transition-all hover:-translate-y-1 hover:shadow-emerald-500/50 flex items-center gap-2 md:gap-3">
-                        <i class="fas fa-download"></i> ດາວໂຫລດເລີຍ
-                    </a>
-                    <a href="#" onclick="showPage('contact')" class="px-6 py-3 md:px-8 md:py-4 rounded-full bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-bold text-sm md:text-base border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all hover:-translate-y-1 shadow-sm flex items-center gap-2 md:gap-3">
-                        <i class="fas fa-comment-dots text-emerald-500"></i> ສອບຖາມຂໍ້ມູນ
-                    </a>
+                    <strong>2. ການປັບປຸງໂຄງສ້າງດັດສະນີ (ຊັ້ນ-ຂັ້ນ)</strong>
+                    <ul>
+                        <li>ກຸ່ມລັດຖະກອນ ແລະ ຄູ: ແບ່ງເປັນ 5 ຊັ້ນ (ຊັ້ນ I-V), ແຕ່ລະຊັ້ນມີ 15 ຂັ້ນ.</li>
+                        <li>ຄ່າດັດສະນີ: ເລີ່ມຕົ້ນ 260 (ຊັ້ນ 1 ຂັ້ນ 1) ຫາ 418 (ຊັ້ນ 5 ຂັ້ນ 15).</li>
+                        <li>ກຸ່ມບຳນານລະດັບສູງ: ຈັດຢູ່ໃນຊັ້ນ 6 ເຊິ່ງມີ 7 ຂັ້ນ (600-1,200).</li>
+                    </ul>
+
+                    <strong>3. ເງິນອຸດໜູນຕຳແໜ່ງ ແລະ ວິຊາການ</strong>
+                    <ul>
+                        <li>ຕຳແໜ່ງບໍລິຫານ (ລະດັບສູງ): 3,000,000 - 9,000,000 ກີບ.</li>
+                        <li>ຕຳແໜ່ງບໍລິຫານ (ທົ່ວໄປ): 1,100,000 - 2,500,000 ກີບ (8 ປະເພດ).</li>
+                        <li>ອຸດໜູນວິຊາການ: 900,000 ກີບ/ເດືອນ.</li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- Excel Section -->
-            <section class="hover-card bg-white dark:bg-gray-800 rounded-[2rem] md:rounded-[2.5rem] shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700 overflow-hidden relative group">
-                <!-- Decorative Background -->
-                <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-500 transform group-hover:scale-110 origin-top-right">
-                    <i class="fas fa-file-excel text-9xl"></i>
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-list-ul"></i>
+                    <span class="card-title">ຄຸນສົມບັດລະບົບ</span>
                 </div>
-                <div class="absolute inset-0 bg-gradient-to-b from-emerald-50/50 to-transparent dark:from-emerald-900/10 dark:to-transparent pointer-events-none"></div>
-                
-                <div class="h-1.5 w-full bg-gradient-to-r from-emerald-500 via-green-400 to-emerald-500"></div>
-                
-                <div class="p-6 md:p-12 space-y-8 md:space-y-12 relative z-10">
-                    <!-- Title Area -->
-                    <div class="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6 text-center md:text-left">
-                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white text-3xl md:text-4xl shrink-0 shadow-lg shadow-emerald-500/20">
-                            <i class="fas fa-table"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Add-in Excel Pro</h2>
-                            <p class="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">
-                                ເຄື່ອງມືເສີມສຳລັບ Microsoft Excel ທີ່ອອກແບບເພື່ອຊ່ວຍວຽກຄຳນວນເງິນເດືອນ ແລະ ວຽກບັນຊີຂອງພາກລັດ/ລັດ-ວິສາຫະກິດ.
-                                ມີຟັງຊັນ ແລະ ສູດທີ່ຖືກຕ້ອງຕາມລະບຽບການ ພ້ອມໃຊ້ທັນທີ ຊ່ວຍຫຼຸດຄວາມຜິດພາດ ແລະ ເພີ່ມຄວາມໄວໃນການເຮັດວຽກ.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Govt Functions -->
-                    <div class="space-y-6">
-                        <h3 class="text-lg md:text-xl font-bold text-sky-700 dark:text-sky-400 flex items-center gap-3 border-b border-gray-100 dark:border-gray-700 pb-3">
-                            <span class="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-900/50 flex items-center justify-center text-sm"><i class="fas fa-landmark"></i></span>
-                            ຟັງຊັນສຳລັບພາກລັດ (Government)
-                        </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                            <!-- Cards -->
-                            <div class="p-4 md:p-5 rounded-2xl bg-sky-50/50 dark:bg-gray-700/30 border border-sky-100 dark:border-gray-600 hover:border-sky-300 dark:hover:border-sky-500 hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all">
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="func-badge bg-white dark:bg-gray-800 text-sky-600 border border-sky-200 dark:border-sky-700">Ph_Akon</span>
-                                    <i class="fas fa-calculator text-sky-400/50"></i>
-                                </div>
-                                <div class="text-sm">
-                                    <strong class="text-gray-900 dark:text-white block mb-1">ຄຳນວນອາກອນ</strong>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">ຖືກຕ້ອງຕາມຫຼັກເກນ ແລະ ກວດສອບງ່າຍ</span>
-                                </div>
-                            </div>
-                            <!-- Card -->
-                            <div class="p-4 md:p-5 rounded-2xl bg-sky-50/50 dark:bg-gray-700/30 border border-sky-100 dark:border-gray-600 hover:border-sky-300 dark:hover:border-sky-500 hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all">
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="func-badge bg-white dark:bg-gray-800 text-sky-600 border border-sky-200 dark:border-sky-700">Ph_Datsani</span>
-                                    <i class="fas fa-chart-line text-sky-400/50"></i>
-                                </div>
-                                <div class="text-sm">
-                                    <strong class="text-gray-900 dark:text-white block mb-1">ຄຳນວນດັດສະນີ</strong>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">ຊອກຫາດັດສະນີ ແລະ ປັບປຸງມູນຄ່າ</span>
-                                </div>
-                            </div>
-                            <!-- Card -->
-                            <div class="p-4 md:p-5 rounded-2xl bg-sky-50/50 dark:bg-gray-700/30 border border-sky-100 dark:border-gray-600 hover:border-sky-300 dark:hover:border-sky-500 hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all">
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="func-badge bg-white dark:bg-gray-800 text-sky-600 border border-sky-200 dark:border-sky-700">Ph_Pikan</span>
-                                    <i class="fas fa-wheelchair text-sky-400/50"></i>
-                                </div>
-                                <div class="text-sm">
-                                    <strong class="text-gray-900 dark:text-white block mb-1">ເງິນປີການ</strong>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">ຄຳນວນເງິນປີການຢ່າງເປັນລະບົບ</span>
-                                </div>
-                            </div>
-                            <!-- Card -->
-                            <div class="p-4 md:p-5 rounded-2xl bg-sky-50/50 dark:bg-gray-700/30 border border-sky-100 dark:border-gray-600 hover:border-sky-300 dark:hover:border-sky-500 hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all">
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="func-badge bg-white dark:bg-gray-800 text-sky-600 border border-sky-200 dark:border-sky-700">Ph_Ngoenduean</span>
-                                    <i class="fas fa-coins text-sky-400/50"></i>
-                                </div>
-                                <div class="text-sm">
-                                    <strong class="text-gray-900 dark:text-white block mb-1">ເງິນເດືອນ</strong>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">ຄຳນວນຕາມໂຄງສ້າງ ຫຼຸດຜ່ອນຄວາມຜິດພາດ</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Enterprise Functions -->
-                    <div class="space-y-6">
-                        <h3 class="text-lg md:text-xl font-bold text-rose-700 dark:text-rose-400 flex items-center gap-3 border-b border-gray-100 dark:border-gray-700 pb-3">
-                            <span class="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-900/50 flex items-center justify-center text-sm"><i class="fas fa-building"></i></span>
-                            ຟັງຊັນສຳລັບວິສາຫະກິດ (Enterprise)
-                        </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                            <!-- Cards -->
-                             <div class="p-4 md:p-5 rounded-2xl bg-rose-50/50 dark:bg-gray-700/30 border border-rose-100 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-500 hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all">
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="func-badge bg-white dark:bg-gray-800 text-rose-600 border border-rose-200 dark:border-rose-700">Bp_UtNun...</span>
-                                    <i class="fas fa-baby-carriage text-rose-400/50"></i>
-                                </div>
-                                <div class="text-sm">
-                                    <strong class="text-gray-900 dark:text-white block mb-1">ຄ່າຊ່ວຍເກີດລູກ</strong>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">ຄຳນວນຄ່າສະຫຼຸບສິດປະໂຫຍດ</span>
-                                </div>
-                            </div>
-                            <div class="p-4 md:p-5 rounded-2xl bg-rose-50/50 dark:bg-gray-700/30 border border-rose-100 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-500 hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all">
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="func-badge bg-white dark:bg-gray-800 text-rose-600 border border-rose-200 dark:border-rose-700">Bp_bamned...</span>
-                                    <i class="fas fa-hand-holding-heart text-rose-400/50"></i>
-                                </div>
-                                <div class="text-sm">
-                                    <strong class="text-gray-900 dark:text-white block mb-1">ບຳເນັດເກີດລູກ</strong>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">ຄຳນວນບຳເນັດຕາມເງື່ອນໄຂ</span>
-                                </div>
-                            </div>
-                            <div class="p-4 md:p-5 rounded-2xl bg-rose-50/50 dark:bg-gray-700/30 border border-rose-100 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-500 hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all">
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="func-badge bg-white dark:bg-gray-800 text-rose-600 border border-rose-200 dark:border-rose-700">Bp_bumnat</span>
-                                    <i class="fas fa-sack-dollar text-rose-400/50"></i>
-                                </div>
-                                <div class="text-sm">
-                                    <strong class="text-gray-900 dark:text-white block mb-1">ບຳເນັດພະນັກງານ</strong>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">ຄຳນວນບຳເນັດພະນັກງານ</span>
-                                </div>
-                            </div>
-                            <div class="p-4 md:p-5 rounded-2xl bg-rose-50/50 dark:bg-gray-700/30 border border-rose-100 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-500 hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all">
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="func-badge bg-white dark:bg-gray-800 text-rose-600 border border-rose-200 dark:border-rose-700">Bp_SiaChiwit</span>
-                                    <i class="fas fa-heart-pulse text-rose-400/50"></i>
-                                </div>
-                                <div class="text-sm">
-                                    <strong class="text-gray-900 dark:text-white block mb-1">ເງິນຊ່ວຍເສຍຊີວິດ</strong>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">ຄຳນວນເງິນຊ່ວຍເຫຼືອທັນທີ</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FIXED CODE EXAMPLE BOX -->
-                    <div class="relative group">
-                        <!-- Box Container: Adaptive BG (White in Light, Dark in Dark) -->
-                        <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 md:p-10 shadow-2xl border border-gray-200 dark:border-gray-700 relative overflow-hidden transition-colors duration-300">
-                            
-                            <!-- Background Decoration (Light/Dark safe) -->
-                            <div class="absolute top-0 right-0 p-8 opacity-5 dark:opacity-20 pointer-events-none">
-                                <i class="fas fa-terminal text-8xl text-gray-900 dark:text-white"></i>
-                            </div>
-
-                            <div class="relative z-10 space-y-6 md:space-y-8">
-                                <!-- Header -->
-                                <div class="space-y-4">
-                                    <h3 class="text-lg md:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                                        <span class="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400"><i class="fas fa-wand-magic-sparkles"></i></span>
-                                        ຟັງຊັ້ນພິເສດ: ແປງຕົວເລກເປັນຕົວໜັງສື
-                                    </h3>
-
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm md:text-lg max-w-3xl leading-relaxed">
-                                        <span class="font-semibold text-emerald-600 dark:text-emerald-400 font-mono">it_SpellNumber</span>
-                                        ແມ່ນຟັງຊັນພິເສດທີ່ຊ່ວຍແປງຕົວເລກເງິນໃຫ້ເປັນຕົວໜັງສືແບບອັດຕະໂນມັດ ຮອງຮັບຫຼາຍພາສາ ເໝາະສຳລັບໃບບິນ ແລະ ເອກະສານການເງິນ.
-                                    </p>
-
-                                    <!-- Language Tags -->
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="lang-tag">🇱🇦 LA</span>
-                                        <span class="lang-tag">🇹🇭 TH</span>
-                                        <span class="lang-tag">🇺🇸 US</span>
-                                        <span class="lang-tag">🇨🇳 CN</span>
-                                    </div>
-                                </div>
-
-                                <!-- Code Terminal: Always nice contrast -->
-                                <div class="rounded-xl overflow-hidden shadow-inner border border-gray-200 dark:border-gray-700">
-                                    <!-- Terminal Header -->
-                                    <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 flex items-center gap-2 border-b border-gray-200 dark:border-gray-700">
-                                        <div class="flex gap-1.5">
-                                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                                        </div>
-                                        <div class="ml-4 text-xs font-mono text-gray-500 dark:text-gray-400">Excel Formula Bar</div>
-                                    </div>
-                                    
-                                    <!-- Code Content: Light Mode = Light Gray, Dark Mode = Dark -->
-                                    <div class="bg-gray-50 dark:bg-black/80 p-4 md:p-6 font-mono text-xs md:text-base space-y-4 md:space-y-5 transition-colors duration-300 overflow-x-auto">
-                                        
-                                        <!-- LA -->
-                                        <div class="code-row">
-                                            <div class="code-command">
-                                                =it_SpellNumber(15000, <span class="code-str">"la"</span>)
-                                            </div>
-                                            <div class="code-arrow">➜</div>
-                                            <div class="code-result whitespace-nowrap">ໜຶ່ງໝື່ນຫ້າພັນກີບຖ້ວນ</div>
-                                        </div>
-
-                                        <!-- TH -->
-                                        <div class="code-row">
-                                            <div class="code-command">
-                                                =it_SpellNumber(15000, <span class="code-str">"th"</span>)
-                                            </div>
-                                            <div class="code-arrow">➜</div>
-                                            <div class="code-result whitespace-nowrap">หนึ่งหมื่นห้าพันบาทถ้วน</div>
-                                        </div>
-
-                                        <!-- US -->
-                                        <div class="code-row">
-                                            <div class="code-command">
-                                                =it_SpellNumber(15000, <span class="code-str">"us"</span>)
-                                            </div>
-                                            <div class="code-arrow">➜</div>
-                                            <div class="code-result whitespace-nowrap">Fifteen thousand Kips only</div>
-                                        </div>
-
-                                        <!-- CN -->
-                                        <div class="code-row">
-                                            <div class="code-command">
-                                                =it_SpellNumber(15000, <span class="code-str">"cn"</span>)
-                                            </div>
-                                            <div class="code-arrow">➜</div>
-                                            <div class="code-result whitespace-nowrap">一万五千基普整</div>
-                                        </div>
-                                        
-                                        <!-- EN -->
-                                        <div class="code-row">
-                                            <div class="code-command">
-                                                =it_SpellNumber(15000, <span class="code-str">"en"</span>)
-                                            </div>
-                                            <div class="code-arrow">➜</div>
-                                            <div class="code-result whitespace-nowrap">Fifteen thousand only</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Styles specific to the Code Box logic -->
-                    <style>
-                        /* Tags */
-                        .lang-tag {
-                            font-size: 0.75rem;
-                            font-weight: 700;
-                            padding: 4px 12px;
-                            border-radius: 9999px;
-                            background-color: #f3f4f6;
-                            color: #4b5563;
-                            border: 1px solid #e5e7eb;
-                        }
-                        .dark .lang-tag {
-                            background-color: rgba(255,255,255,0.1);
-                            color: #e5e7eb;
-                            border-color: rgba(255,255,255,0.2);
-                        }
-
-                        /* Code Block Styles Adaptive */
-                        .code-row {
-                            display: grid;
-                            gap: 0.5rem;
-                            align-items: center;
-                            grid-template-columns: 1fr;
-                        }
-                        @media (min-width: 768px) {
-                            .code-row { grid-template-columns: auto auto 1fr; }
-                        }
-                        
-                        /* Command Color */
-                        .code-command { color: #6d28d9; /* purple-700 */ font-weight: 600; }
-                        .dark .code-command { color: #a78bfa; /* purple-400 */ }
-                        
-                        /* String Color */
-                        .code-str { color: #059669; /* emerald-600 */ }
-                        .dark .code-str { color: #34d399; /* emerald-400 */ }
-                        
-                        /* Arrow */
-                        .code-arrow { color: #9ca3af; display: none; }
-                         @media (min-width: 768px) {
-                            .code-arrow { display: block; }
-                        }
-                        
-                        /* Result Color */
-                        .code-result { color: #b45309; /* amber-700 */ font-family: 'Noto Sans Lao', sans-serif; }
-                        .dark .code-result { color: #fcd34d; /* amber-300 */ }
-                    </style>
-
-                </div>
-            </section>
-
-            <!-- Word Section -->
-            <section class="hover-card bg-white dark:bg-gray-800 rounded-[2rem] md:rounded-[2.5rem] shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700 overflow-hidden relative group">
-                <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <i class="fas fa-file-word text-9xl"></i>
-                </div>
-                <div class="h-1.5 w-full bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-600"></div>
-                
-                <div class="p-6 md:p-12 space-y-8 md:space-y-10 relative z-10">
-                    <div class="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6 text-center md:text-left">
-                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-3xl md:text-4xl shrink-0 shadow-lg shadow-blue-500/20">
-                            <i class="fas fa-file-signature"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Add-in Word Tools</h2>
-                            <p class="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-2">ເຄື່ອງມືເສີມສຳລັບ Microsoft Word ທີ່ຊ່ວຍໃນການຈັດໜ້າເອກະສານ ແລະ ຄຳນວນແບບ Smart Highlight.</p>
-                        </div>
-                    </div>
-
-                    <!-- Highlight Calculation -->
-                    <div class="bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 rounded-2xl p-6 md:p-8">
-                        <h3 class="text-lg md:text-xl font-bold text-amber-800 dark:text-amber-400 mb-6 flex items-center gap-3">
-                            <span class="p-2 bg-amber-100 dark:bg-amber-900 rounded-lg"><i class="fas fa-highlighter"></i></span>
-                            1. ຄຳນວນດ້ວຍສີ (Smart Highlight)
-                        </h3>
-                        <div class="flex flex-col lg:flex-row gap-8 items-center">
-                            <div class="flex-1 text-sm md:text-base text-gray-700 dark:text-gray-300 space-y-4">
-                                <p>
-                                    ບໍ່ຈຳເປັນຕ້ອງສ້າງຕາຕະລາງ! ພຽງແຕ່ <span class="font-bold bg-amber-200 dark:bg-amber-800 dark:text-white px-1 rounded">ທາສີໃສ່ຕົວເລກ</span> ລະບົບຈະຄຳນວນຜົນລວມ ຫຼື ຄ່າສະເລ່ຍໃຫ້ທັນທີ. 
-                                </p>
-                                <div class="flex flex-wrap gap-3 text-xs font-bold text-gray-600 dark:text-gray-400">
-                                    <span class="flex items-center gap-2 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700"><div class="w-3 h-3 bg-yellow-300 rounded-full ring-1 ring-gray-300"></div> ຂໍ້ມູນເຂົ້າ (Input)</span>
-                                    <span class="flex items-center gap-2 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700"><div class="w-3 h-3 bg-green-400 rounded-full ring-1 ring-gray-300"></div> ຜົນລັບ (Result)</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Demo Box -->
-                            <div class="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg font-serif w-full md:w-auto min-w-[300px] transform rotate-1 hover:rotate-0 transition-transform duration-300 relative">
-                                <div class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">LIVE DEMO</div>
-                                <p class="mb-3 text-gray-800 dark:text-gray-200">ລາຍການທີ 1: <span class="bg-yellow-300 text-black px-1 font-semibold selection:bg-yellow-300 rounded-sm">500,000</span> ກີບ</p>
-                                <p class="mb-3 text-gray-800 dark:text-gray-200">ລາຍການທີ 2: <span class="bg-yellow-300 text-black px-1 font-semibold selection:bg-yellow-300 rounded-sm">500,000</span> ກີບ</p>
-                                <div class="border-b-2 border-dotted border-gray-300 dark:border-gray-600 my-4 relative">
-                                    <i class="fas fa-plus-circle absolute -top-2.5 left-1/2 -translate-x-1/2 text-gray-300 dark:text-gray-600 bg-white dark:bg-gray-900 px-1"></i>
-                                </div>
-                                <p class="text-lg font-bold text-gray-900 dark:text-white">ລວມ: <span class="bg-green-400 text-black px-2 py-0.5 rounded-sm shadow-sm ring-2 ring-green-400/30">1,000,000</span> ກີບ</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <!-- Feature 2 -->
-                        <div class="p-6 rounded-2xl bg-indigo-50/50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-900/30">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-white dark:bg-indigo-900 shadow-sm flex items-center justify-center text-indigo-600 dark:text-indigo-400"><i class="fas fa-magic"></i></div>
-                                2. ຈັດໜ້າເອກະສານອັດຕະໂນມັດ
-                            </h3>
-                            <ul class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
-                                <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-500"></i> ຈັດຮູບແບບມາດຕະຖານໃນ 1 ຄລິກ</li>
-								 <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-500"></i> ກຳນົດຂອບເຈ້ຍຕາມລະບຽບ</li>
-                                <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-500"></i> ຕັ້ງຟອນ Phetsarath OT & Times New Roman</li>
-                            </ul>
-                        </div>
-                        
-                        <!-- Feature 3 -->
-                        <div class="p-6 rounded-2xl bg-purple-50/50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-900/30">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-white dark:bg-purple-900 shadow-sm flex items-center justify-center text-purple-600 dark:text-purple-400"><i class="fas fa-spell-check"></i></div>
-                                3. ເຄື່ອງມືເສີມອື່ນໆ
-                            </h3>
-                            <ul class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
-                                <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-500"></i> ແປງເລກເປັນຄຳອ່ານ (ລາວ/ອັງກິດ)</li>
-                                <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-500"></i> ຫຼຸດຄວາມຜິດພາດໃນການພິມ</li>
-                                <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-500"></i> ເພີ່ມຄວາມນ່າເຊື່ອຖືໃຫ້ເອກະສານ</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-             <!-- Services Section -->
-             <section class="hover-card bg-white dark:bg-gray-800 rounded-[2rem] md:rounded-[2.5rem] shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700 overflow-hidden relative">
-                <div class="h-1.5 w-full bg-gradient-to-r from-orange-500 via-rose-500 to-orange-500"></div>
-                <div class="p-6 md:p-12 space-y-8">
-                     <div class="flex items-center gap-6">
-                        <div class="w-16 h-16 rounded-2xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 text-3xl shrink-0 shadow-inner">
-                            <i class="fas fa-toolbox"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">ບໍລິການອື່ນໆ & ຮັບພັດທະນາ</h2>
-                            <p class="text-gray-500 dark:text-gray-400 mt-1">Software Solutions ແລະ ການຝຶກອົບຮົມ</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                        <!-- Service 1 -->
-                        <div class="bg-gray-50 dark:bg-gray-700/30 p-6 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:border-orange-300 dark:hover:border-orange-500 transition-colors group">
-                            <div class="w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-sm text-orange-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                            </div>
-                            <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-3">ສອນ Word / Excel</h4>
-                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-2">
-                                <li><i class="fas fa-check text-orange-500 mr-2"></i> ຈັດໜ້າເອກະສານ & ສາລະບານ</li>
-                                <li><i class="fas fa-check text-orange-500 mr-2"></i> ສູດ Excel ຂັ້ນສູງ</li>
-                            </ul>
-                        </div>
-
-                        <!-- Service 2 -->
-                        <div class="bg-gray-50 dark:bg-gray-700/30 p-6 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:border-cyan-300 dark:hover:border-cyan-500 transition-colors group">
-                            <div class="w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-sm text-cyan-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                                <i class="fas fa-laptop-medical"></i>
-                            </div>
-                            <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-3">ບໍລິການ IT Support</h4>
-                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-2">
-                                <li><i class="fas fa-check text-cyan-500 mr-2"></i> ຕິດຕັ້ງ Windows & Office</li>
-                                <li><i class="fas fa-check text-cyan-500 mr-2"></i> ແກ້ໄຂບັນຫາຄອມພິວເຕີ</li>
-                            </ul>
-                        </div>
-
-                        <!-- Service 3 -->
-                        <div class="bg-gray-50 dark:bg-gray-700/30 p-6 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:border-pink-300 dark:hover:border-pink-500 transition-colors group">
-                            <div class="w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-sm text-pink-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                                <i class="fas fa-code"></i>
-                            </div>
-                            <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-3">ຮັບພັດທະນາລະບົບ</h4>
-                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-2">
-                                <li><i class="fas fa-check text-pink-500 mr-2"></i> ລະບົບເງິນເດືອນ (Payroll)</li>
-                                <li><i class="fas fa-check text-pink-500 mr-2"></i> ສ້າງຟັງຊັນຕາມໃຈສັ່ງ</li>
-                            </ul>
-                        </div>
-                    </div>
-                 </div>
-            </section>
-        </div> 
-
-        <!-- ================= CONTACT PAGE ================= -->
-        <div id="contact-page" class="page hidden space-y-12 animate-fade-in-up relative">
-            
-             <div class="text-center space-y-6 py-10">
-                <h2 class="text-3xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight">
-                    ຕິດຕໍ່ & <span class="text-emerald-600 dark:text-emerald-400">ສະໜັບສະໜູນ</span>
-                </h2>
-                <div class="w-24 h-1.5 bg-gradient-to-r from-emerald-500 to-cyan-500 mx-auto rounded-full"></div>
-                <p class="text-gray-500 dark:text-gray-400 max-w-lg mx-auto text-lg">
-                    ພວກເຮົາຍິນດີໃຫ້ຄຳປຶກສາ ແລະ ຮັບຟັງຄຳຄິດເຫັນຂອງທ່ານສະເໝີ
-                </p>
+                <ul style="padding-left: 20px; color: var(--text-main); font-size: 0.95rem; line-height: 1.6;">
+                    <li>ແຍກການຄຳນວນ ລັດຖະກອນ, ຄູ ແລະ ບຳນານ</li>
+                    <li>ລະບົບຊົດເຊີຍເງິນນະໂຍບາຍຊ່ວຍໜູນ (3 ລ້ານກີບ)</li>
+                    <li>ລ້າງຂໍ້ມູນອັດຕະໂນມັດເມື່ອປ່ຽນໜ້າ</li>
+                    <li>ໃບບິນແບບລະອຽດ (Detailed Slip)</li>
+                </ul>
             </div>
+            
+            <!-- Updated Footer Credit -->
+            <div class="footer-credit">
+                <i class="fas fa-code" style="color: var(--primary); font-size: 1.5rem; margin-bottom: 10px;"></i><br>
+                ລະບົບຄຳນວນເງິນເດືອນນີ້: ສ້າງຂຶ້ນມາ
+                ເພື່ອໃຫ້ຜູ້ທີ່ສົນໃຈຢາກຄິດໄລ່ເງິນເດືອນຂອງຕົນເອງໃນເບື້ອງຕົ້ນເທົ່ານັ້ນ<br><br>
+                <strong>ຜູ້ສ້າງ: ທ. ບຸນເຜີ້ງ ເພັດໄຊຍະພູມ</strong><br>
+                 © 2026
+            </div>
+            <div style="height: 20px;"></div>
+        </div>
 
-            <!-- Buy Coffee Section (Interactive) -->
-            <div class="max-w-md mx-auto relative group cursor-pointer" onclick="showQRCode()">
-                <div class="absolute -inset-1 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 rounded-[2.5rem] blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-                <div class="relative bg-white dark:bg-gray-800 rounded-[2.5rem] p-10 text-center border border-gray-100 dark:border-gray-700 shadow-2xl overflow-hidden hover:scale-[1.02] transition-transform duration-300">
-                    
-                    <!-- Floating Icon -->
-                    <div class="mb-8 relative inline-block">
-                        <div class="absolute inset-0 bg-amber-400 blur-xl opacity-20 rounded-full animate-pulse-slow"></div>
-                        <i class="fas fa-mug-hot text-amber-500 text-7xl animate-float drop-shadow-lg"></i>
+        <!-- PAGE 2: CALCULATOR (Shared for Teacher & Civil) -->
+        <div id="page-calc" class="page">
+            <form id="salaryForm" onsubmit="return false;">
+                <!-- Teacher Mode Header -->
+                <div id="teacherModeBanner" class="home-info-box hidden" style="background: #e8f5e9; border-color: #4caf50; color: #2e7d32;">
+                    <i class="fas fa-chalkboard-teacher"></i> ທ່ານພວມຢູ່ໃນໂຫມດ: <strong>ຄຳນວນເງິນເດືອນຄູ</strong>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-user"></i>
+                        <span class="card-title">ຂໍ້ມູນທົ່ວໄປ</span>
                     </div>
+                    <div class="form-group">
+                        <label class="required">ຊື່ ແລະ ນາມສະກຸນ</label>
+                        <input type="text" id="fullName" placeholder="ປ້ອນຊື່ຂອງທ່ານ..." required>
+                    </div>
+                </div>
 
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">ລ້ຽງກາເຟນັກພັດທະນາ</h3>
-                    <p class="text-gray-500 dark:text-gray-400 mb-8">
-                        ຖືກໃຈຜົນງານບໍ? ທ່ານສາມາດສະໜັບສະໜູນ<br/>ເພື່ອເປັນກຳລັງໃຈໃຫ້ພວກເຮົາພັດທະນາຕໍ່ໄປ
-                    </p>
+                <!-- Position Info -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-briefcase"></i>
+                        <span class="card-title">ຂໍ້ມູນຕຳແໜ່ງ & ຊັ້ນຂັ້ນ</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="required">ຊັ້ນ</label>
+                            <select id="classSelect" onchange="updateLevels()" required>
+                                <option value="">ເລືອກ...</option>
+                                <option value="1">ຊັ້ນ 1</option>
+                                <option value="2">ຊັ້ນ 2</option>
+                                <option value="3">ຊັ້ນ 3</option>
+                                <option value="4">ຊັ້ນ 4</option>
+                                <option value="5">ຊັ້ນ 5</option>
+                                <option value="6">ຊັ້ນ 6</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">ຂັ້ນ</label>
+                            <select id="levelSelect" onchange="updateIndex()" required disabled>
+                                <option value="">...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>ດັດສະນີ (Auto)</label>
+                            <input type="text" id="indexDisplay" readonly placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">ເປີເຊັນໄດ້ຮັບ (%)</label>
+                            <input type="number" id="percentage" value="100" inputmode="numeric">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">ປີການ (ປີ)</label>
+                        <input type="number" id="yearsService" value="0" inputmode="numeric">
+                    </div>
+                    <div class="form-group">
+                        <label>ເງິນຕຳແໜ່ງ</label>
+                        <select id="positionMoney">
+                            <option value="0">ບໍ່ມີ / ພະນັກງານ 95</option>
+                            <option value="900000">ວິຊາການ - 900,000</option>
+                            <option value="1100000">ບໍລິຫານ 8 - 1,100,000</option>
+                            <option value="1300000">ບໍລິຫານ 7 - 1,300,000</option>
+                            <option value="1500000">ບໍລິຫານ 6 - 1,500,000</option>
+                            <option value="1700000">ບໍລິຫານ 5 - 1,700,000</option>
+                            <option value="1900000">ບໍລິຫານ 4 - 1,900,000</option>
+                            <option value="2100000">ບໍລິຫານ 3 - 2,100,000</option>
+                            <option value="2300000">ບໍລິຫານ 2 - 2,300,000</option>
+                            <option value="2500000">ບໍລິຫານ 1 - 2,500,000</option>
+                            <option value="3000000">ການນຳ 6/1 - 3,000,000</option>
+                            <option value="4000000">ການນຳ 6/2 - 4,000,000</option>
+                            <option value="5000000">ການນຳ 6/3 - 5,000,000</option>
+                            <option value="6000000">ການນຳ 6/4 - 6,000,000</option>
+                            <option value="7000000">ການນຳ 6/5 - 7,000,000</option>
+                            <option value="8000000">ການນຳ 6/6 - 8,000,000</option>
+                            <option value="9000000">ການນຳ 6/7 - 9,000,000</option>
+                        </select>
+                    </div>
+                </div>
 
-                    <button class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold shadow-lg shadow-orange-500/30 flex items-center justify-center gap-3 group-hover:shadow-orange-500/50 transition-all">
-                        <i class="fas fa-qrcode"></i> ກົດເພື່ອສະແກນ QR Code
+                <!-- Teacher Allowance (Dynamic Display) -->
+                <div class="card hidden" id="teacherSection">
+                    <div class="card-header">
+                        <i class="fas fa-school"></i>
+                        <span class="card-title">ອຸດໜູນອາຊີບຄູ</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label>ເປີເຊັນອຸດໜູນ (%)</label>
+                            <select id="teacherPercent">
+                                <option value="0">0% (ບໍ່ໄດ້ຮັບ)</option>
+                                <option value="10">10%</option>
+                                <option value="15">15%</option>
+                                <option value="20">20%</option>
+                                <option value="25">25%</option>
+                                <option value="30">30%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>ສອນຫ້ອງຄວບ</label>
+                            <input type="text" id="combinedClass" placeholder="0" class="money-input">
+                        </div>
+                        <div class="form-group">
+                            <label>ຕຳແໜ່ງວິຊາການຄູ</label>
+                            <input type="text" id="technicalTeacher" placeholder="0" class="money-input">
+                        </div>
+                        <div class="form-group full">
+                            <label>ຕາມຜົນປະເມີນ</label>
+                            <input type="text" id="performance" placeholder="0" class="money-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Allowances -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-coins"></i>
+                        <span class="card-title">ເງິນອຸດໜູນ & ນະໂຍບາຍ</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>ຫ່າງໄກສອກຫຼີກ</label>
+                            <input type="text" id="remoteAllowance" placeholder="0" class="money-input">
+                        </div>
+                        <div class="form-group">
+                            <label>ເງິນທາດເບື່ອ</label>
+                            <input type="text" id="toxicAllowance" placeholder="0" class="money-input">
+                        </div>
+                        <div class="form-group">
+                            <label>ນະໂຍບາຍຊ່ວຍໜູນ</label>
+                            <input type="text" id="policySupport" placeholder="0" class="money-input">
+                        </div>
+                        <div class="form-group">
+                            <label>ອໜ ສະມາຊິກສະພາ</label>
+                            <input type="text" id="assemblyAllowance" placeholder="0" class="money-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Family -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-users"></i>
+                        <span class="card-title">ຄອບຄົວ</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>ຈຳນວນລູກ (≤18ປີ)</label>
+                            <input type="number" id="childCount" value="0" inputmode="numeric">
+                        </div>
+                        <div class="form-group">
+                            <label>ຄູ່ສົມລົດ</label>
+                            <select id="spouse">
+                                <option value="0">ບໍ່ມີ</option>
+                                <option value="200000">ມີ (200,000 ກີບ)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-reset" onclick="resetForm(true)">
+                        <i class="fas fa-redo"></i> ລ້າງ
                     </button>
-                    
-                    <div class="mt-6 text-xs text-gray-400 font-mono">
-                        One Heart <i class="fas fa-heart text-rose-500 animate-pulse mx-1"></i> One Coffee
+                    <button class="btn btn-calc" onclick="handleCalculate()">
+                        <i class="fas fa-calculator"></i> ຄຳນວນ
+                    </button>
+                </div>
+                <div style="height: 20px;"></div>
+            </form>
+        </div>
+
+        <!-- PAGE 3: PENSION CALCULATOR -->
+        <div id="page-pension" class="page">
+            <div class="home-info-box" style="background: #efebe9; border-color: #795548; color: #5d4037;">
+                <i class="fas fa-blind"></i> ທ່ານພວມຢູ່ໃນໂຫມດ: <strong>ຄຳນວນບຳນານ (Pension)</strong>
+            </div>
+
+            <form id="pensionForm" onsubmit="return false;">
+                <!-- Personal Info -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-user"></i>
+                        <span class="card-title">ຂໍ້ມູນທົ່ວໄປ</span>
                     </div>
+                    <div class="form-group">
+                        <label class="required">ຊື່ ແລະ ນາມສະກຸນ</label>
+                        <input type="text" id="p_fullName" placeholder="ປ້ອນຊື່..." required>
+                    </div>
+                </div>
+
+                <!-- Position & Index -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-briefcase"></i>
+                        <span class="card-title">ຂໍ້ມູນເງິນເດືອນ & ປີການ</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ເງິນຕຳແໜ່ງ</label>
+                        <select id="p_positionMoney">
+                            <option value="9000000">ການນຳ 6/7 - 9,000,000</option>
+                            <option value="8000000">ການນຳ 6/6 - 8,000,000</option>
+                            <option value="7000000">ການນຳ 6/5 - 7,000,000</option>
+                            <option value="6000000">ການນຳ 6/4 - 6,000,000</option>
+                            <option value="5000000">ການນຳ 6/3 - 5,000,000</option>
+                            <option value="4000000">ການນຳ 6/2 - 4,000,000</option>
+                            <option value="3000000">ການນຳ 6/1 - 3,000,000</option>
+                            <option value="2500000">ບໍລິຫານ 1 - 2,500,000</option>
+                            <option value="2300000">ບໍລິຫານ 2 - 2,300,000</option>
+                            <option value="2100000">ບໍລິຫານ 3 - 2,100,000</option>
+                            <option value="1900000">ບໍລິຫານ 4 - 1,900,000</option>
+                            <option value="1700000">ບໍລິຫານ 5 - 1,700,000</option>
+                            <option value="1500000">ບໍລິຫານ 6 - 1,500,000</option>
+                            <option value="1300000">ບໍລິຫານ 7 - 1,300,000</option>
+                            <option value="1100000">ບໍລິຫານ 8 - 1,100,000</option>
+                            <option value="900000">ວິຊາການ - 900,000</option>
+                            <option value="0" selected>ພະນັກງານ 95 / ບໍ່ມີ - 0</option>
+                        </select>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="required">ຊັ້ນ</label>
+                            <select id="p_classSelect" onchange="updateLevelsPension()" required>
+                                <option value="">ເລືອກ...</option>
+                                <option value="1">ຊັ້ນ 1</option>
+                                <option value="2">ຊັ້ນ 2</option>
+                                <option value="3">ຊັ້ນ 3</option>
+                                <option value="4">ຊັ້ນ 4</option>
+                                <option value="5">ຊັ້ນ 5</option>
+                                <option value="6">ຊັ້ນ 6</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">ຂັ້ນ</label>
+                            <select id="p_levelSelect" onchange="updateIndexPension()" required disabled>
+                                <option value="">...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>ດັດສະນີ (Auto)</label>
+                            <input type="text" id="p_indexDisplay" readonly placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">ປີການ (1-50 ປີ)</label>
+                            <input type="number" id="p_yearsService" value="0" inputmode="numeric">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ອຸດໜູນອາຊີບ (ຖ້າມີ)</label>
+                        <input type="text" id="p_occAllowance" placeholder="0" class="money-input">
+                    </div>
+                </div>
+
+                <!-- Pension Rate -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-percent"></i>
+                        <span class="card-title">ອັດຕາສ່ວນບຳນານ</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">ເປີເຊັນບຳນານ (%)</label>
+                        <input type="number" id="p_pensionPercent" placeholder="ເຊັ່ນ: 75, 80, 100..." required>
+                        <small style="color:#78909c;">ໃສ່ແຕ່ຕົວເລກ (ບໍ່ຕ້ອງໃສ່ %)</small>
+                    </div>
+                </div>
+
+                <!-- Family -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-users"></i>
+                        <span class="card-title">ຄອບຄົວ (ອຸດໜູນລູກ)</span>
+                    </div>
+                    <div class="form-group">
+                        <label>ຈຳນວນລູກ (≤18ປີ)</label>
+                        <input type="number" id="p_childCount" value="0" inputmode="numeric">
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-reset" onclick="resetForm(true)">
+                        <i class="fas fa-redo"></i> ລ້າງ
+                    </button>
+                    <button class="btn btn-calc" onclick="calculatePension()">
+                        <i class="fas fa-calculator"></i> ຄຳນວນບຳນານ
+                    </button>
+                </div>
+                <div style="height: 20px;"></div>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home')" id="nav-home">
+            <i class="fas fa-home"></i>
+            <span>ໜ້າຫຼັກ</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('civil')" id="nav-civil">
+            <i class="fas fa-user-tie"></i>
+            <span>ລັດຖະກອນ</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('teacher')" id="nav-teacher">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span>ຄູ</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('pension')" id="nav-pension">
+            <i class="fas fa-blind"></i>
+            <span>ບຳນານ</span>
+        </div>
+    </nav>
+
+    <!-- Slip Modal (Detailed Version) -->
+    <div class="modal-overlay" id="slipModal">
+        <div class="modal-content">
+            <div class="slip-paper" id="salarySlip">
+                
+                <!-- Official Header -->
+                <div class="slip-header-official">
+                    <h4>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</h4>
+                    <h4>ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນະຖາວອນ</h4>
+                    <div class="slip-divider-line"></div>
+                    <h3 id="slipTitle">ໃບບິນເງິນເດືອນ</h3>
+                </div>
+
+                <div class="slip-meta">
+                    <div class="slip-meta-row">
+                        <span>ວັນທີອອກບິນ:</span>
+                        <span class="val" id="slipDate">dd/mm/yyyy</span>
+                    </div>
+										
+<div class="slip-meta-row">
+    <span>ຊື່ ແລະ ນາມສະກຸນ:</span>
+    <span id="resName" style="font-family:'Noto Sans Lao',sans-serif;font-weight:400;">
+        ...
+    </span>
+</div>
+				
+    <div class="slip-meta-row">
+                        <span>ຕຳແໜ່ງ/ຊັ້ນ-ຂັ້ນ:</span>
+                        <span><span id="resClassLevel"></span> (ດັດສະນີ: <span id="resIndex" class="val"></span>)</span>
+                    </div>
+                </div>
+
+                <!-- 1. Income Section -->
+                <div class="slip-section-title">1. ລາຍຮັບ (Income)</div>
+                <div class="slip-item">
+                    <span>ເງິນເດືອນພື້ນຖານ (Base):</span>
+                    <span class="val" id="resBase">0</span>
+                </div>
+                <div class="slip-item">
+                    <span>ເງິນດັດສົມປີການ (Years):</span>
+                    <span class="val" id="resYear">0</span>
+                </div>
+                <div class="slip-item">
+                    <span>ເງິນຕຳແໜ່ງ (Position):</span>
+                    <span class="val" id="resPosition">0</span>
+                </div>
+                
+                <!-- Teacher specific items -->
+                <div id="resTeacherBlock" class="hidden">
+                    <div class="slip-item sub">
+                        <span>+ ອຸດໜູນຄູ (<span id="resTeacherPct">0</span>%):</span>
+                        <span class="val" id="resTeacherMoney">0</span>
+                    </div>
+                    <div class="slip-item sub">
+                        <span>+ ສອນຫ້ອງຄວບ:</span>
+                        <span class="val" id="resCombined">0</span>
+                    </div>
+                    <div class="slip-item sub">
+                        <span>+ ວິຊາການຄູ:</span>
+                        <span class="val" id="resTechTeacher">0</span>
+                    </div>
+                    <div class="slip-item sub">
+                        <span>+ ຜົນການປະເມີນ:</span>
+                        <span class="val" id="resPerform">0</span>
+                    </div>
+                </div>
+
+                <!-- Civil Allowances -->
+                <div id="resCivilBlock">
+                    <div class="slip-item">
+                        <span>ອຸດໜູນຫ່າງໄກສອກຫຼີກ:</span>
+                        <span class="val" id="resRemote">0</span>
+                    </div>
+                    <div class="slip-item">
+                        <span>ອຸດໜູນອື່ນໆ (ທາດເບື່ອ/ສະພາ):</span>
+                        <span class="val" id="resOtherAllow">0</span>
+                    </div>
+                </div>
+
+                <!-- Pension Specific Block -->
+                <div id="resPensionBlock" class="hidden">
+                    <div class="slip-item">
+                        <span>ອຸດໜູນອາຊີບ:</span>
+                        <span class="val" id="resOccAllow">0</span>
+                    </div>
+                    <div class="slip-item total-sub" style="margin-top:5px; border-top:1px dashed #ccc;">
+                        <span>ລວມເງິນກ່ອນຄິດໄລ່ເປີເຊັນ:</span>
+                        <span class="val" id="resPensionBaseTotal">0</span>
+                    </div>
+                    <div class="slip-item" style="color:var(--pension); font-weight:600;">
+                        <span>ຄິດໄລ່ບຳນານ (<span id="resPensionPctDisplay">0</span>%):</span>
+                        <span class="val" id="resPensionFinal">0</span>
+                    </div>
+                </div>
+
+                <!-- Total Gross (Hidden for Pension Mode as logic differs) -->
+                <div class="slip-item total-sub" id="grossTotalRow" style="margin-top:10px;">
+                    <span>ລວມຍອດລາຍຮັບ:</span>
+                    <span class="val plus" id="resTotalGross">0</span>
+                </div>
+
+                <!-- 2. Deductions -->
+                <div class="slip-section-title">2. ພັນທະ & ອາກອນ (Deductions)</div>
+                
+                <!-- Normal Mode Deductions -->
+                <div id="normalDeductions">
+                    <div class="slip-item">
+                        <span>ຫັກປະກັນສັງຄົມ (8%):</span>
+                        <span class="val minus">-<span id="resSocial">0</span></span>
+                    </div>
+                    <div class="slip-item">
+                        <span>ຫັກອາກອນເງິນເດືອນ:</span>
+                        <span class="val minus">-<span id="resTax">0</span></span>
+                    </div>
+                </div>
+
+                <!-- Pension Deductions -->
+                <div id="pensionDeductions" class="hidden">
+                     <div class="slip-item">
+                        <span>ຫັກປະກັນສຸຂະພາບ (0.625%):</span>
+                        <span class="val minus">-<span id="resHealth">0</span></span>
+                    </div>
+                </div>
+
+                <div class="slip-item total-sub">
+                    <span>ລວມຍອດຫັກ:</span>
+                    <span class="val minus">-<span id="resTotalDeduct">0</span></span>
+                </div>
+
+                <!-- 3. Family/Welfare -->
+                <div class="slip-section-title">3. ເງິນນະໂຍບາຍ (Welfare)</div>
+                <div class="slip-item">
+                    <span>ເງິນລູກ (<span id="resChildCount">0</span> ຄົນ):</span>
+                    <span class="val" id="resChildMoney">0</span>
+                </div>
+                
+                <!-- Normal Only -->
+                <div id="normalWelfare">
+                    <div class="slip-item">
+                        <span>ເງິນຄູ່ສົມລົດ:</span>
+                        <span class="val" id="resSpouse">0</span>
+                    </div>
+                    <div class="slip-item">
+                        <span>ເງິນນະໂຍບາຍຊ່ວຍໜູນ:</span>
+                        <span class="val" id="resPolicy">0</span>
+                    </div>
+                </div>
+
+                <!-- Pension Welfare -->
+                <div id="pensionWelfare" class="hidden">
+                    <div class="slip-item">
+                        <span>ເງິນນະໂຍບາຍຊ່ວຍໜູນ (3ລ້ານ):</span>
+                        <span class="val" id="resPensionSubsidy">0</span>
+                    </div>
+                </div>
+
+                <!-- Grand Total -->
+                <div class="slip-grand-total">
+                    <div class="label">ເງິນເດືອນຮັບສຸດທິ (Net Salary)</div>
+                    <div class="amount"><span id="resNetSalary">0</span> <span style="font-size:1rem; font-weight:400;">ກີບ</span></div>
+                </div>
+                
+                <div class="slip-footer">
+                    Created by IT BANBAN Salary System 2026<br>
+                    (ໃບບິນນີ້ສ້າງຂຶ້ນຈາກລະບົບຄຳນວນເບື້ອງຕົ້ນ)
                 </div>
             </div>
 
-            <!-- Social Links -->
-            <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto pb-20">
-                <a href="https://wa.me/8562091270509" target="_blank" class="group bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700 flex items-center gap-6 hover:border-emerald-500 hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white text-3xl shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                        <i class="fab fa-whatsapp"></i>
-                    </div>
-                    <div>
-                        <div class="text-xs text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-1">Chat on WhatsApp</div>
-                        <div class="text-2xl font-bold text-gray-800 dark:text-white group-hover:text-emerald-600 transition-colors">020 9127 0509</div>
-                    </div>
-                    <div class="ml-auto w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-gray-400 group-hover:text-emerald-500 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/30 transition-all">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </a>
-                
-                <a href="https://www.facebook.com/Phetsaiyaphoom" target="_blank" class="group bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700 flex items-center gap-6 hover:border-blue-500 hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-1">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white text-3xl shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
-                        <i class="fab fa-facebook-messenger"></i>
-                    </div>
-                    <div>
-                        <div class="text-xs text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mb-1">Follow on Facebook</div>
-                        <div class="text-2xl font-bold text-gray-800 dark:text-white group-hover:text-blue-600 transition-colors">IT-banban</div>
-                    </div>
-                    <div class="ml-auto w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-gray-400 group-hover:text-blue-500 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 transition-all">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </a>
+            <div class="modal-actions">
+                <button class="btn btn-close" onclick="closeModal()">ປິດ</button>
+                <button class="btn btn-save" onclick="downloadImage()">ບັນທຶກຮູບ</button>
             </div>
         </div>
+    </div>
 
-    </main>
-
-    <!-- Floating Back Button (Moved Outside) -->
-    <button id="floating-back-btn" onclick="showPage('home')" class="hidden fixed bottom-6 right-6 z-50 bg-gray-900 dark:bg-white text-white dark:text-gray-900 w-14 h-14 rounded-full shadow-2xl items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white dark:border-gray-800 md:hidden">
-        <i class="fas fa-arrow-left text-xl"></i>
-    </button>
-
-    <!-- Footer -->
-    <footer class="mt-auto py-8 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 z-10">
-        <div class="max-w-5xl mx-auto px-4 text-center">
-            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">© 2026 : ພັດທະນາໂດຍ ທ.ບຸນເຜີ້ງ ເພັດໄຊຍະພູມ</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript Logic -->
     <script>
-        // === Page Navigation ===
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.add('hidden');
-                page.classList.remove('active');
-            });
+        // --- Data ---
+        const indexTable = {
+            '1': [260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274],
+            '2': [268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282],
+            '3': [276, 277, 278, 279, 280, 281, 282, 284, 286, 288, 290, 292, 294, 296, 298],
+            '4': [286, 288, 290, 292, 294, 296, 298, 303, 308, 313, 318, 323, 328, 333, 338],
+            '5': [308, 313, 318, 323, 328, 333, 338, 348, 358, 368, 378, 388, 398, 408, 418],
+            '6': [600, 700, 800, 900, 1000, 1100, 1200]
+        };
 
-            // Show target page
-            const target = document.getElementById(pageId + '-page');
-            if (target) {
-                target.classList.remove('hidden');
-                
-                // Add simple fade animation
-                target.style.opacity = '0';
-                target.style.transform = 'translateY(10px)';
-                target.classList.add('active');
-                setTimeout(() => {
-                    target.style.opacity = '1';
-                    target.style.transform = 'translateY(0)';
-                    target.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                }, 50);
+        // Current State
+        let currentMode = 'civil'; // 'civil', 'teacher', 'pension'
+        let deferredPrompt;
 
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-
-            // Close Mobile Menu if open
-            document.getElementById('mobile-menu').classList.add('hidden');
-
-            // Handle Back Button Visibility
-            const backBtn = document.getElementById('floating-back-btn');
-            if (backBtn) {
-                if (pageId === 'contact') {
-                    backBtn.classList.remove('hidden');
-                    backBtn.classList.add('flex');
-                    backBtn.classList.add('animate-bounce');
-                } else {
-                    backBtn.classList.add('hidden');
-                    backBtn.classList.remove('flex');
-                    backBtn.classList.remove('animate-bounce');
-                }
-            }
-        }
-
-        // === QR Code Popup Logic ===
-        function showQRCode() {
-            Swal.fire({
-                title: '<strong class="text-2xl font-sans text-gray-800 dark:text-white">ສະແກນ QR Code</strong>',
-                html: `
-                    <div class="flex flex-col items-center gap-4 py-2">
-                        <div class="p-3 bg-white rounded-2xl shadow-lg border border-gray-100">
-                            <img src="https://i.ibb.co/d30cRC1/Qr.jpg" alt="QR Code" class="w-64 h-auto rounded-xl object-cover">
-                        </div>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm font-sans">BCEL OnePay: BOUNPHENG PHETSAYAPHOOM</p>
-                        <div class="flex items-center gap-2 text-amber-600 bg-amber-50 dark:bg-amber-900/30 dark:text-amber-400 font-bold px-4 py-2 rounded-full mt-2">
-                            <i class="fas fa-heart"></i>
-                            <span>ຂອບໃຈສຳລັບກາເຟເດີ້!</span>
-                        </div>
-                    </div>
-                `,
-                showCloseButton: true,
-                showConfirmButton: false,
-                background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
-                backdrop: `rgba(0,0,0,0.75)`,
-                customClass: {
-                    popup: 'rounded-[2rem] font-sans border border-gray-200 dark:border-gray-700 shadow-2xl',
-                    closeButton: 'focus:outline-none'
-                }
-            });
-        }
-
-        // === Mobile Menu Toggle ===
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
-
-        // === Theme Toggle Logic ===
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        themeToggleBtn.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            
-            // Show toast on theme change
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: false,
-                background: isDark ? '#374151' : '#ffffff',
-                color: isDark ? '#ffffff' : '#1f2937',
-                customClass: {
-                    popup: 'rounded-xl shadow-lg border border-gray-200 dark:border-gray-700'
-                },
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            });
-            Toast.fire({
-                icon: isDark ? 'success' : 'info',
-                title: isDark ? 'Dark Mode Activated 🌙' : 'Light Mode Activated ☀️'
-            });
-        });
-
-        // === Initial Load Animations ===
+        // --- Init ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Add font-sans to Swal defaults
-            const originalSwalFire = Swal.fire;
-            Swal.fire = function(params) {
-                if (!params.customClass) params.customClass = {};
-                if (typeof params.customClass === 'string') {
-                    params.customClass += ' font-sans';
-                } else {
-                    params.customClass.popup = (params.customClass.popup || '') + ' font-sans';
-                }
-                return originalSwalFire.apply(this, arguments);
-            };
+            // Input formatting
+            document.querySelectorAll('.money-input').forEach(input => {
+                input.addEventListener('input', function(e) {
+                    formatCurrencyInput(this);
+                });
+            });
+            
+            // Register Service Worker
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./service-worker.js')
+                        .then(reg => console.log('SW Registered!', reg))
+                        .catch(err => console.log('SW Failed', err));
+                });
+            }
+            
+            // Install Prompt Logic
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                document.getElementById('install-prompt').style.display = 'flex';
+            });
         });
+
+        async function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('install-prompt').style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        }
+
+        // --- Tab Switching Logic (WITH AUTO RESET) ---
+        function switchTab(tabName) {
+            // Update Active Nav Item
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`nav-${tabName}`).classList.add('active');
+
+            // Hide all pages first
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            document.body.classList.remove('pension-mode');
+
+            const headerTitle = document.getElementById('headerTitle');
+            const teacherSection = document.getElementById('teacherSection');
+            const teacherBanner = document.getElementById('teacherModeBanner');
+
+            // AUTO RESET
+            resetForm(true);
+
+            if (tabName === 'home') {
+                document.getElementById('page-home').classList.add('active');
+                headerTitle.textContent = "ໜ້າຫຼັກ";
+            } else if (tabName === 'pension') {
+                currentMode = 'pension';
+                document.getElementById('page-pension').classList.add('active');
+                headerTitle.textContent = "ຄຳນວນບຳນານ";
+                document.body.classList.add('pension-mode');
+            } else {
+                // Show Calculator Page (Civil/Teacher)
+                document.getElementById('page-calc').classList.add('active');
+                
+                if (tabName === 'teacher') {
+                    currentMode = 'teacher';
+                    headerTitle.textContent = "ຄຳນວນເງິນເດືອນຄູ";
+                    teacherSection.classList.remove('hidden');
+                    teacherBanner.classList.remove('hidden');
+                } else {
+                    currentMode = 'civil';
+                    headerTitle.textContent = "ຄຳນວນລັດຖະກອນ";
+                    teacherSection.classList.add('hidden');
+                    teacherBanner.classList.add('hidden');
+                }
+            }
+        }
+
+        // --- Helpers for Pension Form ---
+        function updateLevelsPension() {
+            const cls = document.getElementById('p_classSelect').value;
+            const levelSelect = document.getElementById('p_levelSelect');
+            levelSelect.innerHTML = '<option value="">...</option>';
+            
+            if (cls) {
+                const levels = indexTable[cls].length;
+                for(let i=1; i<=levels; i++) {
+                    const opt = document.createElement('option');
+                    opt.value = i;
+                    opt.textContent = `ຂັ້ນ ${i}`;
+                    levelSelect.appendChild(opt);
+                }
+                levelSelect.disabled = false;
+            } else {
+                levelSelect.disabled = true;
+                document.getElementById('p_indexDisplay').value = '';
+            }
+        }
+
+        function updateIndexPension() {
+            const cls = document.getElementById('p_classSelect').value;
+            const lvl = document.getElementById('p_levelSelect').value;
+            if (cls && lvl) {
+                document.getElementById('p_indexDisplay').value = indexTable[cls][lvl-1];
+            }
+        }
+
+        // --- Helpers for Normal Form ---
+        function updateLevels() {
+            const cls = document.getElementById('classSelect').value;
+            const levelSelect = document.getElementById('levelSelect');
+            levelSelect.innerHTML = '<option value="">...</option>';
+            
+            if (cls) {
+                const levels = indexTable[cls].length;
+                for(let i=1; i<=levels; i++) {
+                    const opt = document.createElement('option');
+                    opt.value = i;
+                    opt.textContent = `ຂັ້ນ ${i}`;
+                    levelSelect.appendChild(opt);
+                }
+                levelSelect.disabled = false;
+            } else {
+                levelSelect.disabled = true;
+                document.getElementById('indexDisplay').value = '';
+            }
+        }
+
+        function updateIndex() {
+            const cls = document.getElementById('classSelect').value;
+            const lvl = document.getElementById('levelSelect').value;
+            if (cls && lvl) {
+                document.getElementById('indexDisplay').value = indexTable[cls][lvl-1];
+            }
+        }
+
+        function formatCurrencyInput(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value) {
+                input.value = parseInt(value).toLocaleString('en-US');
+            } else {
+                input.value = '';
+            }
+        }
+
+        function parseFormatted(id) {
+            const el = document.getElementById(id);
+            if(!el) return 0;
+            const val = el.value;
+            return parseFloat(val.replace(/,/g, '')) || 0;
+        }
+
+        function fmt(num) {
+            return Math.round(num).toLocaleString('en-US');
+        }
+
+        // --- Pension Calculation ---
+        function calculatePension() {
+            // Validation
+            const fullName = document.getElementById('p_fullName').value;
+            const cls = document.getElementById('p_classSelect').value;
+            const lvl = document.getElementById('p_levelSelect').value;
+            const pensionPercent = parseFloat(document.getElementById('p_pensionPercent').value);
+
+            if (!fullName || !cls || !lvl || isNaN(pensionPercent)) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'ຂໍ້ມູນບໍ່ຄົບຖ້ວນ',
+                    text: 'ກະລຸນາປ້ອນຂໍ້ມູນ: ຊື່, ຊັ້ນ-ຂັ້ນ, ແລະ ເປີເຊັນບຳນານ',
+                    confirmButtonColor: '#795548'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'ກຳລັງຄຳນວນ...',
+                timer: 500,
+                didOpen: () => Swal.showLoading()
+            }).then(() => {
+                // Inputs
+                const index = parseFloat(document.getElementById('p_indexDisplay').value);
+                const years = parseFloat(document.getElementById('p_yearsService').value) || 0;
+                const posMoney = parseFloat(document.getElementById('p_positionMoney').value) || 0;
+                const occAllowance = parseFormatted('p_occAllowance');
+                const childCount = parseFloat(document.getElementById('p_childCount').value) || 0;
+
+                // 1. Base (index * 9500)
+                const baseSalary = index * 9500;
+
+                // 2. Year Salary (Formula Provided)
+                let yearSalary = 0;
+                if (years <= 5) yearSalary = years * 10000;
+                else if (years <= 15) yearSalary = 50000 + ((years - 5) * 20000);
+                else if (years <= 25) yearSalary = 250000 + ((years - 15) * 30000); 
+                else yearSalary = 550000 + ((years - 25) * 40000); 
+
+                // 3. Total Before Deductions (Base + Year + Position + Occ)
+                const totalBefore = baseSalary + yearSalary + posMoney + occAllowance;
+
+                // 4. Final Salary (TotalBefore * Percent)
+                // Note: User prompt said "TotalBefore + Percent" but in finance context usually implies application of rate.
+                // Assuming standard Pension Calculation: Base Total * (Rate/100)
+                const finalSalary = totalBefore * (pensionPercent / 100);
+
+                // 5. Health Insurance (0.625%)
+                const healthInsurance = finalSalary * (0.625 / 100);
+
+                // 6. Child Allowance
+                const childMoney = childCount * 200000;
+
+                // 7. Total Received (Before Subsidy)
+                const totalReceived = finalSalary - healthInsurance + childMoney;
+
+                // 8. Subsidy Policy (Minimum Wage Floor 3,000,000)
+                let subsidy = 0;
+                if (totalReceived < 3000000) {
+                    subsidy = 3000000 - totalReceived;
+                }
+
+                // 9. Net Salary
+                const netSalary = totalReceived + subsidy;
+
+                // --- Render Pension Slip ---
+                renderSlip({
+                    mode: 'pension',
+                    name: fullName,
+                    cls: cls,
+                    lvl: lvl,
+                    idx: index,
+                    base: baseSalary,
+                    year: yearSalary,
+                    pos: posMoney,
+                    occ: occAllowance,
+                    pensionBase: totalBefore,
+                    pct: pensionPercent,
+                    finalSal: finalSalary,
+                    health: healthInsurance,
+                    childCount: childCount,
+                    childMoney: childMoney,
+                    subsidy: subsidy,
+                    net: netSalary
+                });
+            });
+        }
+
+        // --- Normal Calculation ---
+        function handleCalculate() {
+            const fullName = document.getElementById('fullName').value;
+            const cls = document.getElementById('classSelect').value;
+            const lvl = document.getElementById('levelSelect').value;
+
+            if (!fullName || !cls || !lvl) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'ຂໍ້ມູນບໍ່ຄົບຖ້ວນ',
+                    text: 'ກະລຸນາປ້ອນຊື່, ເລືອກຊັ້ນ ແລະ ຂັ້ນ ໃຫ້ຄົບຖ້ວນ!',
+                    confirmButtonColor: '#009688'
+                });
+                return;
+            }
+
+            Swal.fire({ title: '...', timer: 500, didOpen: () => Swal.showLoading() }).then(() => {
+                performCalculation(fullName, cls, lvl);
+            });
+        }
+
+        function performCalculation(fullName, cls, lvl) {
+            const index = parseFloat(document.getElementById('indexDisplay').value);
+            const pct = parseFloat(document.getElementById('percentage').value) || 100;
+            const years = parseFloat(document.getElementById('yearsService').value) || 0;
+            const posMoney = parseFloat(document.getElementById('positionMoney').value) || 0;
+            
+            let teacherPct = 0, combined = 0, technical = 0, performance = 0;
+
+            if (currentMode === 'teacher') {
+                teacherPct = parseFloat(document.getElementById('teacherPercent').value) || 0;
+                combined = parseFormatted('combinedClass');
+                technical = parseFormatted('technicalTeacher');
+                performance = parseFormatted('performance');
+            }
+
+            const remote = parseFormatted('remoteAllowance');
+            const toxic = parseFormatted('toxicAllowance');
+            const policy = parseFormatted('policySupport');
+            const assembly = parseFormatted('assemblyAllowance');
+            const childCount = parseFloat(document.getElementById('childCount').value) || 0;
+            const spouse = parseFloat(document.getElementById('spouse').value) || 0;
+
+            const baseSalary = (index * 9500) * (pct / 100);
+            
+            let yearSalary = 0;
+            if (years <= 5) yearSalary = years * 10000;
+            else if (years <= 15) yearSalary = 50000 + ((years - 5) * 20000);
+            else if (years <= 25) yearSalary = 250000 + ((years - 15) * 30000); 
+            else yearSalary = 550000 + ((years - 25) * 40000); 
+
+            const teacherAllowance = baseSalary * (teacherPct / 100);
+            const totalGross = baseSalary + yearSalary + posMoney + teacherAllowance + combined + technical + performance + remote + toxic + assembly;
+            const socialBase = baseSalary + yearSalary + posMoney + teacherAllowance; 
+            const socialSecurity = socialBase * 0.08;
+            const afterSocial = (totalGross - socialSecurity);
+            const taxableIncome = afterSocial - policy;
+
+            let tax = 0;
+            let taxBase = taxableIncome;
+            if (taxBase <= 1300000) tax = 0;
+            else if (taxBase <= 5000000) tax = (taxBase - 1300000) * 0.05;
+            else if (taxBase <= 15000000) tax = 185000 + ((taxBase - 5000000) * 0.10);
+            else if (taxBase <= 25000000) tax = 1185000 + ((taxBase - 15000000) * 0.15);
+            else if (taxBase <= 65000000) tax = 2685000 + ((taxBase - 25000000) * 0.20);
+            else tax = 10685000 + ((taxBase - 65000000) * 0.25);
+
+            const childMoney = childCount * 200000;
+            const familyTotal = childMoney + spouse;
+            const netSalary = (taxableIncome - tax) + policy + familyTotal;
+
+            renderSlip({
+                mode: currentMode,
+                name: fullName,
+                cls: cls,
+                lvl: lvl,
+                idx: index,
+                base: baseSalary,
+                year: yearSalary,
+                pos: posMoney,
+                remote: remote,
+                other: toxic + assembly,
+                teacherPct: teacherPct,
+                teacherMoney: teacherAllowance,
+                combined: combined,
+                techTeacher: technical,
+                perform: performance,
+                gross: totalGross,
+                social: socialSecurity,
+                tax: tax,
+                deduct: socialSecurity + tax,
+                childCount: childCount,
+                childMoney: childMoney,
+                spouse: spouse,
+                policy: policy,
+                net: netSalary
+            });
+        }
+
+        // --- Render Slip (Universal) ---
+        function renderSlip(data) {
+            const d = new Date();
+            document.getElementById('slipDate').textContent = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+            document.getElementById('resName').textContent = data.name;
+            document.getElementById('resClassLevel').textContent = `ຊັ້ນ ${data.cls} ຂັ້ນ ${data.lvl}`;
+            document.getElementById('resIndex').textContent = data.idx;
+
+            // Common Income
+            document.getElementById('resBase').textContent = fmt(data.base);
+            document.getElementById('resYear').textContent = fmt(data.year);
+            document.getElementById('resPosition').textContent = fmt(data.pos);
+
+            // Visibility Toggles
+            const teacherBlock = document.getElementById('resTeacherBlock');
+            const civilBlock = document.getElementById('resCivilBlock');
+            const pensionBlock = document.getElementById('resPensionBlock');
+            
+            const grossRow = document.getElementById('grossTotalRow');
+            const normalDeductions = document.getElementById('normalDeductions');
+            const pensionDeductions = document.getElementById('pensionDeductions');
+            const normalWelfare = document.getElementById('normalWelfare');
+            const pensionWelfare = document.getElementById('pensionWelfare');
+
+            if (data.mode === 'pension') {
+                document.getElementById('slipTitle').textContent = "ໃບບິນເງິນບຳນານ";
+                teacherBlock.classList.add('hidden');
+                civilBlock.classList.add('hidden');
+                pensionBlock.classList.remove('hidden');
+                grossRow.classList.add('hidden');
+                
+                normalDeductions.classList.add('hidden');
+                pensionDeductions.classList.remove('hidden');
+                
+                normalWelfare.classList.add('hidden');
+                pensionWelfare.classList.remove('hidden');
+
+                // Pension Specific Values
+                document.getElementById('resOccAllow').textContent = fmt(data.occ);
+                document.getElementById('resPensionBaseTotal').textContent = fmt(data.pensionBase);
+                document.getElementById('resPensionPctDisplay').textContent = data.pct;
+                document.getElementById('resPensionFinal').textContent = fmt(data.finalSal);
+                
+                // Pension Deductions
+                document.getElementById('resHealth').textContent = fmt(data.health);
+                document.getElementById('resTotalDeduct').textContent = fmt(data.health);
+
+                // Pension Welfare
+                document.getElementById('resChildCount').textContent = data.childCount;
+                document.getElementById('resChildMoney').textContent = fmt(data.childMoney);
+                document.getElementById('resPensionSubsidy').textContent = fmt(data.subsidy);
+
+            } else {
+                document.getElementById('slipTitle').textContent = "ໃບບິນເງິນເດືອນ";
+                pensionBlock.classList.add('hidden');
+                civilBlock.classList.remove('hidden');
+                grossRow.classList.remove('hidden');
+                
+                normalDeductions.classList.remove('hidden');
+                pensionDeductions.classList.add('hidden');
+                
+                normalWelfare.classList.remove('hidden');
+                pensionWelfare.classList.add('hidden');
+
+                // Teacher Check
+                if (data.mode === 'teacher') {
+                    teacherBlock.classList.remove('hidden');
+                    document.getElementById('resTeacherPct').textContent = data.teacherPct;
+                    document.getElementById('resTeacherMoney').textContent = fmt(data.teacherMoney);
+                    document.getElementById('resCombined').textContent = fmt(data.combined);
+                    document.getElementById('resTechTeacher').textContent = fmt(data.techTeacher);
+                    document.getElementById('resPerform').textContent = fmt(data.perform);
+                } else {
+                    teacherBlock.classList.add('hidden');
+                }
+
+                // Civil Values
+                document.getElementById('resRemote').textContent = fmt(data.remote);
+                document.getElementById('resOtherAllow').textContent = fmt(data.other);
+                document.getElementById('resTotalGross').textContent = fmt(data.gross);
+
+                // Normal Deductions
+                document.getElementById('resSocial').textContent = fmt(data.social);
+                document.getElementById('resTax').textContent = fmt(data.tax);
+                document.getElementById('resTotalDeduct').textContent = fmt(data.deduct);
+
+                // Normal Welfare
+                document.getElementById('resChildCount').textContent = data.childCount;
+                document.getElementById('resChildMoney').textContent = fmt(data.childMoney);
+                document.getElementById('resSpouse').textContent = fmt(data.spouse);
+                document.getElementById('resPolicy').textContent = fmt(data.policy);
+            }
+
+            document.getElementById('resNetSalary').textContent = fmt(data.net);
+            document.getElementById('slipModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('slipModal').classList.remove('active');
+        }
+
+        function resetForm(silent = false) {
+            const doReset = () => {
+                document.getElementById('salaryForm').reset();
+                document.getElementById('pensionForm').reset();
+                
+                // Reset Dropdowns UI
+                const selects = ['levelSelect', 'p_levelSelect'];
+                selects.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) {
+                        el.innerHTML = '<option value="">...</option>';
+                        el.disabled = true;
+                    }
+                });
+                
+                document.getElementById('indexDisplay').value = '';
+                document.getElementById('p_indexDisplay').value = '';
+
+                // Civil/Teacher Defaults
+                if (currentMode === 'civil') {
+                    document.getElementById('teacherPercent').value = 0;
+                }
+                closeModal();
+            };
+
+            if (silent) {
+                doReset();
+            } else {
+                Swal.fire({
+                    title: 'ລ້າງຂໍ້ມູນ?',
+                    text: "ທ່ານຕ້ອງການເລີ່ມຕົ້ນໃໝ່ບໍ?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'ຕົກລົງ',
+                    cancelButtonText: 'ຍົກເລີກ',
+                    confirmButtonColor: '#ef5350'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        doReset();
+                    }
+                });
+            }
+        }
+
+        function downloadImage() {
+            const element = document.getElementById("salarySlip");
+            Swal.showLoading();
+            
+            html2canvas(element, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Slip_${currentMode}_${Date.now()}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                Swal.close();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ບັນທຶກສຳເລັດ!',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            });
+        }
     </script>
 </body>
 </html>
