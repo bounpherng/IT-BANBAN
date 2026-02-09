@@ -222,37 +222,48 @@
 .footer-credit {
     text-align: center;
     padding: 20px 15px;
-    font-size: 0.9rem;
+    background-color: #f8fafc; /* ສີພື້ນຫຼັງເທົາອ່ອນ ສະບາຍຕາ */
+    border-top: 1px solid #e2e8f0;
+    font-family: 'Phetsarath OT', sans-serif;
     color: #64748b;
-    line-height: 1.7;
+    font-size: 0.85rem;
+    line-height: 1.5;
 }
 
-.footer-credit i {
-    color: #22c55e;
-    font-size: 1.6rem;
-    margin-bottom: 8px;
-    display: inline-block;
+/* ຈັດການໄອຄອນດ້ານເທິງ */
+.footer-icon {
+    font-size: 1.4rem;        /* ຂະໜາດໄອຄອນ */
+    color: #3b82f6;           /* ສີຟ້າ ໃຫ້ຄວາມຮູ້ສຶກທັນສະໄໝ */
+    margin-bottom: 8px;       /* ຍະຫວ່າງຫ່າງຈາກຂໍ້ຄວາມເລັກນ້ອຍ */
 }
 
-.footer-credit strong {
-    display: block;
-    margin-top: 6px;
-    font-weight: 600;
+/* ຈັດການຂໍ້ຄວາມອະທິບາຍ */
+.footer-desc {
+    margin-bottom: 12px;      /* ຍະຫວ່າງຫ່າງຈາກຊື່ຜູ້ພັດທະນາ */
+    max-width: 600px;         /* ບີບຂໍ້ຄວາມບໍ່ໃຫ້ຍາວເກີນໄປໃນຈໍໃຫຍ່ */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ຈັດການຊື່ຜູ້ພັດທະນາ */
+.footer-dev {
+    border-top: 1px dashed #cbd5e1; /* ເສັ້ນຂີດບາງໆ ແບ່ງສ່ວນ */
+    padding-top: 10px;
     color: #334155;
 }
 
-/* WhatsApp ສີຂຽວ */
-.footer-credit strong:last-child {
-    color: #22c55e;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.footer-dev strong {
+    font-weight: 600;
+    color: #1e293b;
 }
 
-.footer-credit strong:last-child:hover {
-    color: #16a34a;
-    transform: scale(1.05);
+/* ຈັດການເບີໂທ */
+.dev-phone {
+    display: inline-block;
+    margin-top: 4px;
+    color: #22c55e;           /* ສີຂຽວສຳລັບເບີໂທ/WhatsApp */
+    font-weight: 600;
 }
-
 
         /* Form Elements */
         .form-grid {
@@ -623,24 +634,31 @@
                     <i class="fas fa-list-ul"></i>
                     <span class="card-title">ຄຸນສົມບັດລະບົບ</span>
                 </div>
-                <ul style="padding-left: 20px; color: var(--text-main); font-size: 0.95rem; line-height: 1.6;">
-                    <li>ແຍກການຄຳນວນ ລັດຖະກອນ, ຄູ ແລະ ບຳນານ</li>
-                    <li>ລະບົບຊົດເຊີຍເງິນນະໂຍບາຍຊ່ວຍໜູນ (3 ລ້ານກີບ)</li>
-                    <li>ລ້າງຂໍ້ມູນອັດຕະໂນມັດເມື່ອປ່ຽນໜ້າ</li>
-                    <li>ໃບບິນແບບລະອຽດ (Detailed Slip)</li>
-                </ul>
+<ul style="padding-left: 15px; color: var(--text-main); font-size: 0.85rem; line-height: 1.5; list-style-type: disc;">
+    <li style="margin-bottom: 5px;"><strong>ຄຳນວນອອນລາຍ:</strong> ເຂົ້າເຖິງ ແລະ ໃຊ້ງານໄດ້ທຸກບ່ອນ.</li>
+    <li style="margin-bottom: 5px;"><strong>ຂໍ້ມູນບໍ່ຈຳກັດ:</strong> ປະມວນຜົນໄຟລ໌ ແລະ ຂໍ້ມູນໄດ້ເຕັມຮູບແບບ.</li>
+    <li style="margin-bottom: 5px;"><strong>ຄວາມຖືກຕ້ອງສູງ:</strong> ອີງຕາມລະບຽບການ ແລະ ຄຳແນະນຳທາງການ.</li>
+    <li style="margin-bottom: 5px;"><strong>ແຍກການຄຳນວນ:</strong> ລັດຖະກອນ, ຄູ-ອາຈານ ແລະ ບຳນານ.</li>
+    <li style="margin-bottom: 5px;"><strong>ໃບບິນລະອຽດ:</strong> ສະແດງລາຍການຮັບ-ຈ່າຍ ຊັດເຈນ (Detailed Slip).</li>
+</ul>
             </div>
+			
             
-            <!-- Updated Footer Credit -->
+<!-- Updated Footer Credit -->
 <div class="footer-credit">
-    <i class="fas fa-code"></i><br>
-    ລະບົບຄຳນວນເງິນເດືອນນີ້: ສ້າງຂຶ້ນມາ
-    ເພື່ອໃຫ້ຜູ້ທີ່ສົນໃຈຢາກຄິດໄລ່ເງິນເດືອນຂອງຕົນເອງໃນເບື້ອງຕົ້ນເທົ່ານັ້ນ<br><br>
-    <strong> ຜັດທະນາໂດຍ : Bounpherng PHATXAIYAPHOOM. © 2026 All rights reserved.</strong><br>
-    <strong>WhatsApp: 02091270509</strong>
+    <div class="footer-icon">
+        <i class="fas fa-code"></i>
+    </div>
+
+    <div class="footer-desc">
+        ລະບົບຄຳນວນເງິນເດືອນນີ້: ສ້າງຂຶ້ນມາ ເພື່ອໃຫ້ຜູ້ທີ່ສົນໃຈຢາກຄິດໄລ່ເງິນເດືອນຂອງຕົນເອງໃນເບື້ອງຕົ້ນເທົ່ານັ້ນ
+    </div>
+
+    <div class="footer-dev">
+        ພັດທະນາໂດຍ: <strong>Bounpherng PHATXAIYAPHOOM</strong> &copy; 2026<br>
+        <span class="dev-phone"><i class="fab fa-whatsapp"></i> 020 9127 0509</span>
+    </div>
 </div>
-
-
 			
             <div style="height: 20px;"></div>
         </div>
