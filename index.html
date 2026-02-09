@@ -219,17 +219,40 @@
             margin-top: 5px;
         }
 
-        .footer-credit {
-            text-align: center; 
-            color: #78909c; 
-            font-size: 0.75rem; 
-            margin-top: 30px; 
-            padding: 20px; 
-            background: #fff; 
-            border-radius: 16px;
-            line-height: 1.6;
-            border: 1px solid #eee;
-        }
+.footer-credit {
+    text-align: center;
+    padding: 20px 15px;
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.7;
+}
+
+.footer-credit i {
+    color: #22c55e;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.footer-credit strong {
+    display: block;
+    margin-top: 6px;
+    font-weight: 600;
+    color: #334155;
+}
+
+/* WhatsApp ສີຂຽວ */
+.footer-credit strong:last-child {
+    color: #22c55e;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.footer-credit strong:last-child:hover {
+    color: #16a34a;
+    transform: scale(1.05);
+}
+
 
         /* Form Elements */
         .form-grid {
@@ -543,7 +566,7 @@
             <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/bounpherng/IT-BANBAN/main/icon-512.png'" alt="Logo" class="app-logo">
             <div class="app-title">
                 <h1 id="headerTitle">IT-BANBAN</h1>
-                <p>ລະບົບຄຳນວນເງິນເດືອນລັດຖະກອນທົວໄປ,ລັດຖະກອນຄູ ແລະ ບຳນານ ປີ2026</p>
+                <p>ເຄື່ອງຄຳນວນເງິນເດືອນລັດຖະກອນ ແລະ ບຳນານ ປີ2026</p>
             </div>
         </div>
     </header>
@@ -561,8 +584,8 @@
         <div id="page-home" class="page active">
             <div class="home-banner">
                 <i class="fas fa-calculator" style="font-size: 60px; color: var(--primary); margin-bottom: 15px;"></i>
-                <h2>ຄຳນວນເງິນເດືອນລັດຖະກອນ</h2>
-                <p>Civil Servant Salary Calculation</p>
+                <h2>ເຄື່ອງຄຳນວນເງິນເດືອນ</h2>
+                <p>Salary calculator</p>
             </div>
 
             <!-- New Regulation Info Section -->
@@ -609,13 +632,16 @@
             </div>
             
             <!-- Updated Footer Credit -->
-            <div class="footer-credit">
-                <i class="fas fa-code" style="color: var(--primary); font-size: 1.5rem; margin-bottom: 10px;"></i><br>
-                ລະບົບຄຳນວນເງິນເດືອນນີ້: ສ້າງຂຶ້ນມາ
-                ເພື່ອໃຫ້ຜູ້ທີ່ສົນໃຈຢາກຄິດໄລ່ເງິນເດືອນຂອງຕົນເອງໃນເບື້ອງຕົ້ນເທົ່ານັ້ນ<br><br>
-                <strong>ຜູ້ສ້າງ: ທ. ບຸນເຜີ້ງ ເພັດໄຊຍະພູມ</strong><br>
-                 © 2026
-            </div>
+<div class="footer-credit">
+    <i class="fas fa-code"></i><br>
+    ລະບົບຄຳນວນເງິນເດືອນນີ້: ສ້າງຂຶ້ນມາ
+    ເພື່ອໃຫ້ຜູ້ທີ່ສົນໃຈຢາກຄິດໄລ່ເງິນເດືອນຂອງຕົນເອງໃນເບື້ອງຕົ້ນເທົ່ານັ້ນ<br><br>
+    <strong> ຜັດທະນາໂດຍ : Bounpherng PHATXAIYAPHOOM. © 2026 All rights reserved.</strong><br>
+    <strong>WhatsApp: 02091270509</strong>
+</div>
+
+
+			
             <div style="height: 20px;"></div>
         </div>
 
@@ -1182,7 +1208,7 @@
 
             if (tabName === 'home') {
                 document.getElementById('page-home').classList.add('active');
-                headerTitle.textContent = "ໜ້າຫຼັກ";
+                headerTitle.textContent = "IT-BANAN";
             } else if (tabName === 'pension') {
                 currentMode = 'pension';
                 document.getElementById('page-pension').classList.add('active');
