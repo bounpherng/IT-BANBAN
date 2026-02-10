@@ -41,6 +41,7 @@
             --shadow: 0 4px 20px rgba(0,0,0,0.05);
             --safe-area-bottom: env(safe-area-inset-bottom);
             --nav-height: 70px;
+            --app-max-width: 480px; /* Constrain width for desktop */
         }
 
         * {
@@ -52,13 +53,27 @@
 
         body {
             font-family: 'Noto Sans Lao', 'Phetsarath', sans-serif;
-            background-color: var(--bg-color);
+            background-color: #e0e0e0; /* Desktop background */
             color: var(--text-main);
-            padding-bottom: calc(var(--nav-height) + var(--safe-area-bottom)); /* Space for nav bar */
-            overscroll-behavior-y: none;
             height: 100vh;
+            overflow: hidden; /* Prevent body scroll, handle in app-container */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- Desktop Simulation Wrapper --- */
+        #app-container {
+            width: 100%;
+            max-width: var(--app-max-width);
+            height: 100%;
+            max-height: 100vh;
+            background-color: var(--bg-color);
+            position: relative;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 0 30px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
 
         /* App Header */
@@ -76,10 +91,10 @@
         }
         
         /* Pension Theme */
-        body.pension-mode .app-header {
+        #app-container.pension-mode .app-header {
             background: linear-gradient(135deg, var(--pension), #5d4037);
         }
-        body.pension-mode .btn-calc {
+        #app-container.pension-mode .btn-calc {
             background: var(--pension);
         }
 
@@ -114,12 +129,23 @@
         .content-area {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 0 15px;
             margin-top: -15px;
             padding-top: 25px;
+            padding-bottom: calc(var(--nav-height) + 20px); /* Add padding for nav */
             position: relative;
             z-index: 5;
             scroll-behavior: smooth;
+        }
+
+        /* Scrollbar styling for desktop */
+        .content-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .content-area::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 4px;
         }
 
         /* Pages */
@@ -164,7 +190,7 @@
             border-radius: 10px;
         }
         
-        body.pension-mode .card-header i {
+        #app-container.pension-mode .card-header i {
             color: var(--pension);
             background: #efebe9;
         }
@@ -175,97 +201,188 @@
             font-size: 1rem;
         }
 
-        /* Home Page Styles */
+        /* --- HOME PAGE STYLES (NEW) --- */
         .home-banner {
             text-align: center;
-            padding: 30px 20px;
+            padding: 25px 20px;
             background: white;
             border-radius: 20px;
             margin-bottom: 20px;
             box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .home-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
         }
 
         .home-banner h2 {
             color: var(--primary);
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             margin-bottom: 5px;
-        }
-
-        .home-info-box {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            border-left: 4px solid #2196f3;
-            line-height: 1.5;
+            margin-top: 10px;
         }
         
-        .regulation-text {
-            font-size: 0.85rem;
-            line-height: 1.6;
+        .badges-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .badge-blue { background: #e3f2fd; color: #1565c0; }
+        .badge-green { background: #e8f5e9; color: #2e7d32; }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-item {
+            background: white;
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            border: 1px solid #f1f5f9;
+        }
+        
+        .feature-item i {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+        .feature-item h5 { font-size: 0.9rem; margin-bottom: 4px; }
+        .feature-item p { font-size: 0.75rem; color: #64748b; }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.5;
             color: #455a64;
         }
         
-        .regulation-text strong {
-            color: #009688;
-            display: block;
+        .info-list li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+
+        .formula-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 10px;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
         
-        .regulation-text ul {
-            padding-left: 20px;
-            margin-top: 5px;
+        .formula-table th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 8px;
+            color: #475569;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .formula-table td {
+            padding: 8px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+        }
+        
+        .code-block {
+            background: #263238;
+            color: #eceff1;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin: 10px 0;
+            overflow-x: auto;
         }
 
-.footer-credit {
-    text-align: center;
-    padding: 20px 15px;
-    background-color: #f8fafc; /* ສີພື້ນຫຼັງເທົາອ່ອນ ສະບາຍຕາ */
-    border-top: 1px solid #e2e8f0;
-    font-family: 'Phetsarath OT', sans-serif;
-    color: #64748b;
-    font-size: 0.85rem;
-    line-height: 1.5;
-}
+        .disclaimer-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #e65100;
+            line-height: 1.5;
+        }
 
-/* ຈັດການໄອຄອນດ້ານເທິງ */
-.footer-icon {
-    font-size: 1.4rem;        /* ຂະໜາດໄອຄອນ */
-    color: #3b82f6;           /* ສີຟ້າ ໃຫ້ຄວາມຮູ້ສຶກທັນສະໄໝ */
-    margin-bottom: 8px;       /* ຍະຫວ່າງຫ່າງຈາກຂໍ້ຄວາມເລັກນ້ອຍ */
-}
+        /* --- Footer Credit --- */
+        .footer-credit {
+            text-align: center;
+            padding: 20px 15px;
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            font-family: 'Phetsarath OT', sans-serif;
+            color: #64748b;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-top: 20px;
+            border-radius: 12px;
+        }
 
-/* ຈັດການຂໍ້ຄວາມອະທິບາຍ */
-.footer-desc {
-    margin-bottom: 12px;      /* ຍະຫວ່າງຫ່າງຈາກຊື່ຜູ້ພັດທະນາ */
-    max-width: 600px;         /* ບີບຂໍ້ຄວາມບໍ່ໃຫ້ຍາວເກີນໄປໃນຈໍໃຫຍ່ */
-    margin-left: auto;
-    margin-right: auto;
-}
+        .footer-icon {
+            font-size: 1.4rem;
+            color: #3b82f6;
+            margin-bottom: 8px;
+        }
 
-/* ຈັດການຊື່ຜູ້ພັດທະນາ */
-.footer-dev {
-    border-top: 1px dashed #cbd5e1; /* ເສັ້ນຂີດບາງໆ ແບ່ງສ່ວນ */
-    padding-top: 10px;
-    color: #334155;
-}
+        .footer-dev {
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 10px;
+            margin-top: 10px;
+            color: #334155;
+        }
 
-.footer-dev strong {
-    font-weight: 600;
-    color: #1e293b;
-}
+        .footer-dev strong {
+            font-weight: 600;
+            color: #1e293b;
+        }
 
-/* ຈັດການເບີໂທ */
-.dev-phone {
-    display: inline-block;
-    margin-top: 4px;
-    color: #22c55e;           /* ສີຂຽວສຳລັບເບີໂທ/WhatsApp */
-    font-weight: 600;
-}
+        .dev-phone {
+            display: inline-block;
+            margin-top: 4px;
+            color: #22c55e;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .dev-phone:hover {
+            color: #15803d;
+        }
 
-        /* Form Elements */
+        /* --- Form Elements --- */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -322,7 +439,7 @@
 
         /* Bottom Navigation Bar */
         .bottom-nav {
-            position: fixed;
+            position: absolute; /* Stick to bottom of app-container */
             bottom: 0;
             left: 0;
             width: 100%;
@@ -375,7 +492,7 @@
             display: flex;
             gap: 15px;
             margin-top: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
         .btn {
@@ -407,7 +524,7 @@
 
         /* Slip Modal & Layout */
         .modal-overlay {
-            position: fixed;
+            position: absolute; /* Contain within app-container */
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(4px);
@@ -422,10 +539,9 @@
         .modal-content {
             background: #fff;
             width: 100%;
-            max-width: 600px;
             border-top-left-radius: 24px;
             border-top-right-radius: 24px;
-            max-height: 90vh;
+            max-height: 90%;
             overflow-y: auto;
             position: relative;
             animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -570,590 +686,631 @@
 </head>
 <body>
 
-    <!-- Header -->
-    <header class="app-header">
-        <div class="header-content">
-            <!-- Uses icon-512.png if available, otherwise fallback to URL for display -->
-            <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/bounpherng/IT-BANBAN/main/icon-512.png'" alt="Logo" class="app-logo">
-            <div class="app-title">
-                <h1 id="headerTitle">IT-BANBAN</h1>
-                <p>ເຄື່ອງຄຳນວນເງິນເດືອນລັດຖະກອນ ແລະ ບຳນານ ປີ2026</p>
-            </div>
-        </div>
-    </header>
+    <!-- App Wrapper (Mobile on Desktop) -->
+    <div id="app-container">
 
-    <!-- Scrollable Content -->
-    <div class="content-area">
-        
-        <!-- PWA Install Prompt -->
-        <div id="install-prompt">
-            <span>ຕິດຕັ້ງແອັບໄວ້ໃນມືຖືເພື່ອງ່າຍຕໍ່ການໃຊ້ງານ</span>
-            <button onclick="installPWA()">ຕິດຕັ້ງ</button>
-        </div>
-        
-        <!-- PAGE 1: HOME -->
-        <div id="page-home" class="page active">
-            <div class="home-banner">
-                <i class="fas fa-calculator" style="font-size: 60px; color: var(--primary); margin-bottom: 15px;"></i>
-                <h2>ເຄື່ອງຄຳນວນເງິນເດືອນ</h2>
-                <p>Salary calculator</p>
-            </div>
-
-            <!-- New Regulation Info Section -->
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-book"></i>
-                    <span class="card-title">ອ້າງອີງຕາມເອກະສານ</span>
-                </div>
-                <div class="regulation-text">
-                    <strong>1. ຂໍ້ມູນພື້ນຖານຂອງເອກະສານ</strong>
-                    <ul style="list-style: none; padding-left: 0;">
-                        <li>- ປະເພດ: ຄຳແນະນຳ ວ່າດ້ວຍການປະຕິບັດເງິນເດືອນ, ເງິນອຸດໜູນ ແລະ ເງິນນະໂຍບາຍຕ່າງໆ.</li>
-                        <li>- ເລກທີ: 4904/ກງ, ລົງວັນທີ 26 ທັນວາ 2025.</li>
-                        <li>- ເປົ້າໝາຍ: ພະນັກງານ-ລັດຖະກອນ, ຄູ, ທະຫານ, ຕຳຫຼວດ ແລະ ພະນັກງານບຳນານ-ເສຍອົງຄະ.</li>
-                    </ul>
-
-                    <strong>2. ການປັບປຸງໂຄງສ້າງດັດສະນີ (ຊັ້ນ-ຂັ້ນ)</strong>
-                    <ul>
-                        <li>ກຸ່ມລັດຖະກອນ ແລະ ຄູ: ແບ່ງເປັນ 5 ຊັ້ນ (ຊັ້ນ I-V), ແຕ່ລະຊັ້ນມີ 15 ຂັ້ນ.</li>
-                        <li>ຄ່າດັດສະນີ: ເລີ່ມຕົ້ນ 260 (ຊັ້ນ 1 ຂັ້ນ 1) ຫາ 418 (ຊັ້ນ 5 ຂັ້ນ 15).</li>
-                        <li>ກຸ່ມບຳນານລະດັບສູງ: ຈັດຢູ່ໃນຊັ້ນ 6 ເຊິ່ງມີ 7 ຂັ້ນ (600-1,200).</li>
-                    </ul>
-
-                    <strong>3. ເງິນອຸດໜູນຕຳແໜ່ງ ແລະ ວິຊາການ</strong>
-                    <ul>
-                        <li>ຕຳແໜ່ງບໍລິຫານ (ລະດັບສູງ): 3,000,000 - 9,000,000 ກີບ.</li>
-                        <li>ຕຳແໜ່ງບໍລິຫານ (ທົ່ວໄປ): 1,100,000 - 2,500,000 ກີບ (8 ປະເພດ).</li>
-                        <li>ອຸດໜູນວິຊາການ: 900,000 ກີບ/ເດືອນ.</li>
-                    </ul>
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/bounpherng/IT-BANBAN/main/icon-512.png'" alt="Logo" class="app-logo">
+                <div class="app-title">
+                    <h1 id="headerTitle">IT-BANBAN</h1>
+                    <p>ເຄື່ອງຄຳນວນເງິນເດືອນ 2026</p>
                 </div>
             </div>
+        </header>
 
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-list-ul"></i>
-                    <span class="card-title">ຄຸນສົມບັດລະບົບ</span>
-                </div>
-<ul style="padding-left: 15px; color: var(--text-main); font-size: 0.85rem; line-height: 1.5; list-style-type: disc;">
-    <li style="margin-bottom: 5px;"><strong>ຄຳນວນອອນລາຍ:</strong> ເຂົ້າເຖິງ ແລະ ໃຊ້ງານໄດ້ທຸກບ່ອນ.</li>
-    <li style="margin-bottom: 5px;"><strong>ຂໍ້ມູນບໍ່ຈຳກັດ:</strong> ປະມວນຜົນໄຟລ໌ ແລະ ຂໍ້ມູນໄດ້ເຕັມຮູບແບບ.</li>
-    <li style="margin-bottom: 5px;"><strong>ຄວາມຖືກຕ້ອງສູງ:</strong> ອີງຕາມລະບຽບການ ແລະ ຄຳແນະນຳທາງການ.</li>
-    <li style="margin-bottom: 5px;"><strong>ແຍກການຄຳນວນ:</strong> ລັດຖະກອນ, ຄູ-ອາຈານ ແລະ ບຳນານ.</li>
-    <li style="margin-bottom: 5px;"><strong>ໃບບິນລະອຽດ:</strong> ສະແດງລາຍການຮັບ-ຈ່າຍ ຊັດເຈນ (Detailed Slip).</li>
-</ul>
-            </div>
-			
+        <!-- Scrollable Content -->
+        <div class="content-area">
             
-<!-- Updated Footer Credit -->
-<div class="footer-credit">
-    <div class="footer-icon">
-        <i class="fas fa-code"></i>
-    </div>
-
-    <div class="footer-desc">
-        ລະບົບຄຳນວນເງິນເດືອນນີ້: ສ້າງຂຶ້ນມາ ເພື່ອໃຫ້ຜູ້ທີ່ສົນໃຈຢາກຄິດໄລ່ເງິນເດືອນຂອງຕົນເອງໃນເບື້ອງຕົ້ນເທົ່ານັ້ນ
-    </div>
-
-    <div class="footer-dev">
-        ພັດທະນາໂດຍ: <strong>Bounpherng PHATXAIYAPHOOM</strong> &copy; 2026<br>
-        <span class="dev-phone"><i class="fab fa-whatsapp"></i> 020 9127 0509</span>
-    </div>
-</div>
-			
-            <div style="height: 20px;"></div>
-        </div>
-
-        <!-- PAGE 2: CALCULATOR (Shared for Teacher & Civil) -->
-        <div id="page-calc" class="page">
-            <form id="salaryForm" onsubmit="return false;">
-                <!-- Teacher Mode Header -->
-                <div id="teacherModeBanner" class="home-info-box hidden" style="background: #e8f5e9; border-color: #4caf50; color: #2e7d32;">
-                    <i class="fas fa-chalkboard-teacher"></i> ທ່ານພວມຢູ່ໃນໂຫມດ: <strong>ຄຳນວນເງິນເດືອນຄູ</strong>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-user"></i>
-                        <span class="card-title">ຂໍ້ມູນທົ່ວໄປ</span>
-                    </div>
-                    <div class="form-group">
-                        <label class="required">ຊື່ ແລະ ນາມສະກຸນ</label>
-                        <input type="text" id="fullName" placeholder="ປ້ອນຊື່ຂອງທ່ານ..." required>
-                    </div>
-                </div>
-
-                <!-- Position Info -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-briefcase"></i>
-                        <span class="card-title">ຂໍ້ມູນຕຳແໜ່ງ & ຊັ້ນຂັ້ນ</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="required">ຊັ້ນ</label>
-                            <select id="classSelect" onchange="updateLevels()" required>
-                                <option value="">ເລືອກ...</option>
-                                <option value="1">ຊັ້ນ 1</option>
-                                <option value="2">ຊັ້ນ 2</option>
-                                <option value="3">ຊັ້ນ 3</option>
-                                <option value="4">ຊັ້ນ 4</option>
-                                <option value="5">ຊັ້ນ 5</option>
-                                <option value="6">ຊັ້ນ 6</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">ຂັ້ນ</label>
-                            <select id="levelSelect" onchange="updateIndex()" required disabled>
-                                <option value="">...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>ດັດສະນີ (Auto)</label>
-                            <input type="text" id="indexDisplay" readonly placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label class="required">ເປີເຊັນໄດ້ຮັບ (%)</label>
-                            <input type="number" id="percentage" value="100" inputmode="numeric">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="required">ປີການ (ປີ)</label>
-                        <input type="number" id="yearsService" value="0" inputmode="numeric">
-                    </div>
-                    <div class="form-group">
-                        <label>ເງິນຕຳແໜ່ງ</label>
-                        <select id="positionMoney">
-                            <option value="0">ບໍ່ມີ / ພະນັກງານ 95</option>
-                            <option value="900000">ວິຊາການ - 900,000</option>
-                            <option value="1100000">ບໍລິຫານ 8 - 1,100,000</option>
-                            <option value="1300000">ບໍລິຫານ 7 - 1,300,000</option>
-                            <option value="1500000">ບໍລິຫານ 6 - 1,500,000</option>
-                            <option value="1700000">ບໍລິຫານ 5 - 1,700,000</option>
-                            <option value="1900000">ບໍລິຫານ 4 - 1,900,000</option>
-                            <option value="2100000">ບໍລິຫານ 3 - 2,100,000</option>
-                            <option value="2300000">ບໍລິຫານ 2 - 2,300,000</option>
-                            <option value="2500000">ບໍລິຫານ 1 - 2,500,000</option>
-                            <option value="3000000">ການນຳ 6/1 - 3,000,000</option>
-                            <option value="4000000">ການນຳ 6/2 - 4,000,000</option>
-                            <option value="5000000">ການນຳ 6/3 - 5,000,000</option>
-                            <option value="6000000">ການນຳ 6/4 - 6,000,000</option>
-                            <option value="7000000">ການນຳ 6/5 - 7,000,000</option>
-                            <option value="8000000">ການນຳ 6/6 - 8,000,000</option>
-                            <option value="9000000">ການນຳ 6/7 - 9,000,000</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Teacher Allowance (Dynamic Display) -->
-                <div class="card hidden" id="teacherSection">
-                    <div class="card-header">
-                        <i class="fas fa-school"></i>
-                        <span class="card-title">ອຸດໜູນອາຊີບຄູ</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group full">
-                            <label>ເປີເຊັນອຸດໜູນ (%)</label>
-                            <select id="teacherPercent">
-                                <option value="0">0% (ບໍ່ໄດ້ຮັບ)</option>
-                                <option value="10">10%</option>
-                                <option value="15">15%</option>
-                                <option value="20">20%</option>
-                                <option value="25">25%</option>
-                                <option value="30">30%</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>ສອນຫ້ອງຄວບ</label>
-                            <input type="text" id="combinedClass" placeholder="0" class="money-input">
-                        </div>
-                        <div class="form-group">
-                            <label>ຕຳແໜ່ງວິຊາການຄູ</label>
-                            <input type="text" id="technicalTeacher" placeholder="0" class="money-input">
-                        </div>
-                        <div class="form-group full">
-                            <label>ຕາມຜົນປະເມີນ</label>
-                            <input type="text" id="performance" placeholder="0" class="money-input">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Other Allowances -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-coins"></i>
-                        <span class="card-title">ເງິນອຸດໜູນ & ນະໂຍບາຍ</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>ຫ່າງໄກສອກຫຼີກ</label>
-                            <input type="text" id="remoteAllowance" placeholder="0" class="money-input">
-                        </div>
-                        <div class="form-group">
-                            <label>ເງິນທາດເບື່ອ</label>
-                            <input type="text" id="toxicAllowance" placeholder="0" class="money-input">
-                        </div>
-                        <div class="form-group">
-                            <label>ນະໂຍບາຍຊ່ວຍໜູນ</label>
-                            <input type="text" id="policySupport" placeholder="0" class="money-input">
-                        </div>
-                        <div class="form-group">
-                            <label>ອໜ ສະມາຊິກສະພາ</label>
-                            <input type="text" id="assemblyAllowance" placeholder="0" class="money-input">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Family -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-users"></i>
-                        <span class="card-title">ຄອບຄົວ</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>ຈຳນວນລູກ (≤18ປີ)</label>
-                            <input type="number" id="childCount" value="0" inputmode="numeric">
-                        </div>
-                        <div class="form-group">
-                            <label>ຄູ່ສົມລົດ</label>
-                            <select id="spouse">
-                                <option value="0">ບໍ່ມີ</option>
-                                <option value="200000">ມີ (200,000 ກີບ)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="action-buttons">
-                    <button class="btn btn-reset" onclick="resetForm(true)">
-                        <i class="fas fa-redo"></i> ລ້າງ
-                    </button>
-                    <button class="btn btn-calc" onclick="handleCalculate()">
-                        <i class="fas fa-calculator"></i> ຄຳນວນ
-                    </button>
-                </div>
-                <div style="height: 20px;"></div>
-            </form>
-        </div>
-
-        <!-- PAGE 3: PENSION CALCULATOR -->
-        <div id="page-pension" class="page">
-            <div class="home-info-box" style="background: #efebe9; border-color: #795548; color: #5d4037;">
-                <i class="fas fa-blind"></i> ທ່ານພວມຢູ່ໃນໂຫມດ: <strong>ຄຳນວນບຳນານ (Pension)</strong>
+            <!-- PWA Install Prompt -->
+            <div id="install-prompt">
+                <span>ຕິດຕັ້ງແອັບໄວ້ໃນມືຖື</span>
+                <button onclick="installPWA()">ຕິດຕັ້ງ</button>
             </div>
-
-            <form id="pensionForm" onsubmit="return false;">
-                <!-- Personal Info -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-user"></i>
-                        <span class="card-title">ຂໍ້ມູນທົ່ວໄປ</span>
-                    </div>
-                    <div class="form-group">
-                        <label class="required">ຊື່ ແລະ ນາມສະກຸນ</label>
-                        <input type="text" id="p_fullName" placeholder="ປ້ອນຊື່..." required>
-                    </div>
-                </div>
-
-                <!-- Position & Index -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-briefcase"></i>
-                        <span class="card-title">ຂໍ້ມູນເງິນເດືອນ & ປີການ</span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>ເງິນຕຳແໜ່ງ</label>
-                        <select id="p_positionMoney">
-                            <option value="9000000">ການນຳ 6/7 - 9,000,000</option>
-                            <option value="8000000">ການນຳ 6/6 - 8,000,000</option>
-                            <option value="7000000">ການນຳ 6/5 - 7,000,000</option>
-                            <option value="6000000">ການນຳ 6/4 - 6,000,000</option>
-                            <option value="5000000">ການນຳ 6/3 - 5,000,000</option>
-                            <option value="4000000">ການນຳ 6/2 - 4,000,000</option>
-                            <option value="3000000">ການນຳ 6/1 - 3,000,000</option>
-                            <option value="2500000">ບໍລິຫານ 1 - 2,500,000</option>
-                            <option value="2300000">ບໍລິຫານ 2 - 2,300,000</option>
-                            <option value="2100000">ບໍລິຫານ 3 - 2,100,000</option>
-                            <option value="1900000">ບໍລິຫານ 4 - 1,900,000</option>
-                            <option value="1700000">ບໍລິຫານ 5 - 1,700,000</option>
-                            <option value="1500000">ບໍລິຫານ 6 - 1,500,000</option>
-                            <option value="1300000">ບໍລິຫານ 7 - 1,300,000</option>
-                            <option value="1100000">ບໍລິຫານ 8 - 1,100,000</option>
-                            <option value="900000">ວິຊາການ - 900,000</option>
-                            <option value="0" selected>ພະນັກງານ 95 / ບໍ່ມີ - 0</option>
-                        </select>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="required">ຊັ້ນ</label>
-                            <select id="p_classSelect" onchange="updateLevelsPension()" required>
-                                <option value="">ເລືອກ...</option>
-                                <option value="1">ຊັ້ນ 1</option>
-                                <option value="2">ຊັ້ນ 2</option>
-                                <option value="3">ຊັ້ນ 3</option>
-                                <option value="4">ຊັ້ນ 4</option>
-                                <option value="5">ຊັ້ນ 5</option>
-                                <option value="6">ຊັ້ນ 6</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">ຂັ້ນ</label>
-                            <select id="p_levelSelect" onchange="updateIndexPension()" required disabled>
-                                <option value="">...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>ດັດສະນີ (Auto)</label>
-                            <input type="text" id="p_indexDisplay" readonly placeholder="0">
-                        </div>
-                        <div class="form-group">
-                            <label class="required">ປີການ (1-50 ປີ)</label>
-                            <input type="number" id="p_yearsService" value="0" inputmode="numeric">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>ອຸດໜູນອາຊີບ (ຖ້າມີ)</label>
-                        <input type="text" id="p_occAllowance" placeholder="0" class="money-input">
+            
+            <!-- PAGE 1: HOME (Updated with README content) -->
+            <div id="page-home" class="page active">
+                <div class="home-banner">
+                    <i class="fas fa-calculator" style="font-size: 50px; color: var(--primary);"></i>
+                    <h2>IT-BANBAN Calculator</h2>
+                    <p>ລະບົບຄຳນວນເງິນເດືອນ ແລະ ເງິນອຸດໜູນ</p>
+                    <div class="badges-row">
+                        <span class="badge badge-blue">Version 2.0.1</span>
+                        <span class="badge badge-green">Update: Feb 2026</span>
                     </div>
                 </div>
 
-                <!-- Pension Rate -->
+                <!-- NOTE: Removed Feature Grid as requested (Feature Item Grid) -->
+
+                <!-- Regulation & Features List -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-book"></i>
+                        <span class="card-title">ຄຳແນະນຳ ເລກທີ 4904/ກງ ລົງວັນທີ 26 ທັນວາ 2025</span>
+                    </div>
+                    <div class="regulation-text" style="font-size: 0.9rem; line-height: 1.6; color: #455a64;">
+                        
+                        <!-- Added Link Button -->
+                        <div style="margin-bottom: 12px; text-align: center;">
+                             <a href="https://drive.google.com/file/d/1OTFUa_qLxDXYKHwLed8kLlwit8KVVT3A/view?usp=sharing" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; background: #e0f2f1; padding: 10px 18px; border-radius: 20px; border: 1px solid #b2dfdb; transition: all 0.2s;">
+                                <i class="fas fa-file-pdf"></i> ເບິ່ງເອກະສານລະອຽດ
+                             </a>
+                        </div>
+                        
+                        <ul class="info-list">
+                            <li><strong>ເງິນເດືອນພື້ນຖານ:</strong> ອີງຕາມຊັ້ນ-ຂັ້ນ ແລະ ດັດສະນີ (ຄູນ 9,500 ກີບ)</li>
+                            <li><strong>ເງິນດັດສົມປີການ:</strong> ຕາມອາຍຸການຕົວຈິງ (1-50 ປີ)</li>
+                            <li><strong>ເງິນຕຳແໜ່ງ:</strong> ຮອງຮັບທຸກຕຳແໜ່ງບໍລິຫານ ແລະ ວິຊາການ</li>
+                            <li><strong>ອຸດໜູນຄູ:</strong> ຮອງຮັບ 10-30%, ຫ້ອງຄວບ ແລະ ວິຊາການຄູ</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Formulas -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-square-root-alt"></i>
+                        <span class="card-title">ສູດການຄຳນວນປີການ</span>
+                    </div>
+                    <table class="formula-table">
+                        <thead>
+                            <tr>
+                                <th>ປີການ</th>
+                                <th>ສູດການຄິດໄລ່</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>≤ 5 ປີ</td>
+                                <td>ປີການ × 10,000</td>
+                            </tr>
+                            <tr>
+                                <td>6-15 ປີ</td>
+                                <td>50,000 + ((ປີ - 5) × 20,000)</td>
+                            </tr>
+                            <tr>
+                                <td>16-25 ປີ</td>
+                                <td>250,000 + ((ປີ - 15) × 30,000)</td>
+                            </tr>
+                            <tr>
+                                <td>> 25 ປີ</td>
+                                <td>550,000 + ((ປີ - 25) × 40,000)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pension Formula -->
                 <div class="card">
                     <div class="card-header">
                         <i class="fas fa-percent"></i>
-                        <span class="card-title">ອັດຕາສ່ວນບຳນານ</span>
+                        <span class="card-title">ສູດຄິດໄລ່ບຳນານ</span>
                     </div>
-                    <div class="form-group">
-                        <label class="required">ເປີເຊັນບຳນານ (%)</label>
-                        <input type="number" id="p_pensionPercent" placeholder="ເຊັ່ນ: 75, 80, 100..." required>
-                        <small style="color:#78909c;">ໃສ່ແຕ່ຕົວເລກ (ບໍ່ຕ້ອງໃສ່ %)</small>
+                    <div class="code-block">
+                        ບຳນານ = (ເງິນເດືອນພື້ນຖານ + ປີການ + ຕຳແໜ່ງ + ອຸດໜູນອາຊີບ) × %ບຳນານ
                     </div>
+                    <ul class="info-list" style="margin-top:10px;">
+                        <li>ຫັກປະກັນສຸຂະພາບ: 0.625%</li>
+                        <li>ນະໂຍບາຍຊ່ວຍໜູນ: ຖ້າຕ່ຳກວ່າ 3,000,000 ກີບ ລະບົບປັບອັດຕະໂນມັດ</li>
+                    </ul>
                 </div>
 
-                <!-- Family -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-users"></i>
-                        <span class="card-title">ຄອບຄົວ (ອຸດໜູນລູກ)</span>
-                    </div>
-                    <div class="form-group">
-                        <label>ຈຳນວນລູກ (≤18ປີ)</label>
-                        <input type="number" id="p_childCount" value="0" inputmode="numeric">
-                    </div>
-                </div>
-
-                <div class="action-buttons">
-                    <button class="btn btn-reset" onclick="resetForm(true)">
-                        <i class="fas fa-redo"></i> ລ້າງ
-                    </button>
-                    <button class="btn btn-calc" onclick="calculatePension()">
-                        <i class="fas fa-calculator"></i> ຄຳນວນບຳນານ
-                    </button>
-                </div>
-                <div style="height: 20px;"></div>
-            </form>
-        </div>
-
-    </div>
-
-    <!-- Bottom Navigation Bar -->
-    <nav class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home')" id="nav-home">
-            <i class="fas fa-home"></i>
-            <span>ໜ້າຫຼັກ</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('civil')" id="nav-civil">
-            <i class="fas fa-user-tie"></i>
-            <span>ລັດຖະກອນ</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('teacher')" id="nav-teacher">
-            <i class="fas fa-chalkboard-teacher"></i>
-            <span>ຄູ</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('pension')" id="nav-pension">
-            <i class="fas fa-blind"></i>
-            <span>ບຳນານ</span>
-        </div>
-    </nav>
-
-    <!-- Slip Modal (Detailed Version) -->
-    <div class="modal-overlay" id="slipModal">
-        <div class="modal-content">
-            <div class="slip-paper" id="salarySlip">
-                
-                <!-- Official Header -->
-                <div class="slip-header-official">
-                    <h4>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</h4>
-                    <h4>ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນະຖາວອນ</h4>
-                    <div class="slip-divider-line"></div>
-                    <h3 id="slipTitle">ໃບບິນເງິນເດືອນ</h3>
-                </div>
-
-                <div class="slip-meta">
-                    <div class="slip-meta-row">
-                        <span>ວັນທີອອກບິນ:</span>
-                        <span class="val" id="slipDate">dd/mm/yyyy</span>
-                    </div>
-										
-<div class="slip-meta-row">
-    <span>ຊື່ ແລະ ນາມສະກຸນ:</span>
-    <span id="resName" style="font-family:'Noto Sans Lao',sans-serif;font-weight:400;">
-        ...
-    </span>
-</div>
-				
-    <div class="slip-meta-row">
-                        <span>ຕຳແໜ່ງ/ຊັ້ນ-ຂັ້ນ:</span>
-                        <span><span id="resClassLevel"></span> (ດັດສະນີ: <span id="resIndex" class="val"></span>)</span>
-                    </div>
-                </div>
-
-                <!-- 1. Income Section -->
-                <div class="slip-section-title">1. ລາຍຮັບ (Income)</div>
-                <div class="slip-item">
-                    <span>ເງິນເດືອນພື້ນຖານ (Base):</span>
-                    <span class="val" id="resBase">0</span>
-                </div>
-                <div class="slip-item">
-                    <span>ເງິນດັດສົມປີການ (Years):</span>
-                    <span class="val" id="resYear">0</span>
-                </div>
-                <div class="slip-item">
-                    <span>ເງິນຕຳແໜ່ງ (Position):</span>
-                    <span class="val" id="resPosition">0</span>
+                <!-- Disclaimer -->
+                <div class="disclaimer-box">
+                    <strong>⚠️ ຂໍ້ຈຳກັດຄວາມຮັບຜິດຊອບ:</strong><br>
+                    ລະບົບນີ້ສ້າງຂຶ້ນເພື່ອອຳນວຍຄວາມສະດວກໃນການຄິດໄລ່ເບື້ອງຕົ້ນເທົ່ານັ້ນ. ຜົນການຄິດໄລ່ອາດມີຄວາມຄາດເຄື່ອນເລັກນ້ອຍ ຂຶ້ນກັບການຕີຄວາມໝາຍ. ກະລຸນາກວດສອບກັບພາກສ່ວນການເງິນເພື່ອຄວາມຖືກຕ້ອງສູງສຸດ.
                 </div>
                 
-                <!-- Teacher specific items -->
-                <div id="resTeacherBlock" class="hidden">
-                    <div class="slip-item sub">
-                        <span>+ ອຸດໜູນຄູ (<span id="resTeacherPct">0</span>%):</span>
-                        <span class="val" id="resTeacherMoney">0</span>
+                <!-- Footer Credit -->
+                <div class="footer-credit">
+                    <div class="footer-icon">
+                        <!-- Changed Icon to generic Code/Dev icon -->
+                        <i class="fas fa-code"></i>
                     </div>
-                    <div class="slip-item sub">
-                        <span>+ ສອນຫ້ອງຄວບ:</span>
-                        <span class="val" id="resCombined">0</span>
-                    </div>
-                    <div class="slip-item sub">
-                        <span>+ ວິຊາການຄູ:</span>
-                        <span class="val" id="resTechTeacher">0</span>
-                    </div>
-                    <div class="slip-item sub">
-                        <span>+ ຜົນການປະເມີນ:</span>
-                        <span class="val" id="resPerform">0</span>
-                    </div>
-                </div>
 
-                <!-- Civil Allowances -->
-                <div id="resCivilBlock">
-                    <div class="slip-item">
-                        <span>ອຸດໜູນຫ່າງໄກສອກຫຼີກ:</span>
-                        <span class="val" id="resRemote">0</span>
+                    <div class="footer-desc">
+                        Created with ❤️ for Lao Civil Servants<br>
+                        ພັດທະນາໂດຍ: <strong>Bounpherng PHATXAIYAPHOOM</strong> &copy; 2026
                     </div>
-                    <div class="slip-item">
-                        <span>ອຸດໜູນອື່ນໆ (ທາດເບື່ອ/ສະພາ):</span>
-                        <span class="val" id="resOtherAllow">0</span>
-                    </div>
-                </div>
 
-                <!-- Pension Specific Block -->
-                <div id="resPensionBlock" class="hidden">
-                    <div class="slip-item">
-                        <span>ອຸດໜູນອາຊີບ:</span>
-                        <span class="val" id="resOccAllow">0</span>
+                    <div class="footer-dev">
+                        <!-- Made WhatsApp clickable -->
+                        <a href="https://wa.me/8562091270509" target="_blank" class="dev-phone">
+                            <i class="fab fa-whatsapp"></i> 020 9127 0509
+                        </a>
                     </div>
-                    <div class="slip-item total-sub" style="margin-top:5px; border-top:1px dashed #ccc;">
-                        <span>ລວມເງິນກ່ອນຄິດໄລ່ເປີເຊັນ:</span>
-                        <span class="val" id="resPensionBaseTotal">0</span>
-                    </div>
-                    <div class="slip-item" style="color:var(--pension); font-weight:600;">
-                        <span>ຄິດໄລ່ບຳນານ (<span id="resPensionPctDisplay">0</span>%):</span>
-                        <span class="val" id="resPensionFinal">0</span>
-                    </div>
-                </div>
-
-                <!-- Total Gross (Hidden for Pension Mode as logic differs) -->
-                <div class="slip-item total-sub" id="grossTotalRow" style="margin-top:10px;">
-                    <span>ລວມຍອດລາຍຮັບ:</span>
-                    <span class="val plus" id="resTotalGross">0</span>
-                </div>
-
-                <!-- 2. Deductions -->
-                <div class="slip-section-title">2. ພັນທະ & ອາກອນ (Deductions)</div>
-                
-                <!-- Normal Mode Deductions -->
-                <div id="normalDeductions">
-                    <div class="slip-item">
-                        <span>ຫັກປະກັນສັງຄົມ (8%):</span>
-                        <span class="val minus">-<span id="resSocial">0</span></span>
-                    </div>
-                    <div class="slip-item">
-                        <span>ຫັກອາກອນເງິນເດືອນ:</span>
-                        <span class="val minus">-<span id="resTax">0</span></span>
-                    </div>
-                </div>
-
-                <!-- Pension Deductions -->
-                <div id="pensionDeductions" class="hidden">
-                     <div class="slip-item">
-                        <span>ຫັກປະກັນສຸຂະພາບ (0.625%):</span>
-                        <span class="val minus">-<span id="resHealth">0</span></span>
-                    </div>
-                </div>
-
-                <div class="slip-item total-sub">
-                    <span>ລວມຍອດຫັກ:</span>
-                    <span class="val minus">-<span id="resTotalDeduct">0</span></span>
-                </div>
-
-                <!-- 3. Family/Welfare -->
-                <div class="slip-section-title">3. ເງິນນະໂຍບາຍ (Welfare)</div>
-                <div class="slip-item">
-                    <span>ເງິນລູກ (<span id="resChildCount">0</span> ຄົນ):</span>
-                    <span class="val" id="resChildMoney">0</span>
                 </div>
                 
-                <!-- Normal Only -->
-                <div id="normalWelfare">
-                    <div class="slip-item">
-                        <span>ເງິນຄູ່ສົມລົດ:</span>
-                        <span class="val" id="resSpouse">0</span>
-                    </div>
-                    <div class="slip-item">
-                        <span>ເງິນນະໂຍບາຍຊ່ວຍໜູນ:</span>
-                        <span class="val" id="resPolicy">0</span>
-                    </div>
-                </div>
-
-                <!-- Pension Welfare -->
-                <div id="pensionWelfare" class="hidden">
-                    <div class="slip-item">
-                        <span>ເງິນນະໂຍບາຍຊ່ວຍໜູນ (3ລ້ານ):</span>
-                        <span class="val" id="resPensionSubsidy">0</span>
-                    </div>
-                </div>
-
-                <!-- Grand Total -->
-                <div class="slip-grand-total">
-                    <div class="label">ເງິນເດືອນຮັບສຸດທິ (Net Salary)</div>
-                    <div class="amount"><span id="resNetSalary">0</span> <span style="font-size:1rem; font-weight:400;">ກີບ</span></div>
-                </div>
-                
-                <div class="slip-footer">
-                    Created by IT BANBAN Salary System 2026<br>
-                    (ໃບບິນນີ້ສ້າງຂຶ້ນຈາກລະບົບຄຳນວນເບື້ອງຕົ້ນ)
-                </div>
+                <div style="height: 40px;"></div>
             </div>
 
-            <div class="modal-actions">
-                <button class="btn btn-close" onclick="closeModal()">ປິດ</button>
-                <button class="btn btn-save" onclick="downloadImage()">ບັນທຶກຮູບ</button>
+            <!-- PAGE 2: CALCULATOR (Shared for Teacher & Civil) -->
+            <div id="page-calc" class="page">
+                <form id="salaryForm" onsubmit="return false;">
+                    <!-- Teacher Mode Header -->
+                    <div id="teacherModeBanner" class="home-info-box hidden" style="background: #e8f5e9; border: 1px solid #4caf50; color: #2e7d32; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                        <i class="fas fa-chalkboard-teacher"></i> ທ່ານພວມຢູ່ໃນໂຫມດ: <strong>ຄຳນວນເງິນເດືອນຄູ</strong>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-user"></i>
+                            <span class="card-title">ຂໍ້ມູນທົ່ວໄປ</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">ຊື່ ແລະ ນາມສະກຸນ</label>
+                            <input type="text" id="fullName" placeholder="ປ້ອນຊື່ຂອງທ່ານ..." required>
+                        </div>
+                    </div>
+
+                    <!-- Position Info -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-briefcase"></i>
+                            <span class="card-title">ຂໍ້ມູນຕຳແໜ່ງ & ຊັ້ນຂັ້ນ</span>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="required">ຊັ້ນ</label>
+                                <select id="classSelect" onchange="updateLevels()" required>
+                                    <option value="">ເລືອກ...</option>
+                                    <option value="1">ຊັ້ນ 1</option>
+                                    <option value="2">ຊັ້ນ 2</option>
+                                    <option value="3">ຊັ້ນ 3</option>
+                                    <option value="4">ຊັ້ນ 4</option>
+                                    <option value="5">ຊັ້ນ 5</option>
+                                    <option value="6">ຊັ້ນ 6</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">ຂັ້ນ</label>
+                                <select id="levelSelect" onchange="updateIndex()" required disabled>
+                                    <option value="">...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>ດັດສະນີ (Auto)</label>
+                                <input type="text" id="indexDisplay" readonly placeholder="0">
+                            </div>
+                            <div class="form-group">
+                                <label class="required">ເປີເຊັນໄດ້ຮັບ (%)</label>
+                                <input type="number" id="percentage" value="100" inputmode="numeric">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">ປີການ (ປີ)</label>
+                            <input type="number" id="yearsService" value="0" inputmode="numeric">
+                        </div>
+                        <div class="form-group">
+                            <label>ເງິນຕຳແໜ່ງ</label>
+                            <select id="positionMoney">
+                                <option value="0">ບໍ່ມີ / ພະນັກງານ 95</option>
+                                <option value="900000">ວິຊາການ - 900,000</option>
+                                <option value="1100000">ບໍລິຫານ 8 - 1,100,000</option>
+                                <option value="1300000">ບໍລິຫານ 7 - 1,300,000</option>
+                                <option value="1500000">ບໍລິຫານ 6 - 1,500,000</option>
+                                <option value="1700000">ບໍລິຫານ 5 - 1,700,000</option>
+                                <option value="1900000">ບໍລິຫານ 4 - 1,900,000</option>
+                                <option value="2100000">ບໍລິຫານ 3 - 2,100,000</option>
+                                <option value="2300000">ບໍລິຫານ 2 - 2,300,000</option>
+                                <option value="2500000">ບໍລິຫານ 1 - 2,500,000</option>
+                                <option value="3000000">ການນຳ 6/1 - 3,000,000</option>
+                                <option value="4000000">ການນຳ 6/2 - 4,000,000</option>
+                                <option value="5000000">ການນຳ 6/3 - 5,000,000</option>
+                                <option value="6000000">ການນຳ 6/4 - 6,000,000</option>
+                                <option value="7000000">ການນຳ 6/5 - 7,000,000</option>
+                                <option value="8000000">ການນຳ 6/6 - 8,000,000</option>
+                                <option value="9000000">ການນຳ 6/7 - 9,000,000</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Allowance (Dynamic Display) -->
+                    <div class="card hidden" id="teacherSection">
+                        <div class="card-header">
+                            <i class="fas fa-school"></i>
+                            <span class="card-title">ອຸດໜູນອາຊີບຄູ</span>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group full">
+                                <label>ເປີເຊັນອຸດໜູນ (%)</label>
+                                <select id="teacherPercent">
+                                    <option value="0">0% (ບໍ່ໄດ້ຮັບ)</option>
+                                    <option value="10">10%</option>
+                                    <option value="15">15%</option>
+                                    <option value="20">20%</option>
+                                    <option value="25">25%</option>
+                                    <option value="30">30%</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>ສອນຫ້ອງຄວບ</label>
+                                <input type="text" id="combinedClass" placeholder="0" class="money-input">
+                            </div>
+                            <div class="form-group">
+                                <label>ຕຳແໜ່ງວິຊາການຄູ</label>
+                                <input type="text" id="technicalTeacher" placeholder="0" class="money-input">
+                            </div>
+                            <div class="form-group full">
+                                <label>ຕາມຜົນປະເມີນ</label>
+                                <input type="text" id="performance" placeholder="0" class="money-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other Allowances -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-coins"></i>
+                            <span class="card-title">ເງິນອຸດໜູນ & ນະໂຍບາຍ</span>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>ຫ່າງໄກສອກຫຼີກ</label>
+                                <input type="text" id="remoteAllowance" placeholder="0" class="money-input">
+                            </div>
+                            <div class="form-group">
+                                <label>ເງິນທາດເບື່ອ</label>
+                                <input type="text" id="toxicAllowance" placeholder="0" class="money-input">
+                            </div>
+                            <div class="form-group">
+                                <label>ນະໂຍບາຍຊ່ວຍໜູນ</label>
+                                <input type="text" id="policySupport" placeholder="0" class="money-input">
+                            </div>
+                            <div class="form-group">
+                                <label>ອໜ ສະມາຊິກສະພາ</label>
+                                <input type="text" id="assemblyAllowance" placeholder="0" class="money-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Family -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-users"></i>
+                            <span class="card-title">ຄອບຄົວ</span>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>ຈຳນວນລູກ (≤18ປີ)</label>
+                                <input type="number" id="childCount" value="0" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                                <label>ຄູ່ສົມລົດ</label>
+                                <select id="spouse">
+                                    <option value="0">ບໍ່ມີ</option>
+                                    <option value="200000">ມີ (200,000 ກີບ)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn btn-reset" onclick="resetForm(true)">
+                            <i class="fas fa-redo"></i> ລ້າງ
+                        </button>
+                        <button class="btn btn-calc" onclick="handleCalculate()">
+                            <i class="fas fa-calculator"></i> ຄຳນວນ
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- PAGE 3: PENSION CALCULATOR -->
+            <div id="page-pension" class="page">
+                <div class="home-info-box" style="background: #efebe9; border: 1px solid #795548; color: #5d4037; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <i class="fas fa-blind"></i> ທ່ານພວມຢູ່ໃນໂຫມດ: <strong>ຄຳນວນບຳນານ (Pension)</strong>
+                </div>
+
+                <form id="pensionForm" onsubmit="return false;">
+                    <!-- Personal Info -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-user"></i>
+                            <span class="card-title">ຂໍ້ມູນທົ່ວໄປ</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">ຊື່ ແລະ ນາມສະກຸນ</label>
+                            <input type="text" id="p_fullName" placeholder="ປ້ອນຊື່..." required>
+                        </div>
+                    </div>
+
+                    <!-- Position & Index -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-briefcase"></i>
+                            <span class="card-title">ຂໍ້ມູນເງິນເດືອນ & ປີການ</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>ເງິນຕຳແໜ່ງ</label>
+                            <select id="p_positionMoney">
+                                <option value="9000000">ການນຳ 6/7 - 9,000,000</option>
+                                <option value="8000000">ການນຳ 6/6 - 8,000,000</option>
+                                <option value="7000000">ການນຳ 6/5 - 7,000,000</option>
+                                <option value="6000000">ການນຳ 6/4 - 6,000,000</option>
+                                <option value="5000000">ການນຳ 6/3 - 5,000,000</option>
+                                <option value="4000000">ການນຳ 6/2 - 4,000,000</option>
+                                <option value="3000000">ການນຳ 6/1 - 3,000,000</option>
+                                <option value="2500000">ບໍລິຫານ 1 - 2,500,000</option>
+                                <option value="2300000">ບໍລິຫານ 2 - 2,300,000</option>
+                                <option value="2100000">ບໍລິຫານ 3 - 2,100,000</option>
+                                <option value="1900000">ບໍລິຫານ 4 - 1,900,000</option>
+                                <option value="1700000">ບໍລິຫານ 5 - 1,700,000</option>
+                                <option value="1500000">ບໍລິຫານ 6 - 1,500,000</option>
+                                <option value="1300000">ບໍລິຫານ 7 - 1,300,000</option>
+                                <option value="1100000">ບໍລິຫານ 8 - 1,100,000</option>
+                                <option value="900000">ວິຊາການ - 900,000</option>
+                                <option value="0" selected>ພະນັກງານ 95 / ບໍ່ມີ - 0</option>
+                            </select>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="required">ຊັ້ນ</label>
+                                <select id="p_classSelect" onchange="updateLevelsPension()" required>
+                                    <option value="">ເລືອກ...</option>
+                                    <option value="1">ຊັ້ນ 1</option>
+                                    <option value="2">ຊັ້ນ 2</option>
+                                    <option value="3">ຊັ້ນ 3</option>
+                                    <option value="4">ຊັ້ນ 4</option>
+                                    <option value="5">ຊັ້ນ 5</option>
+                                    <option value="6">ຊັ້ນ 6</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">ຂັ້ນ</label>
+                                <select id="p_levelSelect" onchange="updateIndexPension()" required disabled>
+                                    <option value="">...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>ດັດສະນີ (Auto)</label>
+                                <input type="text" id="p_indexDisplay" readonly placeholder="0">
+                            </div>
+                            <div class="form-group">
+                                <label class="required">ປີການ (1-50 ປີ)</label>
+                                <input type="number" id="p_yearsService" value="0" inputmode="numeric">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>ອຸດໜູນອາຊີບ (ຖ້າມີ)</label>
+                            <input type="text" id="p_occAllowance" placeholder="0" class="money-input">
+                        </div>
+                    </div>
+
+                    <!-- Pension Rate -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-percent"></i>
+                            <span class="card-title">ອັດຕາສ່ວນບຳນານ</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">ເປີເຊັນບຳນານ (%)</label>
+                            <input type="number" id="p_pensionPercent" placeholder="ເຊັ່ນ: 75, 80, 100..." required>
+                            <small style="color:#78909c;">ໃສ່ແຕ່ຕົວເລກ (ບໍ່ຕ້ອງໃສ່ %)</small>
+                        </div>
+                    </div>
+
+                    <!-- Family -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-users"></i>
+                            <span class="card-title">ຄອບຄົວ (ອຸດໜູນລູກ)</span>
+                        </div>
+                        <div class="form-group">
+                            <label>ຈຳນວນລູກ (≤18ປີ)</label>
+                            <input type="number" id="p_childCount" value="0" inputmode="numeric">
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-reset" onclick="resetForm(true)">
+                            <i class="fas fa-redo"></i> ລ້າງ
+                        </button>
+                        <button class="btn btn-calc" onclick="calculatePension()">
+                            <i class="fas fa-calculator"></i> ຄຳນວນບຳນານ
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('home')" id="nav-home">
+                <i class="fas fa-home"></i>
+                <span>ໜ້າຫຼັກ</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('civil')" id="nav-civil">
+                <i class="fas fa-user-tie"></i>
+                <span>ລັດຖະກອນ</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('teacher')" id="nav-teacher">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>ຄູ</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('pension')" id="nav-pension">
+                <i class="fas fa-blind"></i>
+                <span>ບຳນານ</span>
+            </div>
+        </nav>
+
+        <!-- Slip Modal (Detailed Version) -->
+        <div class="modal-overlay" id="slipModal">
+            <div class="modal-content">
+                <div class="slip-paper" id="salarySlip">
+                    
+                    <!-- Official Header -->
+                    <div class="slip-header-official">
+                        <h4>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</h4>
+                        <h4>ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນະຖາວອນ</h4>
+                        <div class="slip-divider-line"></div>
+                        <h3 id="slipTitle">ໃບບິນເງິນເດືອນ</h3>
+                    </div>
+
+                    <div class="slip-meta">
+                        <div class="slip-meta-row">
+                            <span>ວັນທີອອກບິນ:</span>
+                            <span class="val" id="slipDate">dd/mm/yyyy</span>
+                        </div>
+                        <div class="slip-meta-row">
+                            <span>ຊື່ ແລະ ນາມສະກຸນ:</span>
+                            <span id="resName" style="font-family:'Noto Sans Lao',sans-serif;font-weight:400;">...</span>
+                        </div>
+                        <div class="slip-meta-row">
+                            <span>ຕຳແໜ່ງ/ຊັ້ນ-ຂັ້ນ:</span>
+                            <span><span id="resClassLevel"></span> (ດັດສະນີ: <span id="resIndex" class="val"></span>)</span>
+                        </div>
+                    </div>
+
+                    <!-- 1. Income Section -->
+                    <div class="slip-section-title">1. ລາຍຮັບ (Income)</div>
+                    <div class="slip-item">
+                        <span>ເງິນເດືອນພື້ນຖານ (Base):</span>
+                        <span class="val" id="resBase">0</span>
+                    </div>
+                    <div class="slip-item">
+                        <span>ເງິນດັດສົມປີການ (Years):</span>
+                        <span class="val" id="resYear">0</span>
+                    </div>
+                    <div class="slip-item">
+                        <span>ເງິນຕຳແໜ່ງ (Position):</span>
+                        <span class="val" id="resPosition">0</span>
+                    </div>
+                    
+                    <!-- Teacher specific items -->
+                    <div id="resTeacherBlock" class="hidden">
+                        <div class="slip-item sub">
+                            <span>+ ອຸດໜູນຄູ (<span id="resTeacherPct">0</span>%):</span>
+                            <span class="val" id="resTeacherMoney">0</span>
+                        </div>
+                        <div class="slip-item sub">
+                            <span>+ ສອນຫ້ອງຄວບ:</span>
+                            <span class="val" id="resCombined">0</span>
+                        </div>
+                        <div class="slip-item sub">
+                            <span>+ ວິຊາການຄູ:</span>
+                            <span class="val" id="resTechTeacher">0</span>
+                        </div>
+                        <div class="slip-item sub">
+                            <span>+ ຜົນການປະເມີນ:</span>
+                            <span class="val" id="resPerform">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Civil Allowances -->
+                    <div id="resCivilBlock">
+                        <div class="slip-item">
+                            <span>ອຸດໜູນຫ່າງໄກສອກຫຼີກ:</span>
+                            <span class="val" id="resRemote">0</span>
+                        </div>
+                        <div class="slip-item">
+                            <span>ອຸດໜູນອື່ນໆ (ທາດເບື່ອ/ສະພາ):</span>
+                            <span class="val" id="resOtherAllow">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Pension Specific Block -->
+                    <div id="resPensionBlock" class="hidden">
+                        <div class="slip-item">
+                            <span>ອຸດໜູນອາຊີບ:</span>
+                            <span class="val" id="resOccAllow">0</span>
+                        </div>
+                        <div class="slip-item total-sub" style="margin-top:5px; border-top:1px dashed #ccc;">
+                            <span>ລວມເງິນກ່ອນຄິດໄລ່ເປີເຊັນ:</span>
+                            <span class="val" id="resPensionBaseTotal">0</span>
+                        </div>
+                        <div class="slip-item" style="color:var(--pension); font-weight:600;">
+                            <span>ຄິດໄລ່ບຳນານ (<span id="resPensionPctDisplay">0</span>%):</span>
+                            <span class="val" id="resPensionFinal">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Total Gross -->
+                    <div class="slip-item total-sub" id="grossTotalRow" style="margin-top:10px;">
+                        <span>ລວມຍອດລາຍຮັບ:</span>
+                        <span class="val plus" id="resTotalGross">0</span>
+                    </div>
+
+                    <!-- 2. Deductions -->
+                    <div class="slip-section-title">2. ພັນທະ & ອາກອນ (Deductions)</div>
+                    
+                    <!-- Normal Mode Deductions -->
+                    <div id="normalDeductions">
+                        <div class="slip-item">
+                            <span>ຫັກປະກັນສັງຄົມ (8%):</span>
+                            <span class="val minus">-<span id="resSocial">0</span></span>
+                        </div>
+                        <div class="slip-item">
+                            <span>ຫັກອາກອນເງິນເດືອນ:</span>
+                            <span class="val minus">-<span id="resTax">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Pension Deductions -->
+                    <div id="pensionDeductions" class="hidden">
+                        <div class="slip-item">
+                            <span>ຫັກປະກັນສຸຂະພາບ (0.625%):</span>
+                            <span class="val minus">-<span id="resHealth">0</span></span>
+                        </div>
+                    </div>
+
+                    <div class="slip-item total-sub">
+                        <span>ລວມຍອດຫັກ:</span>
+                        <span class="val minus">-<span id="resTotalDeduct">0</span></span>
+                    </div>
+
+                    <!-- 3. Family/Welfare -->
+                    <div class="slip-section-title">3. ເງິນນະໂຍບາຍ (Welfare)</div>
+                    <div class="slip-item">
+                        <span>ເງິນລູກ (<span id="resChildCount">0</span> ຄົນ):</span>
+                        <span class="val" id="resChildMoney">0</span>
+                    </div>
+                    
+                    <!-- Normal Only -->
+                    <div id="normalWelfare">
+                        <div class="slip-item">
+                            <span>ເງິນຄູ່ສົມລົດ:</span>
+                            <span class="val" id="resSpouse">0</span>
+                        </div>
+                        <div class="slip-item">
+                            <span>ເງິນນະໂຍບາຍຊ່ວຍໜູນ:</span>
+                            <span class="val" id="resPolicy">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Pension Welfare -->
+                    <div id="pensionWelfare" class="hidden">
+                        <div class="slip-item">
+                            <span>ເງິນນະໂຍບາຍຊ່ວຍໜູນ (3ລ້ານ):</span>
+                            <span class="val" id="resPensionSubsidy">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Grand Total -->
+                    <div class="slip-grand-total">
+                        <div class="label">ເງິນເດືອນຮັບສຸດທິ (Net Salary)</div>
+                        <div class="amount"><span id="resNetSalary">0</span> <span style="font-size:1rem; font-weight:400;">ກີບ</span></div>
+                    </div>
+                    
+                    <div class="slip-footer">
+                        Created by IT BANBAN Salary System 2026<br>
+                        (ໃບບິນນີ້ສ້າງຂຶ້ນຈາກລະບົບຄຳນວນເບື້ອງຕົ້ນ)
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-close" onclick="closeModal()">ປິດ</button>
+                    <button class="btn btn-save" onclick="downloadImage()">ບັນທຶກຮູບ</button>
+                </div>
             </div>
         </div>
-    </div>
+    </div> <!-- End App Container -->
 
     <script>
         // --- Data ---
@@ -1215,7 +1372,9 @@
 
             // Hide all pages first
             document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-            document.body.classList.remove('pension-mode');
+            
+            // Update Container Class instead of Body (for Pension Theme)
+            document.getElementById('app-container').classList.remove('pension-mode');
 
             const headerTitle = document.getElementById('headerTitle');
             const teacherSection = document.getElementById('teacherSection');
@@ -1226,12 +1385,12 @@
 
             if (tabName === 'home') {
                 document.getElementById('page-home').classList.add('active');
-                headerTitle.textContent = "IT-BANAN";
+                headerTitle.textContent = "IT-BANBAN";
             } else if (tabName === 'pension') {
                 currentMode = 'pension';
                 document.getElementById('page-pension').classList.add('active');
                 headerTitle.textContent = "ຄຳນວນບຳນານ";
-                document.body.classList.add('pension-mode');
+                document.getElementById('app-container').classList.add('pension-mode');
             } else {
                 // Show Calculator Page (Civil/Teacher)
                 document.getElementById('page-calc').classList.add('active');
