@@ -240,13 +240,29 @@
         }
         
         .badge {
-            font-size: 0.7rem;
-            padding: 3px 8px;
-            border-radius: 12px;
+            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 15px;
             font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .badge-blue { background: #e3f2fd; color: #1565c0; }
-        .badge-green { background: #e8f5e9; color: #2e7d32; }
+        
+        /* New Visitor Badge Style */
+        .badge-visitor { 
+            background: #e0f7fa; 
+            color: #006064; 
+            border: 1px solid #b2ebf2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
 
         .info-list {
             list-style: none;
@@ -697,11 +713,12 @@
                     <i class="fas fa-calculator" style="font-size: 50px; color: var(--primary);"></i>
                     <h2>IT-BANBAN Calculator</h2>
                     <p>ລະບົບຄຳນວນເງິນເດືອນ ແລະ ເງິນອຸດໜູນ</p>
+                    
+                    <!-- NEW VISITOR COUNTER SECTION (Updated for GAS) -->
                     <div class="badges-row">
-                        <!-- UPDATED: Visitor Counter Badge -->
-                        <a href="https://hits.seeyoufarm.com">
-                            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fbounpherng.github.io%2FIT-BANBAN%2F&count_bg=%2379C83D&title_bg=%2355555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" alt="Visitor Count"/>
-                        </a>
+                        <span class="badge badge-visitor">
+                            <i class="fas fa-users"></i> ຈຳນວນຜູ້ເຂົ້າຊົມ: <span id="visitorCount">ກຳລັງໂຫຼດ...</span> ຄົນ
+                        </span>
                     </div>
                 </div>
 
@@ -1306,6 +1323,43 @@
         </div>
     </div> <!-- End App Container -->
 
+    <!-- Updated Visitor Counter using Google Apps Script -->
+    <script>
+        // --- Visitor Counter Logic (Google Apps Script) ---
+        // ໃຊ້ scriptURL ທີ່ທ່ານໃຫ້ມາ
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwoADLF5SEmx7rksFXBNEBbEF_Tzs5qPLKATUZFei9MeL7lIIf0k3f0hibRMz_u_c0qTw/exec";
+
+        async function initVisitorCounter() {
+            const displayEl = document.getElementById('visitorCount');
+            if (!displayEl) return;
+
+            try {
+                // Fetch data from GAS Web App
+                const response = await fetch(scriptURL);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                
+                // Update UI based on response
+                if (data.total !== undefined) {
+                    displayEl.innerText = data.total.toLocaleString('en-US');
+                } else if (data.error) {
+                    console.error("GAS Error:", data.error);
+                    displayEl.innerText = "Error";
+                }
+                
+            } catch (error) {
+                console.error("Error fetching visitor count:", error);
+                // Fallback display if fetch fails
+                displayEl.innerText = "..."; 
+            }
+        }
+    </script>
+
+    <!-- Original Calculator Logic (Unchanged) -->
     <script>
         // --- Data ---
         const indexTable = {
@@ -1324,6 +1378,9 @@
         // --- Init ---
         document.addEventListener('DOMContentLoaded', () => {
             
+            // Start Visitor Counter (Apps Script)
+            initVisitorCounter();
+
             // --- FIX 2: Strict Numeric Input Handler ---
             function strictNumericCheck(event) {
                  // Allow: backspace, delete, tab, escape, enter
