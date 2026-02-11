@@ -1,5 +1,5 @@
 // 🔹 ປ່ຽນຄ່ານີ້ທຸກເທື່ອທີ່ອັບເດດລະບົບ
-const APP_VERSION = 'v2026.04.04';
+const APP_VERSION = 'v2026.05.05';
 
 // 🔹 cache name = app name + version
 const CACHE_NAME = `ຄຳນວນເງີນເດືອນ-${APP_VERSION}`;
@@ -51,6 +51,7 @@ self.addEventListener('activate', (event) => {
     );
     self.clients.claim();
 });
+
 
 
 
