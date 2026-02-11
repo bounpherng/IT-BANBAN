@@ -2,7 +2,7 @@
 <html lang="lo">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Salary Calculator 2026</title>
     
     <!-- PWA Settings -->
@@ -55,7 +55,9 @@
             font-family: 'Noto Sans Lao', 'Phetsarath', sans-serif;
             background-color: #e0e0e0; /* Desktop background */
             color: var(--text-main);
-            height: 100vh;
+            /* FIX 1: Use dvh (Dynamic Viewport Height) for mobile browsers to handle address bar */
+            height: 100vh; 
+            height: 100dvh; 
             overflow: hidden; /* Prevent body scroll, handle in app-container */
             display: flex;
             justify-content: center;
@@ -66,8 +68,10 @@
         #app-container {
             width: 100%;
             max-width: var(--app-max-width);
+            /* FIX 1: Ensure container respects the dynamic viewport */
             height: 100%;
-            max-height: 100vh;
+            height: 100dvh;
+            max-height: 100dvh;
             background-color: var(--bg-color);
             position: relative;
             display: flex;
@@ -133,7 +137,7 @@
             padding: 0 15px;
             margin-top: -15px;
             padding-top: 25px;
-            padding-bottom: calc(var(--nav-height) + 20px); /* Add padding for nav */
+            padding-bottom: calc(var(--nav-height) + 20px + var(--safe-area-bottom)); /* Added safe area */
             position: relative;
             z-index: 5;
             scroll-behavior: smooth;
@@ -201,7 +205,7 @@
             font-size: 1rem;
         }
 
-        /* --- HOME PAGE STYLES (NEW) --- */
+        /* --- HOME PAGE STYLES --- */
         .home-banner {
             text-align: center;
             padding: 25px 20px;
@@ -243,30 +247,6 @@
         }
         .badge-blue { background: #e3f2fd; color: #1565c0; }
         .badge-green { background: #e8f5e9; color: #2e7d32; }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .feature-item {
-            background: white;
-            padding: 15px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            border: 1px solid #f1f5f9;
-        }
-        
-        .feature-item i {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-            color: var(--primary);
-        }
-        .feature-item h5 { font-size: 0.9rem; margin-bottom: 4px; }
-        .feature-item p { font-size: 0.75rem; color: #64748b; }
 
         .info-list {
             list-style: none;
@@ -453,6 +433,8 @@
             z-index: 100;
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
+            /* Extra guarantee for display */
+            transform: translateZ(0); 
         }
 
         .nav-item {
@@ -716,12 +698,10 @@
                     <h2>IT-BANBAN Calculator</h2>
                     <p>ລະບົບຄຳນວນເງິນເດືອນ ແລະ ເງິນອຸດໜູນ</p>
                     <div class="badges-row">
-                        <span class="badge badge-blue">Version 2.0.1</span>
+                        <span class="badge badge-blue">Version 2.0.2</span>
                         <span class="badge badge-green">Update: Feb 2026</span>
                     </div>
                 </div>
-
-                <!-- NOTE: Removed Feature Grid as requested (Feature Item Grid) -->
 
                 <!-- Regulation & Features List -->
                 <div class="card">
@@ -805,7 +785,6 @@
                 <!-- Footer Credit -->
                 <div class="footer-credit">
                     <div class="footer-icon">
-                        <!-- Changed Icon to generic Code/Dev icon -->
                         <i class="fas fa-code"></i>
                     </div>
 
@@ -815,7 +794,6 @@
                     </div>
 
                     <div class="footer-dev">
-                        <!-- Made WhatsApp clickable -->
                         <a href="https://wa.me/8562091270509" target="_blank" class="dev-phone">
                             <i class="fab fa-whatsapp"></i> 020 9127 0509
                         </a>
@@ -875,12 +853,14 @@
                             </div>
                             <div class="form-group">
                                 <label class="required">ເປີເຊັນໄດ້ຮັບ (%)</label>
-                                <input type="number" id="percentage" value="100" inputmode="numeric">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="percentage" value="100" inputmode="numeric" class="numeric-only">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="required">ປີການ (ປີ)</label>
-                            <input type="number" id="yearsService" value="0" inputmode="numeric">
+                            <!-- FIX 2: Numeric Input Only -->
+                            <input type="tel" id="yearsService" value="0" inputmode="numeric" class="numeric-only">
                         </div>
                         <div class="form-group">
                             <label>ເງິນຕຳແໜ່ງ</label>
@@ -926,15 +906,18 @@
                             </div>
                             <div class="form-group">
                                 <label>ສອນຫ້ອງຄວບ</label>
-                                <input type="text" id="combinedClass" placeholder="0" class="money-input">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="combinedClass" placeholder="0" class="money-input" inputmode="numeric">
                             </div>
                             <div class="form-group">
                                 <label>ຕຳແໜ່ງວິຊາການຄູ</label>
-                                <input type="text" id="technicalTeacher" placeholder="0" class="money-input">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="technicalTeacher" placeholder="0" class="money-input" inputmode="numeric">
                             </div>
                             <div class="form-group full">
                                 <label>ຕາມຜົນປະເມີນ</label>
-                                <input type="text" id="performance" placeholder="0" class="money-input">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="performance" placeholder="0" class="money-input" inputmode="numeric">
                             </div>
                         </div>
                     </div>
@@ -948,19 +931,23 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>ຫ່າງໄກສອກຫຼີກ</label>
-                                <input type="text" id="remoteAllowance" placeholder="0" class="money-input">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="remoteAllowance" placeholder="0" class="money-input" inputmode="numeric">
                             </div>
                             <div class="form-group">
                                 <label>ເງິນທາດເບື່ອ</label>
-                                <input type="text" id="toxicAllowance" placeholder="0" class="money-input">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="toxicAllowance" placeholder="0" class="money-input" inputmode="numeric">
                             </div>
                             <div class="form-group">
                                 <label>ນະໂຍບາຍຊ່ວຍໜູນ</label>
-                                <input type="text" id="policySupport" placeholder="0" class="money-input">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="policySupport" placeholder="0" class="money-input" inputmode="numeric">
                             </div>
                             <div class="form-group">
                                 <label>ອໜ ສະມາຊິກສະພາ</label>
-                                <input type="text" id="assemblyAllowance" placeholder="0" class="money-input">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="assemblyAllowance" placeholder="0" class="money-input" inputmode="numeric">
                             </div>
                         </div>
                     </div>
@@ -974,7 +961,8 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>ຈຳນວນລູກ (≤18ປີ)</label>
-                                <input type="number" id="childCount" value="0" inputmode="numeric">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="childCount" value="0" inputmode="numeric" class="numeric-only">
                             </div>
                             <div class="form-group">
                                 <label>ຄູ່ສົມລົດ</label>
@@ -1072,13 +1060,15 @@
                             </div>
                             <div class="form-group">
                                 <label class="required">ປີການ (1-50 ປີ)</label>
-                                <input type="number" id="p_yearsService" value="0" inputmode="numeric">
+                                <!-- FIX 2: Numeric Input Only -->
+                                <input type="tel" id="p_yearsService" value="0" inputmode="numeric" class="numeric-only">
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label>ອຸດໜູນອາຊີບ (ຖ້າມີ)</label>
-                            <input type="text" id="p_occAllowance" placeholder="0" class="money-input">
+                            <!-- FIX 2: Numeric Input Only -->
+                            <input type="tel" id="p_occAllowance" placeholder="0" class="money-input" inputmode="numeric">
                         </div>
                     </div>
 
@@ -1090,7 +1080,8 @@
                         </div>
                         <div class="form-group">
                             <label class="required">ເປີເຊັນບຳນານ (%)</label>
-                            <input type="number" id="p_pensionPercent" placeholder="ເຊັ່ນ: 75, 80, 100..." required>
+                            <!-- FIX 2: Numeric Input Only -->
+                            <input type="tel" id="p_pensionPercent" placeholder="ເຊັ່ນ: 75, 80, 100..." required inputmode="numeric" class="numeric-only">
                             <small style="color:#78909c;">ໃສ່ແຕ່ຕົວເລກ (ບໍ່ຕ້ອງໃສ່ %)</small>
                         </div>
                     </div>
@@ -1103,7 +1094,8 @@
                         </div>
                         <div class="form-group">
                             <label>ຈຳນວນລູກ (≤18ປີ)</label>
-                            <input type="number" id="p_childCount" value="0" inputmode="numeric">
+                            <!-- FIX 2: Numeric Input Only -->
+                            <input type="tel" id="p_childCount" value="0" inputmode="numeric" class="numeric-only">
                         </div>
                     </div>
 
@@ -1329,10 +1321,38 @@
 
         // --- Init ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Input formatting
+            
+            // --- FIX 2: Strict Numeric Input Handler ---
+            function strictNumericCheck(event) {
+                 // Allow: backspace, delete, tab, escape, enter
+                if ([46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
+                    // Allow: Ctrl+A,C,V,X
+                    (event.ctrlKey === true || event.metaKey === true) ||
+                    // Allow: home, end, left, right
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+                     // let it happen, don't do anything
+                     return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((event.shiftKey || (event.keyCode < 48 || event.keyCode > 57)) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+
+            // Apply to money inputs
             document.querySelectorAll('.money-input').forEach(input => {
+                input.addEventListener('keydown', strictNumericCheck);
                 input.addEventListener('input', function(e) {
                     formatCurrencyInput(this);
+                });
+            });
+            
+            // Apply to plain numeric inputs
+            document.querySelectorAll('.numeric-only').forEach(input => {
+                input.addEventListener('keydown', strictNumericCheck);
+                input.addEventListener('input', function(e) {
+                    // Remove any non-digit chars just in case (paste)
+                    this.value = this.value.replace(/[^0-9]/g, '');
                 });
             });
             
